@@ -45,15 +45,18 @@
                         </VBox>
                      </children>
                      <VBox.margin>
-                        <Insets bottom="10.0" top="10.0" />
+                        <Insets bottom="10.0" top="30.0" />
                      </VBox.margin>
                   </HBox>
-                  <HBox alignment="CENTER" prefHeight="46.0" prefWidth="246.0">
+                  <HBox alignment="TOP_CENTER" prefHeight="195.0" prefWidth="246.0">
                      <children>
                         <Label alignment="CENTER" contentDisplay="CENTER" styleClass="label-view" stylesheets="@style.css" text="Turn X" />
                      </children>
+                     <VBox.margin>
+                        <Insets top="10.0" />
+                     </VBox.margin>
                   </HBox>
-                  <VBox prefHeight="630.0" prefWidth="246.0">
+                  <VBox prefHeight="316.0" prefWidth="246.0">
                      <children>
                         <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
                            <children>
@@ -102,6 +105,9 @@
                      </image>
                   </ImageView>
                </children>
+               <BorderPane.margin>
+                  <Insets />
+               </BorderPane.margin>
             </VBox>
          </center>
          <bottom>
