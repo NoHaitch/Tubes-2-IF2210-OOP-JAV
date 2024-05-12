@@ -9,6 +9,7 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="927.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1">
@@ -17,7 +18,7 @@
          <right>
             <VBox prefHeight="574.0" prefWidth="246.0" style="-fx-background-color: rgba(194, 224, 206, 1)E;" BorderPane.alignment="CENTER">
                <children>
-                  <HBox prefHeight="100.0" prefWidth="200.0">
+                  <HBox prefHeight="42.0" prefWidth="246.0">
                      <children>
                         <VBox alignment="CENTER" prefHeight="100.0" prefWidth="155.0">
                            <children>
@@ -35,46 +36,53 @@
                         </VBox>
                         <VBox alignment="CENTER" prefHeight="100.0" prefWidth="149.0">
                            <children>
-                              <Button mnemonicParsing="false" text="Next" />
+                              <Button mnemonicParsing="false" styleClass="next-button" stylesheets="@style.css" text="Next" textFill="WHITE">
+                                 <font>
+                                    <Font name="System Bold" size="12.0" />
+                                 </font>
+                              </Button>
                            </children>
                         </VBox>
                      </children>
+                     <VBox.margin>
+                        <Insets bottom="10.0" top="10.0" />
+                     </VBox.margin>
                   </HBox>
                   <HBox alignment="CENTER" prefHeight="46.0" prefWidth="246.0">
                      <children>
-                        <Label text="Turn X" />
+                        <Label alignment="CENTER" contentDisplay="CENTER" styleClass="label-view" stylesheets="@style.css" text="Turn X" />
                      </children>
                   </HBox>
                   <VBox prefHeight="630.0" prefWidth="246.0">
                      <children>
                         <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
                            <children>
-                              <Button mnemonicParsing="false" text="My Field" />
+                              <Button mnemonicParsing="false" prefHeight="37.0" prefWidth="132.0" stylesheets="@style.css" text="My Field" />
                            </children>
                         </HBox>
                         <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
                            <children>
-                              <Button mnemonicParsing="false" text="Enemy Field" />
+                              <Button mnemonicParsing="false" stylesheets="@style.css" text="Enemy Field" />
                            </children>
                         </HBox>
                         <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
                            <children>
-                              <Button mnemonicParsing="false" text="Shop" />
+                              <Button mnemonicParsing="false" stylesheets="@style.css" text="Shop" />
                            </children>
                         </HBox>
                         <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
                            <children>
-                              <Button mnemonicParsing="false" text="Save State" />
+                              <Button mnemonicParsing="false" stylesheets="@style.css" text="Save State" />
                            </children>
                         </HBox>
                         <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
                            <children>
-                              <Button mnemonicParsing="false" text="Load State" />
+                              <Button mnemonicParsing="false" stylesheets="@style.css" text="Load State" />
                            </children>
                         </HBox>
                         <HBox alignment="CENTER" prefHeight="100.0" prefWidth="246.0">
                            <children>
-                              <Button mnemonicParsing="false" text="Load Plugin" />
+                              <Button mnemonicParsing="false" stylesheets="@style.css" text="Load Plugin" />
                            </children>
                         </HBox>
                      </children>
@@ -102,7 +110,7 @@
                   <VBox prefHeight="152.0" prefWidth="1033.0" />
                   <VBox alignment="CENTER" prefHeight="152.0" prefWidth="248.0">
                      <children>
-                        <Label text="Dexk XX/40" />
+                        <Label alignment="CENTER" contentDisplay="CENTER" styleClass="label-view" stylesheets="@style.css" text="Deck XX/40" />
                      </children>
                   </VBox>
                </children>
