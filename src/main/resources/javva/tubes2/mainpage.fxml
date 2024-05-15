@@ -7,12 +7,14 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="927.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="927.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="javva.tubes2.MainController">
    <children>
       <BorderPane layoutX="187.0" layoutY="30.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <right>
@@ -24,12 +26,18 @@
                            <children>
                               <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
                                  <children>
-                                    <Label text="Player 1" />
+                                    <Label text="Player 1">
+                                       <font>
+                                          <Font name="Arial Rounded MT Bold" size="13.0" />
+                                       </font></Label>
                                  </children>
                               </HBox>
                               <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
                                  <children>
-                                    <Label text="Player 2" />
+                                    <Label text="Player 2">
+                                       <font>
+                                          <Font name="Arial Rounded MT Bold" size="13.0" />
+                                       </font></Label>
                                  </children>
                               </HBox>
                            </children>
@@ -38,7 +46,7 @@
                            <children>
                               <Button mnemonicParsing="false" styleClass="next-button" stylesheets="@style.css" text="Next" textFill="WHITE">
                                  <font>
-                                    <Font name="System Bold" size="12.0" />
+                                    <Font name="System Bold" size="16.0" />
                                  </font>
                               </Button>
                            </children>
@@ -50,7 +58,10 @@
                   </HBox>
                   <HBox alignment="TOP_CENTER" prefHeight="195.0" prefWidth="246.0">
                      <children>
-                        <Label alignment="CENTER" contentDisplay="CENTER" styleClass="label-view" stylesheets="@style.css" text="Turn X" />
+                        <Label alignment="CENTER" contentDisplay="CENTER" styleClass="label-view" stylesheets="@style.css" text="Turn X" textFill="WHITE">
+                           <font>
+                              <Font name="Arial Rounded MT Bold" size="15.0" />
+                           </font></Label>
                      </children>
                      <VBox.margin>
                         <Insets top="10.0" />
@@ -65,7 +76,10 @@
                         </HBox>
                         <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
                            <children>
-                              <Button mnemonicParsing="false" stylesheets="@style.css" text="Enemy Field" />
+                              <Button mnemonicParsing="false" stylesheets="@style.css" text="Enemy Field">
+                                 <font>
+                                    <Font name="Arial Rounded MT Bold" size="12.0" />
+                                 </font></Button>
                            </children>
                         </HBox>
                         <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
@@ -93,35 +107,53 @@
                </children>
             </VBox>
          </right>
-         <center>
-            <VBox prefHeight="720.0" prefWidth="756.0" BorderPane.alignment="CENTER">
-               <children>
-                  <ImageView fitHeight="150.0" fitWidth="399.0" pickOnBounds="true" preserveRatio="true">
-                     <VBox.margin>
-                        <Insets left="80.0" top="20.0" />
-                     </VBox.margin>
-                     <image>
-                        <Image url="@Logo.png" />
-                     </image>
-                  </ImageView>
-               </children>
-               <BorderPane.margin>
-                  <Insets />
-               </BorderPane.margin>
-            </VBox>
-         </center>
          <bottom>
             <HBox prefHeight="152.0" prefWidth="1280.0" style="-fx-background-color: rgba(86, 133, 125, 1);" BorderPane.alignment="CENTER">
                <children>
                   <VBox prefHeight="152.0" prefWidth="1033.0" />
                   <VBox alignment="CENTER" prefHeight="152.0" prefWidth="248.0">
                      <children>
-                        <Label alignment="CENTER" contentDisplay="CENTER" styleClass="label-view" stylesheets="@style.css" text="Deck XX/40" />
+                        <Label alignment="CENTER" contentDisplay="CENTER" styleClass="label-view" stylesheets="@style.css" text="Deck XX/40" textFill="WHITE">
+                           <font>
+                              <Font name="Arial Rounded MT Bold" size="15.0" />
+                           </font></Label>
                      </children>
                   </VBox>
                </children>
             </HBox>
          </bottom>
+         <left>
+            <VBox prefHeight="775.0" prefWidth="1033.0" BorderPane.alignment="CENTER">
+               <children>
+                  <ImageView fitHeight="150.0" fitWidth="399.0" pickOnBounds="true" preserveRatio="true">
+                     <VBox.margin>
+                        <Insets left="80.0" top="20.0" />
+                     </VBox.margin>
+                     <image>
+                        <Image url="@images/Logo.png" />
+                     </image>
+                  </ImageView>
+                  <GridPane fx:id="card_field" alignment="CENTER" prefHeight="663.0" prefWidth="1033.0">
+                    <columnConstraints>
+                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                    </columnConstraints>
+                    <rowConstraints>
+                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                    </rowConstraints>
+                  </GridPane>
+               </children>
+               <BorderPane.margin>
+                  <Insets />
+               </BorderPane.margin>
+            </VBox>
+         </left>
       </BorderPane>
    </children>
 </AnchorPane>
