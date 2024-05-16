@@ -8,13 +8,13 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="261.0" prefWidth="200.0" styleClass="card" stylesheets="@style.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="javva.tubes2.CardController">
+<AnchorPane prefHeight="136.0" prefWidth="111.0" styleClass="card" stylesheets="@style.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="javva.tubes2.CardController">
    <children>
-      <VBox layoutX="14.0" prefHeight="200.0" prefWidth="134.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <VBox layoutX="14.0" prefHeight="171.0" prefWidth="107.0" styleClass="card" stylesheets="@style.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
             <HBox alignment="CENTER" prefHeight="133.0" prefWidth="169.0">
                <children>
-                  <ImageView fx:id="card_image" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fx:id="card_image" fitHeight="88.0" fitWidth="81.0" nodeOrientation="INHERIT" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@images/Hewan/chicken.png" />
                      </image>
@@ -23,9 +23,9 @@
             </HBox>
             <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
                <children>
-                  <Label fx:id="card_name" text="Chicken">
+                  <Label fx:id="card_name" prefHeight="21.0" prefWidth="77.0" text="Chicken">
                      <font>
-                        <Font name="System Bold" size="27.0" />
+                        <Font name="Arial Rounded MT Bold" size="16.0" />
                      </font>
                   </Label>
                </children>
