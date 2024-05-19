@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="136.0" prefWidth="111.0" styleClass="card" stylesheets="@style.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="javva.tubes2.CardController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="123.0" prefWidth="98.0" styleClass="card" stylesheets="@style.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="javva.tubes2.CardController">
    <children>
       <VBox layoutX="14.0" prefHeight="171.0" prefWidth="107.0" styleClass="card" stylesheets="@style.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
@@ -16,16 +16,16 @@
                <children>
                   <ImageView fx:id="card_image" fitHeight="88.0" fitWidth="81.0" nodeOrientation="INHERIT" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@images/Hewan/chicken.png" />
+                        <Image url="@images/Hewan/cow.png" />
                      </image>
                   </ImageView>
                </children>
             </HBox>
-            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="98.0">
                <children>
-                  <Label fx:id="card_name" prefHeight="21.0" prefWidth="77.0" text="Chicken">
+                  <Label fx:id="card_name" alignment="CENTER" contentDisplay="CENTER" prefHeight="21.0" prefWidth="76.0" text="Chicken" textAlignment="CENTER">
                      <font>
-                        <Font name="Arial Rounded MT Bold" size="16.0" />
+                        <Font name="Arial Rounded MT Bold" size="13.0" />
                      </font>
                   </Label>
                </children>
