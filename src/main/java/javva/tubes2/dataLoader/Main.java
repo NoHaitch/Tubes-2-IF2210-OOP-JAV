@@ -16,7 +16,7 @@ public class Main {
         Test test2 = (Test) dataPlugin.loadData("temp.json", Test.class.getName());
         test2.printTest();
 
-        // TEST XLM SAVE LOAD
+        // TEST YAML SAVE LOAD
         // use save
         dataPlugin = new YAMLDataLoader();
         dataPlugin.saveData(test, "temp.yaml");
@@ -24,5 +24,14 @@ public class Main {
         // use load
         Test test3 = (Test) dataPlugin.loadData("temp.yaml", Test.class.getName());
         test3.printTest();
+
+        // TEST TXT SAVE LOAD
+        // use save
+        dataPlugin = new TXTDataLoader();
+        dataPlugin.saveData(test, "temp.txt");
+
+        // use load
+        Test test4 = (Test) dataPlugin.loadData("temp.txt", Test.class.getName());
+        test4.printTest();
     }
 }

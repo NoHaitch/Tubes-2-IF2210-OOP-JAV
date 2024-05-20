@@ -24,6 +24,7 @@ public class YAMLDataLoader implements DataLoader {
         // get all attributes and their value
         Field[] fields = data.getClass().getDeclaredFields();
         for (Field field : fields) {
+            // get private field
             field.setAccessible(true);
 
             // check if variable is initialized or exist

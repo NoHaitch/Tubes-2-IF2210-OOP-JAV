@@ -48,7 +48,7 @@ public class Test {
         System.out.println("attribute3 = " + attribute3);
         System.out.println("attribute4 = " + attribute4);
         System.out.println("attribute5 = " + attribute5);
-        for (int i = 0; i < 10; i++){
+        for (int i = 0; i < list.size(); i++){
             System.out.println("list[" + i + "] = " + list.get(i));
         }
         for (String key: map.keySet()){
