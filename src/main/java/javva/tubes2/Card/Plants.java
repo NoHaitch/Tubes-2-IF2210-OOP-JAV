@@ -4,14 +4,14 @@ public class Plants extends Card implements Harvestable{
     private Product product;
     private Integer progress;
     private Integer harvestLimit;
-    private String effect;
+    private String activeEffect;
 
     Plants(String nameString, String tyString, Product retProduct, Integer harvestLim){
         super(nameString, tyString);
         product = retProduct;
         progress = 0;
         harvestLimit = harvestLim;
-        effect = "";
+        activeEffect = "";
     }
 
     public Product getProduct() {
