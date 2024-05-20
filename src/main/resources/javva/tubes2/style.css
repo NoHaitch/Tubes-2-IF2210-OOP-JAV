@@ -29,3 +29,27 @@
     -fx-background-radius: 25;
     -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.5), 10, 0, 0, 2);
 }
+
+.red_zone{
+    -fx-background-color: #FDC7C7;
+}
+
+.card_info{
+    -fx-background-color: #ECFFE9;
+    -fx-background-radius: 10;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.3), 10, 0, 0, 2);
+}
+
+.card_shuffle{
+    -fx-background-color: #FFFFFF;
+    -fx-background-radius: 10;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.3), 10, 0, 0, 2);
+}
+
+.panen_button{
+    -fx-background-color: linear-gradient(to top right, #4cf97c, #0bdffc);
+    -fx-background-radius: 100;
+    -fx-pref-width: 100px;
+    -fx-pref-height: 37px;
+}
+

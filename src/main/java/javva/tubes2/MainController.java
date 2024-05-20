@@ -98,7 +98,7 @@ public class MainController implements Initializable  {
                 card_field.add(anchorPane, column, row);
 
                 // Set margin around the anchorPane
-                GridPane.setMargin(anchorPane, new Insets(10)); // Set a uniform margin
+                GridPane.setMargin(anchorPane, new Insets(0)); // Set a uniform margin
 
                 // Increment column and row for the next card
                 column++;
