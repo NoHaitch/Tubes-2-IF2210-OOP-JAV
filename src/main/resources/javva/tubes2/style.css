@@ -36,7 +36,7 @@
 
 .card_info{
     -fx-background-color: #ECFFE9;
-    -fx-background-radius: 10;
+    -fx-background-radius: 20;
     -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.3), 10, 0, 0, 2);
 }
 
@@ -53,3 +53,8 @@
     -fx-pref-height: 37px;
 }
 
+.shop{
+    -fx-background-color: #E5FFDF;
+    -fx-background-radius: 30;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.5), 10, 0, 0, 2);
+}

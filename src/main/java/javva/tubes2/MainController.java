@@ -1,5 +1,10 @@
 package javva.tubes2;
 
+import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
+import javafx.scene.control.Label;
+import javafx.scene.layout.GridPane;
+
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -15,15 +20,112 @@ import java.util.ResourceBundle;
 import java.util.Random;
 
 public class MainController implements Initializable  {
+    //    Attributes
+    @FXML
+    private GridPane active_deck;
 
     @FXML
-    private GridPane card_field;
+    private Label active_deck_number;
 
     @FXML
-    private GridPane deck_field;
+    private GridPane field;
+
+    @FXML
+    private Label player_1;
+
+    @FXML
+    private Label player_2;
+
+    @FXML
+    private Label turn_label;
 
     private List<TempCard> list_of_cards = new ArrayList<>();
 
+    //  Methodes
+    @FXML
+    void loadPlugin(ActionEvent event) {
+    }
+
+    @FXML
+    void loadState(ActionEvent event) {
+    }
+
+    @FXML
+    void nextTurn(ActionEvent event) {
+    }
+
+    @FXML
+    void saveState(ActionEvent event) {
+    }
+
+    @FXML
+    void showEnemyField(ActionEvent event) {
+    }
+
+    @FXML
+    void showMyField(ActionEvent event) {
+    }
+
+    @FXML
+    void showShop(ActionEvent event) {
+    }
+
+
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        list_of_cards.addAll(generateRandom());
+        int column = 0;
+        int row = 0;
+        try {
+            for (int i = 0; i < 20; i++) {
+                FXMLLoader fxmlLoader = new FXMLLoader();
+                fxmlLoader.setLocation(MainController.class.getResource("card.fxml"));
+                AnchorPane anchorPane = fxmlLoader.load();
+
+                CardController cardController = fxmlLoader.getController();
+                cardController.setData(list_of_cards.get(i));
+
+                // Add the anchorPane to the GridPane
+                field.add(anchorPane, column, row);
+
+                // Set margin around the anchorPane
+                GridPane.setMargin(anchorPane, new Insets(0)); // Set a uniform margin
+
+                // Increment column and row for the next card
+                column++;
+                if (column == 5) {
+                    column = 0;
+                    row++;
+                }
+            }
+        }
+        catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        try {
+            column = 0;
+            for (int i = 0; i < 6; i++) {
+                FXMLLoader fxmlLoader = new FXMLLoader();
+                fxmlLoader.setLocation(MainController.class.getResource("card.fxml"));
+                AnchorPane anchorPane = fxmlLoader.load();
+
+                CardController cardController = fxmlLoader.getController();
+                cardController.setData(list_of_cards.get(i));
+
+                // Add the anchorPane to the GridPane
+                active_deck.add(anchorPane, column, row);
+
+                // Set margin around the anchorPane
+                GridPane.setMargin(anchorPane, new Insets(10)); // Set a uniform margin
+                column ++;
+            }
+        }
+        catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    //
     private List<TempCard> generateRandom(){
         List<TempCard> tempCards = new ArrayList<>();
         TempCard tempCard = new TempCard();
@@ -78,60 +180,6 @@ public class MainController implements Initializable  {
             tempCards.add(tempCard);
         }
         return tempCards;
-    }
-
-    @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
-        list_of_cards.addAll(generateRandom());
-        int column = 0;
-        int row = 0;
-        try {
-            for (int i = 0; i < 20; i++) {
-                FXMLLoader fxmlLoader = new FXMLLoader();
-                fxmlLoader.setLocation(MainController.class.getResource("card.fxml"));
-                AnchorPane anchorPane = fxmlLoader.load();
-
-                CardController cardController = fxmlLoader.getController();
-                cardController.setData(list_of_cards.get(i));
-
-                // Add the anchorPane to the GridPane
-                card_field.add(anchorPane, column, row);
-
-                // Set margin around the anchorPane
-                GridPane.setMargin(anchorPane, new Insets(0)); // Set a uniform margin
-
-                // Increment column and row for the next card
-                column++;
-                if (column == 5) {
-                    column = 0;
-                    row++;
-                }
-            }
-        }
-        catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-        try {
-            column = 0;
-            for (int i = 0; i < 6; i++) {
-                FXMLLoader fxmlLoader = new FXMLLoader();
-                fxmlLoader.setLocation(MainController.class.getResource("card.fxml"));
-                AnchorPane anchorPane = fxmlLoader.load();
-
-                CardController cardController = fxmlLoader.getController();
-                cardController.setData(list_of_cards.get(i));
-
-                // Add the anchorPane to the GridPane
-                deck_field.add(anchorPane, column, row);
-
-                // Set margin around the anchorPane
-                GridPane.setMargin(anchorPane, new Insets(10)); // Set a uniform margin
-                column ++;
-            }
-        }
-        catch (IOException e) {
-            throw new RuntimeException(e);
-        }
     }
 
 }

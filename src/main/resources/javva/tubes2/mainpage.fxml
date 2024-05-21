@@ -18,23 +18,43 @@
          <children>
             <HBox prefHeight="761.0" prefWidth="1280.0" VBox.vgrow="ALWAYS">
                <children>
-                  <VBox prefHeight="775.0" prefWidth="1034.0" HBox.hgrow="ALWAYS">
+                  <VBox prefHeight="775.0" prefWidth="1034.0" style="-fx-background-color: #F3FFEF;" HBox.hgrow="ALWAYS">
                      <children>
                         <HBox alignment="CENTER" prefHeight="151.0" prefWidth="1033.0">
                            <children>
-                              <ImageView fitHeight="135.0" fitWidth="508.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@images/Logo.png" />
-                                 </image>
-                                 <HBox.margin>
-                                    <Insets left="35.0" top="10.0" />
-                                 </HBox.margin>
-                              </ImageView>
+                              <VBox prefHeight="151.0" prefWidth="915.0">
+                                 <children>
+                                    <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+                                       <children>
+                                          <ImageView fitHeight="135.0" fitWidth="508.0" pickOnBounds="true" preserveRatio="true">
+                                             <image>
+                                                <Image url="@images/Logo.png" />
+                                             </image>
+                                          </ImageView>
+                                       </children>
+                                       <VBox.margin>
+                                          <Insets top="10.0" />
+                                       </VBox.margin>
+                                    </HBox>
+                                    <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0">
+                                       <children>
+                                          <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="21.0" prefWidth="862.0" text="Keterangan, bisa diisi informasi lagi tahap apa atau gimana" textFill="#0eab79" HBox.hgrow="ALWAYS">
+                                             <font>
+                                                <Font name="System Bold" size="15.0" />
+                                             </font>
+                                             <HBox.margin>
+                                                <Insets top="10.0" />
+                                             </HBox.margin>
+                                          </Label>
+                                       </children>
+                                    </HBox>
+                                 </children>
+                              </VBox>
                            </children>
                         </HBox>
                         <HBox alignment="CENTER" nodeOrientation="RIGHT_TO_LEFT" prefHeight="584.0" prefWidth="962.0" VBox.vgrow="ALWAYS">
                            <children>
-                              <GridPane fx:id="card_field" alignment="CENTER" focusTraversable="true" nodeOrientation="LEFT_TO_RIGHT" prefHeight="584.0" prefWidth="495.0" scaleShape="false" HBox.hgrow="ALWAYS">
+                              <GridPane fx:id="field" alignment="CENTER" focusTraversable="true" nodeOrientation="LEFT_TO_RIGHT" prefHeight="584.0" prefWidth="495.0" scaleShape="false" HBox.hgrow="ALWAYS">
                               </GridPane>
                            </children>
                         </HBox>
@@ -44,7 +64,7 @@
                      <children>
                         <HBox alignment="BOTTOM_CENTER" prefHeight="42.0" prefWidth="246.0">
                            <children>
-                              <Button mnemonicParsing="false" styleClass="next-button" stylesheets="@style.css" text="Next" textFill="WHITE">
+                              <Button mnemonicParsing="false" onAction="#nextTurn" styleClass="next-button" stylesheets="@style.css" text="Next" textFill="WHITE">
                                  <font>
                                     <Font name="System Bold" size="16.0" />
                                  </font>
@@ -56,7 +76,7 @@
                         </HBox>
                         <HBox alignment="TOP_CENTER" prefHeight="195.0" prefWidth="246.0">
                            <children>
-                              <Label alignment="CENTER" contentDisplay="CENTER" styleClass="label-view" stylesheets="@style.css" text="Turn X" textFill="WHITE">
+                              <Label fx:id="turn_label" alignment="CENTER" contentDisplay="CENTER" styleClass="label-view" stylesheets="@style.css" text="Turn X" textFill="WHITE">
                                  <font>
                                     <Font name="Arial Rounded MT Bold" size="15.0" />
                                  </font>
@@ -70,7 +90,7 @@
                            <children>
                               <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
                                  <children>
-                                   <Button stylesheets="@style.css" text="My Field">
+                                   <Button onAction="#showMyField" stylesheets="@style.css" text="My Field">
                                       <font>
                                          <Font name="Arial Rounded MT Bold" size="12.0" />
                                       </font>
@@ -79,7 +99,7 @@
                               </HBox>
                               <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
                                  <children>
-                                    <Button mnemonicParsing="false" stylesheets="@style.css" text="Enemy Field">
+                                    <Button mnemonicParsing="false" onAction="#showEnemyField" stylesheets="@style.css" text="Enemy Field">
                                        <font>
                                           <Font name="Arial Rounded MT Bold" size="12.0" />
                                        </font>
@@ -88,7 +108,7 @@
                               </HBox>
                               <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
                                  <children>
-                                    <Button mnemonicParsing="false" stylesheets="@style.css" text="Shop">
+                                    <Button mnemonicParsing="false" onAction="#showShop" stylesheets="@style.css" text="Shop">
                                        <font>
                                           <Font name="Arial Rounded MT Bold" size="12.0" />
                                        </font>
@@ -97,7 +117,7 @@
                               </HBox>
                               <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
                                  <children>
-                                    <Button mnemonicParsing="false" stylesheets="@style.css" text="Save State">
+                                    <Button mnemonicParsing="false" onAction="#saveState" stylesheets="@style.css" text="Save State">
                                        <font>
                                           <Font name="Arial Rounded MT Bold" size="12.0" />
                                        </font>
@@ -106,7 +126,7 @@
                               </HBox>
                               <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
                                  <children>
-                                    <Button mnemonicParsing="false" stylesheets="@style.css" text="Load State">
+                                    <Button mnemonicParsing="false" onAction="#loadState" stylesheets="@style.css" text="Load State">
                                        <font>
                                           <Font name="Arial Rounded MT Bold" size="12.0" />
                                        </font>
@@ -115,7 +135,7 @@
                               </HBox>
                               <HBox alignment="CENTER" prefHeight="100.0" prefWidth="246.0">
                                  <children>
-                                    <Button mnemonicParsing="false" stylesheets="@style.css" text="Load Plugin">
+                                    <Button mnemonicParsing="false" onAction="#loadPlugin" stylesheets="@style.css" text="Load Plugin">
                                        <font>
                                           <Font name="Arial Rounded MT Bold" size="12.0" />
                                        </font>
@@ -126,11 +146,11 @@
                         </VBox>
                         <VBox alignment="CENTER" prefHeight="179.0" prefWidth="246.0">
                            <children>
-                              <HBox alignment="CENTER" nodeOrientation="LEFT_TO_RIGHT" prefHeight="100.0" prefWidth="200.0">
+                              <HBox alignment="CENTER" nodeOrientation="LEFT_TO_RIGHT" prefHeight="100.0" prefWidth="200.0" style="-fx-background-color: #F3FFEF;" styleClass="card" stylesheets="@style.css">
                                  <children>
                                     <VBox alignment="CENTER_LEFT" prefHeight="200.0" prefWidth="100.0">
                                        <children>
-                                          <Label text="Player 1">
+                                          <Label prefHeight="16.0" prefWidth="59.0" text="Player 1">
                                              <font>
                                                 <Font name="Arial Rounded MT Bold" size="13.0" />
                                              </font>
@@ -143,9 +163,9 @@
                                           <Insets left="20.0" />
                                        </padding>
                                     </VBox>
-                                    <VBox alignment="CENTER_RIGHT" prefHeight="200.0" prefWidth="100.0" HBox.hgrow="ALWAYS">
+                                    <VBox alignment="CENTER_RIGHT" prefHeight="74.0" prefWidth="54.0" HBox.hgrow="ALWAYS">
                                        <children>
-                                          <Label contentDisplay="CENTER" text="XXX">
+                                          <Label fx:id="player_1" contentDisplay="CENTER" text="XXXXX">
                                              <font>
                                                 <Font name="Arial Rounded MT Bold" size="13.0" />
                                              </font>
@@ -155,7 +175,7 @@
                                           <Insets right="10.0" />
                                        </padding>
                                     </VBox>
-                                    <VBox alignment="CENTER_LEFT" prefHeight="200.0" prefWidth="100.0">
+                                    <VBox alignment="CENTER_LEFT" prefHeight="74.0" prefWidth="59.0">
                                        <children>
                                           <ImageView fitHeight="51.0" fitWidth="60.0" pickOnBounds="true" preserveRatio="true">
                                              <image>
@@ -165,12 +185,15 @@
                                        </children>
                                     </VBox>
                                  </children>
+                                 <VBox.margin>
+                                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                 </VBox.margin>
                               </HBox>
-                              <HBox alignment="CENTER" nodeOrientation="LEFT_TO_RIGHT" prefHeight="100.0" prefWidth="200.0">
+                              <HBox alignment="CENTER" nodeOrientation="LEFT_TO_RIGHT" prefHeight="100.0" prefWidth="200.0" style="-fx-background-color: #F3FFEF;" styleClass="card" stylesheets="@style.css">
                                  <children>
                                     <VBox alignment="CENTER_LEFT" prefHeight="200.0" prefWidth="100.0">
                                        <children>
-                                          <Label text="Player 2">
+                                          <Label prefHeight="16.0" prefWidth="59.0" text="Player 1">
                                              <font>
                                                 <Font name="Arial Rounded MT Bold" size="13.0" />
                                              </font>
@@ -183,9 +206,9 @@
                                           <Insets left="20.0" />
                                        </padding>
                                     </VBox>
-                                    <VBox alignment="CENTER_RIGHT" prefHeight="200.0" prefWidth="100.0" HBox.hgrow="ALWAYS">
+                                    <VBox alignment="CENTER_RIGHT" prefHeight="74.0" prefWidth="54.0" HBox.hgrow="ALWAYS">
                                        <children>
-                                          <Label contentDisplay="CENTER" text="XXX">
+                                          <Label fx:id="player_11" contentDisplay="CENTER" text="XXXXX">
                                              <font>
                                                 <Font name="Arial Rounded MT Bold" size="13.0" />
                                              </font>
@@ -195,7 +218,7 @@
                                           <Insets right="10.0" />
                                        </padding>
                                     </VBox>
-                                    <VBox alignment="CENTER_LEFT" prefHeight="200.0" prefWidth="100.0">
+                                    <VBox alignment="CENTER_LEFT" prefHeight="74.0" prefWidth="59.0">
                                        <children>
                                           <ImageView fitHeight="51.0" fitWidth="60.0" pickOnBounds="true" preserveRatio="true">
                                              <image>
@@ -205,10 +228,13 @@
                                        </children>
                                     </VBox>
                                  </children>
+                                 <VBox.margin>
+                                    <Insets bottom="20.0" left="10.0" right="10.0" />
+                                 </VBox.margin>
                               </HBox>
                            </children>
                            <VBox.margin>
-                              <Insets top="20.0" />
+                              <Insets />
                            </VBox.margin>
                         </VBox>
                      </children>
@@ -219,13 +245,13 @@
                <children>
                   <VBox alignment="CENTER" prefHeight="188.0" prefWidth="1033.0" HBox.hgrow="ALWAYS">
                      <children>
-                        <GridPane fx:id="deck_field" alignment="CENTER" VBox.vgrow="ALWAYS">
+                        <GridPane fx:id="active_deck" alignment="CENTER" VBox.vgrow="ALWAYS">
                         </GridPane>
                      </children>
                   </VBox>
                   <VBox alignment="CENTER" nodeOrientation="RIGHT_TO_LEFT" prefHeight="152.0" prefWidth="248.0">
                      <children>
-                        <Label alignment="CENTER" contentDisplay="CENTER" styleClass="label-view" stylesheets="@style.css" text="Deck XX/40" textFill="WHITE">
+                        <Label fx:id="active_deck_number" alignment="CENTER" contentDisplay="CENTER" styleClass="label-view" stylesheets="@style.css" text="Deck XX/40" textFill="WHITE">
                            <font>
                               <Font name="Arial Rounded MT Bold" size="15.0" />
                            </font>
