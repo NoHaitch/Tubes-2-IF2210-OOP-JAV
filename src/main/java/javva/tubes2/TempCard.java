@@ -4,6 +4,8 @@ public class TempCard {
     private String name;
     private String imgSrc;
 
+
+
     public String getImgSrc() {
         return imgSrc;
     }

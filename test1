@@ -1,0 +1,25 @@
+---
+attribute4: 4
+attribute5: 5
+list:
+- 0
+- 1
+- 2
+- 3
+- 4
+- 5
+- 6
+- 7
+- 8
+- 9
+map:
+  Key2: 2
+  Key1: 1
+  Key0: 0
+  Key6: 6
+  Key5: 5
+  Key4: 4
+  Key3: 3
+  Key9: 9
+  Key8: 8
+  Key7: 7
