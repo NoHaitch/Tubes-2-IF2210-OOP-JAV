@@ -4,8 +4,8 @@ public class Product extends Card{
     private Integer addedWeight;
     private Integer addedMoney;
 
-    Product(String nameString, String tyString, Integer addWeight, Integer addMoney){
-        super(nameString, tyString);
+    Product(String nameString, String tyString, String imgpth, Integer addWeight, Integer addMoney){
+        super(nameString, tyString, imgpth);
 
         addedWeight = addWeight;
         addedMoney = addMoney;

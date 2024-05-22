@@ -1,13 +1,13 @@
 package javva.tubes2.Card;
 
-public class Animal extends Card implements Harvestable{
+public class Animal extends Harvestable{
     private Product product;
     private Integer weight;
     private Integer harvestWeight;
     private String activeEffect;
 
-    public Animal(String nameString, String tyString, Product productRet, Integer wInteger, Integer harvbInteger){
-        super(nameString, tyString);
+    public Animal(String nameString, String tyString, String imgpth, Product productRet, Integer wInteger, Integer harvbInteger){
+        super(nameString, tyString, imgpth, productRet);
 
         product = productRet;
         weight = wInteger;
@@ -47,6 +47,7 @@ public class Animal extends Card implements Harvestable{
         this.activeEffect = activeEffect;
     }
 
+    @Override
     public Product harvest() throws NotReadyToHarvest{
         if(isHarvestReady()){
             return product;
@@ -54,6 +55,7 @@ public class Animal extends Card implements Harvestable{
         throw new NotReadyToHarvest();
     }
 
+    @Override
     public Boolean isHarvestReady(){
         return weight >= harvestWeight;
     }
