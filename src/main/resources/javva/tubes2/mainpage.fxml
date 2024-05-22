@@ -74,7 +74,7 @@
                               <Insets bottom="10.0" top="30.0" />
                            </VBox.margin>
                         </HBox>
-                        <HBox alignment="TOP_CENTER" prefHeight="195.0" prefWidth="246.0">
+                        <HBox alignment="CENTER" prefHeight="58.0" prefWidth="231.0">
                            <children>
                               <Label fx:id="turn_label" alignment="CENTER" contentDisplay="CENTER" styleClass="label-view" stylesheets="@style.css" text="Turn X" textFill="WHITE">
                                  <font>
@@ -88,18 +88,18 @@
                         </HBox>
                         <VBox prefHeight="316.0" prefWidth="246.0" VBox.vgrow="ALWAYS">
                            <children>
-                              <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
+                              <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" VBox.vgrow="NEVER">
                                  <children>
-                                   <Button onAction="#showMyField" stylesheets="@style.css" text="My Field">
+                                   <Button fx:id="my_field_button" onAction="#showMyField" stylesheets="@style.css" text="My Field">
                                       <font>
                                          <Font name="Arial Rounded MT Bold" size="12.0" />
                                       </font>
                                    </Button>
                                  </children>
                               </HBox>
-                              <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+                              <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
                                  <children>
-                                    <Button mnemonicParsing="false" onAction="#showEnemyField" stylesheets="@style.css" text="Enemy Field">
+                                    <Button fx:id="enemy_field_button" mnemonicParsing="false" onAction="#showEnemyField" stylesheets="@style.css" text="Enemy Field">
                                        <font>
                                           <Font name="Arial Rounded MT Bold" size="12.0" />
                                        </font>
@@ -108,7 +108,7 @@
                               </HBox>
                               <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
                                  <children>
-                                    <Button mnemonicParsing="false" onAction="#showShop" stylesheets="@style.css" text="Shop">
+                                    <Button fx:id="shop_button" mnemonicParsing="false" onAction="#showShop" stylesheets="@style.css" text="Shop">
                                        <font>
                                           <Font name="Arial Rounded MT Bold" size="12.0" />
                                        </font>
@@ -117,7 +117,7 @@
                               </HBox>
                               <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
                                  <children>
-                                    <Button mnemonicParsing="false" onAction="#saveState" stylesheets="@style.css" text="Save State">
+                                    <Button fx:id="save_state_button" mnemonicParsing="false" onAction="#saveState" stylesheets="@style.css" text="Save State">
                                        <font>
                                           <Font name="Arial Rounded MT Bold" size="12.0" />
                                        </font>
@@ -126,7 +126,7 @@
                               </HBox>
                               <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
                                  <children>
-                                    <Button mnemonicParsing="false" onAction="#loadState" stylesheets="@style.css" text="Load State">
+                                    <Button fx:id="load_state_button" mnemonicParsing="false" onAction="#loadState" stylesheets="@style.css" text="Load State">
                                        <font>
                                           <Font name="Arial Rounded MT Bold" size="12.0" />
                                        </font>
@@ -135,12 +135,18 @@
                               </HBox>
                               <HBox alignment="CENTER" prefHeight="100.0" prefWidth="246.0">
                                  <children>
-                                    <Button mnemonicParsing="false" onAction="#loadPlugin" stylesheets="@style.css" text="Load Plugin">
+                                    <Button fx:id="load_plugin_button" mnemonicParsing="false" onAction="#loadPlugin" stylesheets="@style.css" text="Load Plugin">
                                        <font>
                                           <Font name="Arial Rounded MT Bold" size="12.0" />
                                        </font>
+                                       <HBox.margin>
+                                          <Insets />
+                                       </HBox.margin>
                                     </Button>
                                  </children>
+                                 <VBox.margin>
+                                    <Insets bottom="10.0" />
+                                 </VBox.margin>
                               </HBox>
                            </children>
                         </VBox>
