@@ -12,11 +12,13 @@ import java.util.*;
 public class TXTDataLoader implements DataLoader {
     /**
      * Save player data to text file
-     * @param player Player data
+     *
+     * @param player   Player data
      * @param filePath relative path to result folder
      * @throws Exception data not correct, failed to save
      */
-    public void savePlayer(Player player, String filePath) throws Exception{
+    public void savePlayer(Player player, String filePath) throws Exception {
+        // TODO: USE PLAYER ATTRIBUTE
         // initialize file
         PrintWriter writer = new PrintWriter(filePath);
 
@@ -35,7 +37,7 @@ public class TXTDataLoader implements DataLoader {
         tempActive.put("B01", "BERUANG");
         tempActive.put("C01", "BERUANG");
 
-        for(String key : tempActive.keySet()){
+        for (String key : tempActive.keySet()) {
             writer.print(key + " ");
             writer.println(tempActive.get(key));
         }
@@ -55,17 +57,20 @@ public class TXTDataLoader implements DataLoader {
         writer.print(location + " " + card + " " + weight + " " + amountOfItems + " ");
         for (String item : items) {
             writer.print(item + " ");
-        } writer.println();
+        }
+        writer.println();
 
         writer.close();
     }
 
     /**
      * save game data to text file
+     *
      * @param filePath relative path to result folder
      * @throws Exception data not correct, failed to save
      */
     public void saveGameState(String filePath) throws Exception {
+        // TODO: USE GAME ATTRIBUTE
         // initialize file
         PrintWriter writer = new PrintWriter(filePath);
 
@@ -83,7 +88,7 @@ public class TXTDataLoader implements DataLoader {
         tempShop.put("DAGING_KUDA", 10);
         tempShop.put("DAGING_BERUANG", 1);
 
-        for(String key : tempShop.keySet()){
+        for (String key : tempShop.keySet()) {
             writer.print(key + " ");
             writer.println(tempShop.get(key));
         }
@@ -93,11 +98,13 @@ public class TXTDataLoader implements DataLoader {
 
     /**
      * Load player data from text file
+     *
      * @param filePath relative path to result folder
      * @return Player object
      * @throws Exception data not correct, corrupted save
      */
-    public Player loadPlayer(String filePath) throws Exception{
+    public Player loadPlayer(String filePath) throws Exception {
+        // TODO: USE PLAYER ATTRIBUTE
         // load file
         Scanner scanner = new Scanner(new File(filePath));
 
@@ -114,7 +121,7 @@ public class TXTDataLoader implements DataLoader {
         System.out.println("[LoadPlayer] Active Card Amount: " + active_card_amount);
 
         // get active cards
-        for(int i = 0; i < active_card_amount; i++){
+        for (int i = 0; i < active_card_amount; i++) {
             String location = scanner.next();
             String card = scanner.next();
             System.out.println("[LoadPlayer] Active Card: " + location + " " + card);
@@ -125,14 +132,14 @@ public class TXTDataLoader implements DataLoader {
         System.out.println("[LoadPlayer] Field Card Amount: " + field_card_amount);
 
         // get field cards
-        for(int i = 0; i < field_card_amount; i++){
+        for (int i = 0; i < field_card_amount; i++) {
             String location = scanner.next();
             String card = scanner.next();
             int weight = scanner.nextInt();
             int amountOfItems = scanner.nextInt();
             System.out.println("[LoadPlayer] Field Card: " + location + " " + card + " " + weight + " " + amountOfItems + " ");
             List<String> items = new ArrayList<>();
-            for(int j = 0; j < amountOfItems; j++){
+            for (int j = 0; j < amountOfItems; j++) {
                 items.add(scanner.next());
                 System.out.println("[LoadPlayer] " + (j + 1) + " Item: " + items.get(j));
             }
@@ -145,11 +152,13 @@ public class TXTDataLoader implements DataLoader {
 
     /**
      * Load game data from text file
+     *
      * @param filePath relative path to result folder
      * @return Game data
      * @throws Exception data not correct, corrupted save
      */
-    public Object loadGameState(String filePath) throws Exception{
+    public Object loadGameState(String filePath) throws Exception {
+        // TODO: USE GAME ATTRIBUTE
         // load file
         Scanner scanner = new Scanner(new File(filePath));
 
@@ -163,7 +172,7 @@ public class TXTDataLoader implements DataLoader {
 
         // Save shop items
         Map<String, Integer> tempShop = new HashMap<>();
-        for(int i = 0; i < shop_item_amount; i++){
+        for (int i = 0; i < shop_item_amount; i++) {
             String item_name = scanner.next();
             int item_amount = scanner.nextInt();
             tempShop.put(item_name, item_amount);

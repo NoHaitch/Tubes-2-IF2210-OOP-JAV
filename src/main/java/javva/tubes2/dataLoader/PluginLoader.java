@@ -12,8 +12,8 @@ import java.util.jar.JarFile;
 
 /**
  * Plugin Loader <br>
- * Load plugins from .jar file <br><br>
- *
+ * Load plugins from .jar file <br>
+ * <p>
  * Class loaded must be an implementation of DataLoader Interface
  */
 public class PluginLoader {
@@ -24,7 +24,7 @@ public class PluginLoader {
      *
      * @param jarFilePath relative path from root of project to .jar file
      * @return list of DataLoader classes
-     * @exception Exception if file not found, invalid path, or no DataLoader found
+     * @throws Exception if file not found, invalid path, or no DataLoader found
      */
     public static List<Class<?>> loadClassesFromJar(String jarFilePath) throws Exception {
         List<Class<?>> loadedClasses = new ArrayList<>();
@@ -70,7 +70,7 @@ public class PluginLoader {
                             }
                         }
                     }
-                } catch (Exception e){
+                } catch (Exception e) {
                     throw new Exception("Failed to open jar file");
                 }
             }
