@@ -8,11 +8,13 @@ public class Player {
     private int gulden ;
     private Deck deck ;
     private List<Card> active_deck ;
+    private Field field;
 
     public Player() {
         this.gulden = 0 ;
         this.deck = new Deck() ;
         this.active_deck = new ArrayList<>() ;
+        field = new Field(20);
     }
 
     public Player(int gulden) {
