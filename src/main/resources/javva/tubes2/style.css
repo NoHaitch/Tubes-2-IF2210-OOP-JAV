@@ -1,12 +1,20 @@
-.button {
+.btn {
     -fx-background-color: #5cad9f;
     -fx-background-radius: 100;
     -fx-pref-width: 132px;
     -fx-pref-height: 37px;
-    -fx-border-color: white; /* Set border color to white */
-    -fx-border-width: 2px;
+    /*-fx-border-color: white; !* Set border color to white *!*/
+    /*-fx-border-width: 2px;*/
     -fx-border-radius: 100;
     -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.5), 5, 0, 0, 2);
+}
+
+.small_btn{
+    -fx-background-color: #529885;
+    -fx-background-radius: 100;
+    -fx-border-radius: 100;
+    -fx-text-fill: #dbffe7;
+
 }
 
 .label-view {
@@ -27,5 +35,35 @@
 .card {
     -fx-background-color: #FFFFFF;
     -fx-background-radius: 25;
-    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.5), 10, 0, 0, 2);
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.7), 10, 0, 0, 2);
+}
+
+
+.card_info{
+    -fx-background-color: #ECFFE9;
+    -fx-background-radius: 20;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.3), 10, 0, 0, 2);
+}
+
+.card_shuffle{
+    -fx-background-color: #FFFFFF;
+    -fx-background-radius: 10;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.3), 10, 0, 0, 2);
+}
+
+.panen_button{
+    -fx-background-color: linear-gradient(to top right, #4cf97c, #0bdffc);
+    -fx-background-radius: 100;
+    -fx-pref-width: 100px;
+    -fx-pref-height: 37px;
+}
+
+.shop{
+    -fx-background-color: #E5FFDF;
+    -fx-background-radius: 30;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 1), 10, 0, 0, 2);
+}
+
+.transparent{
+    -fx-background-color: rgba(0, 0, 0, 0);
 }
