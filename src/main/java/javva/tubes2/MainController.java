@@ -74,7 +74,7 @@ public class MainController implements Initializable  {
 
     @FXML
     void loadPlugin(ActionEvent event) {
-        load_plugin_button.setDisable(true);
+//        load_plugin_button.setDisable(true);
         enemy_field_button.setDisable(false);
         load_state_button.setDisable(false);
         my_field_button.setDisable(false);
@@ -88,7 +88,7 @@ public class MainController implements Initializable  {
     void loadState(ActionEvent event) {
         load_plugin_button.setDisable(false);
         enemy_field_button.setDisable(false);
-        load_state_button.setDisable(true);
+//        load_state_button.setDisable(true);
         my_field_button.setDisable(false);
         save_state_button.setDisable(false);
         shop_button.setDisable(false);
@@ -103,7 +103,7 @@ public class MainController implements Initializable  {
         enemy_field_button.setDisable(false);
         load_state_button.setDisable(false);
         my_field_button.setDisable(false);
-        save_state_button.setDisable(true);
+//        save_state_button.setDisable(true);
         shop_button.setDisable(false);
 
         renderSaveState();
