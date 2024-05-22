@@ -100,7 +100,7 @@ public class TXTDataLoader implements DataLoader {
      * Load player data from text file
      *
      * @param filePath relative path to result folder
-     * @return Player object
+     * @return Player object, null if failed to load
      * @throws Exception data not correct, corrupted save
      */
     public Player loadPlayer(String filePath) throws Exception {
@@ -154,7 +154,7 @@ public class TXTDataLoader implements DataLoader {
      * Load game data from text file
      *
      * @param filePath relative path to result folder
-     * @return Game data
+     * @return Game data, null if failed to load
      * @throws Exception data not correct, corrupted save
      */
     public Object loadGameState(String filePath) throws Exception {
