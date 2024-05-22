@@ -2,6 +2,8 @@ package javva.tubes2;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 
@@ -19,9 +21,14 @@ import java.util.List;
 import java.util.ResourceBundle;
 import java.util.Random;
 import javafx.scene.control.Button;
+import javafx.scene.effect.GaussianBlur;
+import javafx.stage.Stage;
+import javafx.stage.StageStyle;
+import org.w3c.dom.ls.LSOutput;
 
 public class MainController implements Initializable  {
     // Attributes
+    private GaussianBlur blur;
     private List<TempCard> list_of_cards = new ArrayList<>();
 
     // GridPanes
@@ -54,10 +61,12 @@ public class MainController implements Initializable  {
     @FXML
     private Button shop_button;
 
+    // Anchors
+    @FXML
+    private AnchorPane pane;
 
 
-    //  Methode
-
+    //  Methods
     // Buttons
     @FXML
     void nextTurn(ActionEvent event) {
@@ -71,6 +80,8 @@ public class MainController implements Initializable  {
         my_field_button.setDisable(false);
         save_state_button.setDisable(false);
         shop_button.setDisable(false);
+
+        renderLoadPlugin();
     }
 
     @FXML
@@ -81,6 +92,8 @@ public class MainController implements Initializable  {
         my_field_button.setDisable(false);
         save_state_button.setDisable(false);
         shop_button.setDisable(false);
+
+        renderLoadState();
     }
 
 
@@ -92,6 +105,8 @@ public class MainController implements Initializable  {
         my_field_button.setDisable(false);
         save_state_button.setDisable(true);
         shop_button.setDisable(false);
+
+        renderSaveState();
     }
 
     @FXML
@@ -105,8 +120,8 @@ public class MainController implements Initializable  {
 
         field.getChildren().clear();
         active_deck.getChildren().clear();
-        renderField(generateRandom());
-        renderActiveDeck(generateRandom());
+        renderField(generateRandom(20));
+        renderActiveDeck();
     }
 
     @FXML
@@ -120,8 +135,8 @@ public class MainController implements Initializable  {
 
         field.getChildren().clear();
         active_deck.getChildren().clear();
-        renderField(generateRandom());
-        renderActiveDeck(generateRandom());
+        renderField(generateRandom(20));
+        renderActiveDeck();
     }
 
     @FXML
@@ -131,20 +146,23 @@ public class MainController implements Initializable  {
         load_state_button.setDisable(false);
         my_field_button.setDisable(false);
         save_state_button.setDisable(false);
-        shop_button.setDisable(true);
+//        shop_button.setDisable(true);
+        renderShop();
+
     }
 
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        renderField(generateRandom());
+        renderField(generateRandom(20));
+        renderActiveDeck();
 
     }
 
     // Others
-    private List<TempCard> generateRandom(){
+    private List<TempCard> generateRandom(int len){
         List<TempCard> tempCards = new ArrayList<>();
-        for(int i = 0; i<20; i++){
+        for(int i = 0; i<len; i++){
             TempCard tempCard = new TempCard();
             // Generate random number
             Random random = new Random();
@@ -193,15 +211,102 @@ public class MainController implements Initializable  {
         }
         return tempCards;
     }
-//    private List<TempCard> setRedZone(List<TempCard> tempCards, Integer row_start, Integer col_start){
-//
-//    }
-//    private List<TempCard> clearRedZone(List<TempCard> tempCards){
-//
-//    }
 
 
     // Renders
+    public void renderLoadState(){
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("load-state.fxml"));
+
+        Parent root = null;
+        try {
+            root = loader.load();
+        } catch (IOException e) {
+            System.out.println("Failed to load");
+            e.printStackTrace();
+            return; // Return here to prevent further execution in case of error
+        }
+
+        // Membuat stage baru untuk popup
+        Stage popupStage = new Stage();
+        popupStage.initStyle(StageStyle.TRANSPARENT); // Use TRANSPARENT instead of UNDECORATED to allow transparency
+        Scene scene = new Scene(root);
+        scene.setFill(null); // Set the Scene's background to transparent
+        popupStage.setScene(scene);
+
+        // Tampilkan popup
+        popupStage.show();
+    }
+
+    public void renderLoadPlugin(){
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("load-plugin.fxml"));
+
+        Parent root = null;
+        try {
+            root = loader.load();
+        } catch (IOException e) {
+            System.out.println("Failed to load");
+            e.printStackTrace();
+            return; // Return here to prevent further execution in case of error
+        }
+
+        // Membuat stage baru untuk popup
+        Stage popupStage = new Stage();
+        popupStage.initStyle(StageStyle.TRANSPARENT); // Use TRANSPARENT instead of UNDECORATED to allow transparency
+        Scene scene = new Scene(root);
+        scene.setFill(null); // Set the Scene's background to transparent
+        popupStage.setScene(scene);
+
+        // Tampilkan popup
+        popupStage.show();
+    }
+
+
+
+    public void renderSaveState(){
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("save-state.fxml"));
+
+        Parent root = null;
+        try {
+            root = loader.load();
+        } catch (IOException e) {
+            System.out.println("Failed to load");
+            e.printStackTrace();
+            return; // Return here to prevent further execution in case of error
+        }
+
+        // Membuat stage baru untuk popup
+        Stage popupStage = new Stage();
+        popupStage.initStyle(StageStyle.TRANSPARENT); // Use TRANSPARENT instead of UNDECORATED to allow transparency
+        Scene scene = new Scene(root);
+        scene.setFill(null); // Set the Scene's background to transparent
+        popupStage.setScene(scene);
+
+        // Tampilkan popup
+        popupStage.show();
+    }
+
+    public void renderShop(){
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("shop.fxml"));
+        Parent root = null;
+        try {
+            root = loader.load();
+        } catch (IOException e) {
+            System.out.println("Failed to load");
+            e.printStackTrace();
+            return; // Return here to prevent further execution in case of error
+        }
+
+        // Membuat stage baru untuk popup
+        Stage popupStage = new Stage();
+        popupStage.initStyle(StageStyle.TRANSPARENT); // Use TRANSPARENT instead of UNDECORATED to allow transparency
+        Scene scene = new Scene(root);
+        scene.setFill(null); // Set the Scene's background to transparent
+        popupStage.setScene(scene);
+
+        // Tampilkan popup
+        popupStage.show();
+    }
+
     public void renderField(List<TempCard> cards ){
         // Render the card field
         list_of_cards.clear();
@@ -236,17 +341,18 @@ public class MainController implements Initializable  {
         }
     }
 
-    public void renderActiveDeck(List<TempCard> cards){
+    public void renderActiveDeck(){
         try {
             Integer column = 0;
             Integer row = 0;
             for (int i = 0; i < 6; i++) {
+                TempCard empty = new TempCard();
                 FXMLLoader fxmlLoader = new FXMLLoader();
                 fxmlLoader.setLocation(MainController.class.getResource("card.fxml"));
                 AnchorPane anchorPane = fxmlLoader.load();
 
                 CardController cardController = fxmlLoader.getController();
-                cardController.setData(list_of_cards.get(i));
+                cardController.setData(empty);
 
                 // Add the anchorPane to the GridPane
                 active_deck.add(anchorPane, column, row);
@@ -260,4 +366,5 @@ public class MainController implements Initializable  {
             throw new RuntimeException(e);
         }
     }
+
 }
