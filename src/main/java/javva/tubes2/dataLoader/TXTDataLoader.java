@@ -1,113 +1,176 @@
 package javva.tubes2.dataLoader;
 
+import javva.tubes2.Player;
+
 import java.io.File;
 import java.io.PrintWriter;
-import java.lang.reflect.Field;
 import java.util.*;
-import java.util.stream.Collectors;
 
 /**
  * Plugin to save and load data to Text file
  */
 public class TXTDataLoader implements DataLoader {
-
     /**
-     * Save data to Text file
-     *
-     * @param data     object that will be saved to text save file
-     * @param filePath relative path to new text save file
+     * Save player data to text file
+     * @param player Player data
+     * @param filePath relative path to result folder
      * @throws Exception data not correct, failed to save
      */
-    @Override
-    public void saveData(Object data, String filePath) throws Exception {
-        // get all attributes and their value
-        Field[] fields = data.getClass().getDeclaredFields();
+    public void savePlayer(Player player, String filePath) throws Exception{
+        // initialize file
+        PrintWriter writer = new PrintWriter(filePath);
 
-        // use printwriter to write to file
-        try (PrintWriter writer = new PrintWriter(new File(filePath))) {
-            for (Field field : fields) {
-                // get private field
-                field.setAccessible(true);
+        // save gulden
+        writer.println(player.getGulden());
 
-                // check if variable is initialized or exist
-                Object value = field.get(data);
-                if (value == null) {
-                    throw new Exception("Save error, " + field.getName() + " is null");
-                }
+        // save deck amount
+        writer.println(37);
 
-                // write to file
-                if (value instanceof List || value instanceof Map || value.getClass().isArray()) {
-                    writer.println(value.toString());
-                } else {
-                    writer.println(value);
-                }
-            }
+        // save active card amount
+        writer.println(3);
+
+        // save active cards
+        Map<String, String> tempActive = new HashMap<>();
+        tempActive.put("A01", "BERUANG");
+        tempActive.put("B01", "BERUANG");
+        tempActive.put("C01", "BERUANG");
+
+        for(String key : tempActive.keySet()){
+            writer.print(key + " ");
+            writer.println(tempActive.get(key));
         }
+
+        // save field card amount
+        writer.println(1);
+
+        // save field cards location
+        String location = "A01";
+        String card = "DOMBA";
+        int weight = 10;
+        int amountOfItems = 3;
+        List<String> items = new ArrayList<>();
+        items.add("ACCELERATE");
+        items.add("DELAY");
+        items.add("PROTECT");
+        writer.print(location + " " + card + " " + weight + " " + amountOfItems + " ");
+        for (String item : items) {
+            writer.print(item + " ");
+        } writer.println();
+
+        writer.close();
     }
 
     /**
-     * Load data from Text file
-     *
-     * @param filePath  relative path to text save file
-     * @param className fully qualified name of the class
-     * @return data object
+     * save game data to text file
+     * @param filePath relative path to result folder
+     * @throws Exception data not correct, failed to save
+     */
+    public void saveGameState(String filePath) throws Exception {
+        // initialize file
+        PrintWriter writer = new PrintWriter(filePath);
+
+        // save current turn
+        writer.println(1);
+
+        // save amount of shop items
+        writer.println(5);
+
+        // Save shop items
+        Map<String, Integer> tempShop = new HashMap<>();
+        tempShop.put("SIRIP_HIU", 5);
+        tempShop.put("SUSU", 2);
+        tempShop.put("DAGING_DOMBA", 3);
+        tempShop.put("DAGING_KUDA", 10);
+        tempShop.put("DAGING_BERUANG", 1);
+
+        for(String key : tempShop.keySet()){
+            writer.print(key + " ");
+            writer.println(tempShop.get(key));
+        }
+
+        writer.close();
+    }
+
+    /**
+     * Load player data from text file
+     * @param filePath relative path to result folder
+     * @return Player object
      * @throws Exception data not correct, corrupted save
      */
-    @Override
-    public Object loadData(String filePath, String className) throws Exception {
-        // create class object from class name
-        Class<?> objclass = Class.forName(className);
+    public Player loadPlayer(String filePath) throws Exception{
+        // load file
+        Scanner scanner = new Scanner(new File(filePath));
 
-        // create object
-        Object obj = objclass.getDeclaredConstructor().newInstance();
+        // get gulden
+        int gulden = scanner.nextInt();
+        System.out.println("[LoadPlayer] Gulden: " + gulden);
 
-        // get all attributes and their value
-        Field[] fields = objclass.getDeclaredFields();
+        // get deck amoung
+        int deck_amount = scanner.nextInt();
+        System.out.println("[LoadPlayer] Deck Amount: " + deck_amount);
 
-        // use scanner to read from file
-        try (Scanner scanner = new Scanner(new File(filePath))) {
-            for (Field field : fields) {
-                // get private field
-                field.setAccessible(true);
+        /// get active card amount
+        int active_card_amount = scanner.nextInt();
+        System.out.println("[LoadPlayer] Active Card Amount: " + active_card_amount);
 
-                // read from file
-                // if no more line, stop reading
-                if (!scanner.hasNextLine()) {
-                    break;
-                }
-                String line = scanner.nextLine();
-
-                // parse safe file
-                // set value to object field
-                if (line.startsWith("{") && line.endsWith("}") && field.getType() == Map.class) {
-                    Map<String, String> map = Arrays.stream(line.substring(1, line.length() - 1).split(", "))
-                            .filter(entry -> entry.contains("="))
-                            .map(entry -> entry.split("="))
-                            .collect(Collectors.toMap(entry -> entry[0], entry -> entry[1]));
-                    field.set(obj, map);
-
-                } else if (line.startsWith("[") && line.endsWith("]") && field.getType() == List.class) {
-                    List<String> list = Arrays.asList(line.substring(1, line.length() - 1).split(", "));
-                    field.set(obj, list);
-
-                } else if (line.startsWith("[") && line.endsWith("]") && field.getType().isArray()) {
-                    String[] array = line.substring(1, line.length() - 1).split(", ");
-                    field.set(obj, array);
-
-                } else if (field.getType() == int.class) {
-                    field.setInt(obj, Integer.parseInt(line));
-
-                } else if (field.getType() == double.class) {
-                    field.setDouble(obj, Double.parseDouble(line));
-
-                } else if (field.getType() == boolean.class) {
-                    field.setBoolean(obj, Boolean.parseBoolean(line));
-
-                } else {
-                    field.set(obj, line);
-                }
-            }
+        // get active cards
+        for(int i = 0; i < active_card_amount; i++){
+            String location = scanner.next();
+            String card = scanner.next();
+            System.out.println("[LoadPlayer] Active Card: " + location + " " + card);
         }
-        return obj;
+
+        // get field card amount
+        int field_card_amount = scanner.nextInt();
+        System.out.println("[LoadPlayer] Field Card Amount: " + field_card_amount);
+
+        // get field cards
+        for(int i = 0; i < field_card_amount; i++){
+            String location = scanner.next();
+            String card = scanner.next();
+            int weight = scanner.nextInt();
+            int amountOfItems = scanner.nextInt();
+            System.out.println("[LoadPlayer] Field Card: " + location + " " + card + " " + weight + " " + amountOfItems + " ");
+            List<String> items = new ArrayList<>();
+            for(int j = 0; j < amountOfItems; j++){
+                items.add(scanner.next());
+                System.out.println("[LoadPlayer] " + (j + 1) + " Item: " + items.get(j));
+            }
+
+        }
+
+        scanner.close();
+        return null;
+    }
+
+    /**
+     * Load game data from text file
+     * @param filePath relative path to result folder
+     * @return Game data
+     * @throws Exception data not correct, corrupted save
+     */
+    public Object loadGameState(String filePath) throws Exception{
+        // load file
+        Scanner scanner = new Scanner(new File(filePath));
+
+        // load current turn
+        int turn = scanner.nextInt();
+        System.out.println("[LoadGameState] Turn: " + turn);
+
+        // save amount of shop items
+        int shop_item_amount = scanner.nextInt();
+        System.out.println("[LoadGameState] Shop Item Amount: " + shop_item_amount);
+
+        // Save shop items
+        Map<String, Integer> tempShop = new HashMap<>();
+        for(int i = 0; i < shop_item_amount; i++){
+            String item_name = scanner.next();
+            int item_amount = scanner.nextInt();
+            tempShop.put(item_name, item_amount);
+            System.out.println("[LoadGameState] Shop Item: " + item_name + " " + item_amount);
+        }
+
+        scanner.close();
+        return null;
     }
 }
