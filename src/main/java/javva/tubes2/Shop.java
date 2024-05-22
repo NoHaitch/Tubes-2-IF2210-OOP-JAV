@@ -38,7 +38,7 @@ public class Shop {
     }
 
     public Integer getPrice(String productName){
-        return prices.get(productName)
+        return prices.get(productName);
     }
 
     public void createPricesMap(){
