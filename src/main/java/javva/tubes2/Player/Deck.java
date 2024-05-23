@@ -17,9 +17,9 @@ public class Deck {
     // private List<Animal> animals ;
     // private List<Plants> plants ;
 
-    public Deck() {
+    public Deck(int capacity) {
         deck = new ArrayList<>() ;
-        capacity = 5 ;
+        this.capacity = capacity;
 
         products = new ArrayList<>() ;
         products.addLast(new Product("SharkFin", "Product", "", 12, 500));
@@ -125,7 +125,7 @@ public class Deck {
 
     public static void main(String[] args) {
         System.out.println("aa");
-        Deck tes = new Deck() ;
+        Deck tes = new Deck(5) ;
         List<Card> hand = tes.drawCards(1) ;
         System.out.println(hand.size());
         String name = hand.get(0).getName() ;

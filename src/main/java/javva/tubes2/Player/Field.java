@@ -30,6 +30,16 @@ public class Field {
         return content.get(index);
     }
 
+    public void addElement(Harvestable addition, int index) throws Throwable {
+        if(index >= capacity || index < 0){
+            throw new IndexOutOfRange();
+        }    
+        if(content.get(index).getName() != "null"){
+            throw new EmptyElement();
+        }
+        content.set(index, addition) ;
+    }
+
     public void removeElement(int index) throws Throwable{
         if(index >= capacity || index < 0){
             throw new IndexOutOfRange();
