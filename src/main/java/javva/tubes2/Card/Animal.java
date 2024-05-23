@@ -9,10 +9,17 @@ public class Animal extends Harvestable{
     public Animal(String nameString, String tyString, String imgpth, Product productRet, Integer wInteger, Integer harvbInteger){
         super(nameString, tyString, imgpth, productRet);
 
-        product = productRet;
         weight = wInteger;
         harvestWeight = harvbInteger;
         activeEffect = "";
+    }
+
+    public Animal(Animal a) {
+        super(a.getName(), a.getType(), a.getPath(), a.getProduct()) ;
+
+        weight = a.getWeight() ;
+        harvestWeight = a.getHarvestWeight() ;
+        activeEffect = a.getActiveEffect() ;
     }
     
     public Product getProduct() {

@@ -32,4 +32,12 @@ public class Card {
     public String getType() {
         return type;
     }
+
+    public String getPath() {
+        return this.imagepath;
+    }
+
+    public void setPath(String path) {
+        this.imagepath = path ;
+    }
 }
