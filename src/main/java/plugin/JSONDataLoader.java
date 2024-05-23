@@ -13,16 +13,11 @@ import javva.tubes2.dataLoader.DataLoader;
  */
 public class JSONDataLoader implements DataLoader {
     /**
-     * File format for this plugin
-     */
-    private final String format = "json";
-
-    /**
      * @return file format
      */
     @Override
     public String getFileFormat() {
-        return format;
+        return "json";
     }
 
     /**
@@ -34,7 +29,7 @@ public class JSONDataLoader implements DataLoader {
      */
     @Override
     public void savePlayer(Player player, String filePath) throws Exception {
-        // Create ObjectMapper instance
+        // Create ObjectMapper instances
         ObjectMapper objectMapper = new ObjectMapper();
 
         // Convert Player object to JSON string

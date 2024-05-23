@@ -15,16 +15,11 @@ import javva.tubes2.dataLoader.DataLoader;
  */
 public class YAMLDataLoader implements DataLoader {
     /**
-     * File format for this plugin
-     */
-    private final String format = "yaml";
-
-    /**
      * @return file format
      */
     @Override
     public String getFileFormat() {
-        return format;
+        return "yaml";
     }
 
     /**
