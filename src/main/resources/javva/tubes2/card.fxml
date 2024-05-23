@@ -1,31 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="136.0" prefWidth="111.0" styleClass="card" stylesheets="@style.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="javva.tubes2.CardController">
+<AnchorPane fx:id="card_background" prefHeight="136.0" prefWidth="111.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="javva.tubes2.CardController">
    <children>
-      <VBox layoutX="14.0" prefHeight="171.0" prefWidth="107.0" styleClass="card" stylesheets="@style.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <VBox fx:id="card_frame" alignment="CENTER" layoutX="9.0" layoutY="11.0" onMouseClicked="#showInfo" onMouseEntered="#onHover" onMouseExited="#onExitingHover" prefHeight="117.0" prefWidth="95.0" styleClass="card" stylesheets="@style.css" AnchorPane.bottomAnchor="8.200000000000003" AnchorPane.leftAnchor="9.0" AnchorPane.rightAnchor="8.599999999999994" AnchorPane.topAnchor="11.0">
          <children>
-            <HBox alignment="CENTER" prefHeight="133.0" prefWidth="169.0">
+            <HBox alignment="BOTTOM_CENTER" prefHeight="74.0" prefWidth="76.0">
                <children>
-                  <ImageView fx:id="card_image" fitHeight="88.0" fitWidth="81.0" nodeOrientation="INHERIT" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@images/Hewan/chicken.png" />
-                     </image>
-                  </ImageView>
+                  <ImageView fx:id="card_image" fitHeight="68.0" fitWidth="70.0" nodeOrientation="INHERIT" pickOnBounds="true" preserveRatio="true" />
                </children>
+               <VBox.margin>
+                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+               </VBox.margin>
             </HBox>
-            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+            <HBox alignment="CENTER" prefHeight="31.0" prefWidth="94.0">
                <children>
-                  <Label fx:id="card_name" prefHeight="21.0" prefWidth="77.0" text="Chicken">
+                  <Label fx:id="card_name" alignment="CENTER" prefHeight="21.0" prefWidth="77.0">
                      <font>
-                        <Font name="Arial Rounded MT Bold" size="16.0" />
+                        <Font name="Arial Rounded MT Bold" size="14.0" />
                      </font>
                   </Label>
                </children>

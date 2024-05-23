@@ -1,11 +1,29 @@
 package javva.tubes2;
-
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
+import javafx.stage.StageStyle;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
 
 public class CardController {
+
+    public static TempCard dragged_item;
+    @FXML
+    private VBox card_frame;
+
+    @FXML
+    private AnchorPane card_background;
 
     @FXML
     private ImageView card_image;
@@ -15,11 +33,71 @@ public class CardController {
 
     private TempCard card;
 
+
+
     public void setData(TempCard card){
         this.card = card;
         card_name.setText(card.getName());
-//        Image image = new Image(getClass().getResourceAsStream((card.getImgSrc())));
-//        card_image.setImage(image);
+        card_background.setStyle("-fx-background-color: " + card.getHexColor() + ";");
+
+        try{
+            Image image = new Image(getClass().getResourceAsStream((card.getImgSrc())));
+            card_image.setImage(image);
+        }
+        catch(Exception e){
+            System.out.println("Image not found :" + card.getImgSrc() );
+        }
 
     }
+
+    public void onExitingHover(){
+        setCardColor("");
+    }
+    public void onHover(){
+        setCardColor("#B4FFD6");
+    }
+
+    public void setCardBackground(String color){
+        card_background.setStyle("-fx-background-color: " + color + ";");
+    }
+
+    public void setCardColor(String color){
+        card_frame.setStyle("-fx-background-color: " + color + ";");
+    }
+
+
+    public void showInfo() {
+        FXMLLoader loader = new FXMLLoader(CardController.class.getResource("card-info.fxml"));
+        Parent root = null;
+
+
+        try {
+            root = loader.load();
+        } catch (IOException e) {
+            System.out.println("Failed to load Info Cards");
+//            e.printStackTrace();
+            return;
+        }
+
+        CardInfoController controller = loader.getController();
+
+        if (controller != null) {
+            controller.setData(card);  // Assuming 'card' is a variable you want to pass to the controller
+        } else {
+            System.out.println("Controller is null");
+        }
+
+
+        // Membuat stage baru untuk popup
+        Stage popupStage = new Stage();
+        popupStage.initStyle(StageStyle.TRANSPARENT); // Use TRANSPARENT instead of UNDECORATED to allow transparency
+        Scene scene = new Scene(root);
+        scene.setFill(null); // Set the Scene's background to transparent
+        popupStage.setScene(scene);
+
+        // Tampilkan popup
+        popupStage.show();
+    }
+
+
 }
