@@ -1,6 +1,10 @@
 package javva.tubes2.dataLoader;
 
+import javva.tubes2.Player.Field;
 import javva.tubes2.Player.Player;
+import javva.tubes2.Card.Card;
+import javva.tubes2.Card.Plants;
+import javva.tubes2.Card.Animal;
 
 import java.io.File;
 import java.io.PrintWriter;
@@ -10,17 +14,13 @@ import java.util.*;
  * Plugin to save and load data to Text file
  */
 public class TXTDataLoader implements DataLoader {
-    /**
-     * File format for this plugin
-     */
-    private final String format = "txt";
 
     /**
      * @return file format
      */
     @Override
     public String getFileFormat() {
-        return format;
+        return "txt";
     }
 
     /**
@@ -40,37 +40,47 @@ public class TXTDataLoader implements DataLoader {
         // save deck amount
         writer.println(player.getCapacity());
 
+        // get active deck
+        List<Card> activeCards = player.getActiveDeck();
+        int activeCardSize = activeCards.size();
+
         // save active card amount
-        writer.println(3);
+        writer.println(activeCardSize);
 
         // save active cards
-        Map<String, String> tempActive = new HashMap<>();
-        tempActive.put("A01", "BERUANG");
-        tempActive.put("B01", "BERUANG");
-        tempActive.put("C01", "BERUANG");
-
-        for (String key : tempActive.keySet()) {
-            writer.print(key + " ");
-            writer.println(tempActive.get(key));
+        for (int i = 0; i < activeCardSize; i++) {
+            writer.print((i + 1) + " ");
+            writer.println(activeCards.get(i).getName());
         }
 
         // save field card amount
-        writer.println(1);
+//        Field field = player.getField();
+        int count = 0;
+//        for(int i = 0; i < 20; i++){
+//            Card card = field.getElement(i);
+//            if(!card.getName().equals("null")){
+//                count++;
+//            }
+//        }
+        writer.println(count);
 
-        // save field cards location
-        String location = "A01";
-        String card = "DOMBA";
-        int weight = 10;
-        int amountOfItems = 3;
-        List<String> items = new ArrayList<>();
-        items.add("ACCELERATE");
-        items.add("DELAY");
-        items.add("PROTECT");
-        writer.print(location + " " + card + " " + weight + " " + amountOfItems + " ");
-        for (String item : items) {
-            writer.print(item + " ");
-        }
-        writer.println();
+//        for(int i = 0; i < 20; i++){
+//            Card card = field.getElement(i);
+//            if(card.getName().equals("null")){
+//                continue;
+//            }
+//
+//            // save item location and name
+//            writer.print((i + 1) + " ");
+//            writer.print(card.getName() + " ");
+
+//            // save item progress and items
+//            if (card instanceof Plants) {
+//                Plants plant = (Plants) card;
+//                writer.print(plant.getProgress() + " ");
+//                // TODO: add item amount
+//            }
+//        }
 
         writer.close();
     }
@@ -116,7 +126,6 @@ public class TXTDataLoader implements DataLoader {
      * @throws Exception data not correct, corrupted save
      */
     public Player loadPlayer(String filePath) throws Exception {
-        // TODO: USE PLAYER ATTRIBUTE
         // load file
         Scanner scanner = new Scanner(new File(filePath));
 
@@ -124,19 +133,24 @@ public class TXTDataLoader implements DataLoader {
         int gulden = scanner.nextInt();
         System.out.println("[LoadPlayer] Gulden: " + gulden);
 
-        // get deck amoung
+        // get deck amount
         int deck_amount = scanner.nextInt();
         System.out.println("[LoadPlayer] Deck Amount: " + deck_amount);
 
-        /// get active card amount
+        // initialize player
+        Player player = new Player(gulden, deck_amount);
+
+        // get active card amount
         int active_card_amount = scanner.nextInt();
         System.out.println("[LoadPlayer] Active Card Amount: " + active_card_amount);
 
         // get active cards
+        List<Card> activeCards = new ArrayList<>(active_card_amount);
         for (int i = 0; i < active_card_amount; i++) {
             String location = scanner.next();
-            String card = scanner.next();
-            System.out.println("[LoadPlayer] Active Card: " + location + " " + card);
+            String card_name = scanner.next();
+            Card card = new Card(card_name, "ACTIVE");
+            player.addToActiveDeck(card);
         }
 
         // get field card amount
