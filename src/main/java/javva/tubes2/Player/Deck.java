@@ -123,15 +123,15 @@ public class Deck {
     //     return this.contain ;
     // }
 
-    public static void main(String[] args) {
-        System.out.println("aa");
-        Deck tes = new Deck(5) ;
-        List<Card> hand = tes.drawCards(1) ;
-        System.out.println(hand.size());
-        String name = hand.get(0).getName() ;
-        System.out.println(hand.get(0).getName()); 
+    // public static void main(String[] args) {
+    //     System.out.println("aa");
+    //     Deck tes = new Deck(5) ;
+    //     List<Card> hand = tes.drawCards(1) ;
+    //     System.out.println(hand.size());
+    //     String name = hand.get(0).getName() ;
+    //     System.out.println(hand.get(0).getName()); 
 
-        hand.remove(0) ;
-        tes.removeCards(1);
-    }
+    //     hand.remove(0) ;
+    //     tes.removeCards(1);
+    // }
 }
