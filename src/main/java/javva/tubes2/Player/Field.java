@@ -15,7 +15,7 @@ public class Field {
         capacity = cap;
         content = new ArrayList<>(capacity);
         for(int i = 0 ; i < cap ; i++){
-            content.set(i, new NullCard());
+            content.add(i, new NullCard());
         }
     }
 
