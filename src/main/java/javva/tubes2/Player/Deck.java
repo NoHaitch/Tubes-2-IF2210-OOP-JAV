@@ -5,48 +5,26 @@ import java.util.Collections;
 import java.util.List;
 
 import javva.tubes2.Card.Card;
-import javva.tubes2.Card.Product;
-import javva.tubes2.Card.Animal;
-import javva.tubes2.Card.Plants;
+import javva.tubes2.CardConfig ;
 
 public class Deck {
-    // private List<Card> contain ;
     private int capacity ;
-    private List<Product> products ;
     private List<Card> deck ;
-    // private List<Animal> animals ;
-    // private List<Plants> plants ;
+
 
     public Deck(int capacity) {
+        CardConfig cardConfig = new CardConfig() ;
         deck = new ArrayList<>() ;
+        deck.addAll(cardConfig.getAnimalConfig()) ;
+        deck.addAll(cardConfig.getPlantConfig()) ;
         this.capacity = capacity;
 
-        products = new ArrayList<>() ;
-        products.addLast(new Product("SharkFin", "Product", "", 12, 500));
-        products.addLast(new Product("Milk", "Product", "", 4, 100));
-        products.addLast(new Product("LambMeat", "Product", "", 6, 120));
-        products.addLast(new Product("HorseMeat", "Product", "", 8, 150));
-        products.addLast(new Product("Egg", "Product", "", 2, 50));
-        products.addLast(new Product("Bearmeat", "Product", "", 12, 500));
-        products.addLast(new Product("Corn", "Product", "", 3, 150));
-        products.addLast(new Product("Pumpkin", "Product", "", 10, 500));
-        products.addLast(new Product("Strawberry", "Product", "", 5, 350));
-
-        // animals = new ArrayList<>() ;
-        deck.addLast(new Animal("LandShark", "Carnivore", "", new Product("SharkFin", "Product", "", 12, 500), 0, 20));
-        deck.addLast(new Animal("Cow", "Herbivore", "", new Product("Milk", "Product", "", 4, 100), 0, 10));
-        deck.addLast(new Animal("Lamb", "Herbivore", "", new Product("LambMeat", "Product", "", 6, 120), 0, 12));
-        deck.addLast(new Animal("Horse", "Herbivore", "", new Product("HorseMeat", "Product", "", 8, 150), 0, 14));
-        deck.addLast(new Animal("Chicken", "Omnivore", "", new Product("Egg", "Product", "", 2, 50), 0, 5));
-        deck.addLast(new Animal("Bear", "Omnivore", "", new Product("Bearmeat", "Product", "", 12, 500), 0, 25));
-
-        // plants = new ArrayList<>() ;
-        deck.addLast(new Plants("CornSeed", "Plant", "", new Product("Corn", "Product", "", 3, 150), 3));
-        deck.addLast(new Plants("PumpkinSeed", "Plant", "", new Product("Pumpkin", "Product", "", 10, 500), 5));
-        deck.addLast(new Plants("StrawberrySeed", "Plant", "", new Product("Strawberry", "Product", "", 5, 350), 4));
-
-
-
+        for (int i = 0 ; i < deck.size() ; i++) {
+            if (deck.get(i).getName() == "Bear") {
+                deck.remove(i) ;
+                break ;
+            }
+        }
     }
 
     public int getCapacity() {
@@ -123,15 +101,15 @@ public class Deck {
     //     return this.contain ;
     // }
 
-    public static void main(String[] args) {
-        System.out.println("aa");
-        Deck tes = new Deck(5) ;
-        List<Card> hand = tes.drawCards(1) ;
-        System.out.println(hand.size());
-        String name = hand.get(0).getName() ;
-        System.out.println(hand.get(0).getName()); 
+    // public static void main(String[] args) {
+    //     System.out.println("aa");
+    //     Deck tes = new Deck(5) ;
+    //     List<Card> hand = tes.drawCards(1) ;
+    //     System.out.println(hand.size());
+    //     String name = hand.get(0).getName() ;
+    //     System.out.println(hand.get(0).getName()); 
 
-        hand.remove(0) ;
-        tes.removeCards(1);
-    }
+    //     hand.remove(0) ;
+    //     tes.removeCards(1);
+    // }
 }

@@ -30,6 +30,10 @@ public class Player {
         field = new Field(20);        
     }
 
+    public Field getField() {
+        return this.field ;
+    }
+
     public void addField(Card stuff, int index) {
         try {
             this.field.addElement((Harvestable)stuff, index);
@@ -161,22 +165,16 @@ public class Player {
         }
     }
 
-    public static void main(String[] args) {
-        Player player = new Player() ;
+    // public static void main(String[] args) {
+    //     Player player = new Player() ;
+    //     Card animal = new Animal("LandShark", "Carnivore", "", new Product("SharkFin", "Product", "", 12, 500), 0, 20) ;
+    //     player.addField(animal, 0);
+    //     try {
+    //         System.out.println(player.field.getElement(0).getName()) ;
+    //     }
+    //     catch(Throwable e) {
 
-        
-        
-        
-        // System.out.println("aa");
-        // Deck tes = new Deck() ;
-        // List<Card> hand = tes.drawCards(1) ;
-        // System.out.println(hand.size());
-        // String name = hand.get(0).getName() ;
-        // System.out.println(hand.get(0).getName()); 
-
-        // hand.remove(0) ;
-        // tes.removeCards(1);
-    }
+    //     }
 }
 
 class DeckIsFull extends Exception {
