@@ -24,6 +24,10 @@ public class Player {
         this.gulden = gulden ;
     }
 
+    public int getCapacity() {
+        return this.deck.getCapacity() ;
+    }
+
     public int getGulden() {
         return this.gulden ;
     }
