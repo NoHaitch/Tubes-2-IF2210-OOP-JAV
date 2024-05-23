@@ -5,6 +5,9 @@ import java.util.Map;
 import java.util.ArrayList;
 import java.util.List;
 
+import javva.tubes2.Card.Product;
+import javva.tubes2.CardConfig;
+
 public class Shop {
     /* ATTRIBUTE */
     private Map<String, Integer> products;
@@ -42,6 +45,18 @@ public class Shop {
     }
 
     public void createPricesMap(){
-        //TODO: insert prices for each product
+        /* Insert prices for each product */
+        prices = new HashMap<String, Integer>();
+        CardConfig config = new CardConfig();
+        List<Product> productConfig = config.getProductConfig();
+        for(Product product : productConfig){
+            prices.put(product.getName(), product.getAddedMoney());
+        }
+    }
+
+    public static void main(String[] args){
+        Shop shop = new Shop();
+        shop.createPricesMap();
+        System.out.println(shop.getPrice("Pumpkin"));
     }
 }
