@@ -1,5 +1,5 @@
 package javva.tubes2.Player;
-import javva.tubes2.Card.Card;
+import javva.tubes2.Card.* ;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,6 +14,9 @@ public class Player {
         this.gulden = 0 ;
         this.deck = new Deck() ;
         this.active_deck = new ArrayList<>() ;
+        for (int i = 0 ; i < 6 ; i++) {
+            active_deck.add(new NullCard()) ;
+        }
         field = new Field(20);
     }
 
@@ -34,8 +37,31 @@ public class Player {
         return this.active_deck ;
     }
 
-    public void addToActiveDeck(Card card, int index) throws DeckIsFull{
-        if (this.active_deck.size() < 6 && index <= 5 && index >= 0) {
+    public int countActiveCard() {
+        int count = 0;
+        for(int i = 0 ; i < 6 ; i++) {
+            if (active_deck.get(i).getName() != "null") {
+                count += 1 ;
+            }
+        }
+        return count ;
+    }
+
+    public int findSlot() {
+        int index = -1 ;
+        for (int i = 0 ; i < 6 ; i++) {
+            if (active_deck.get(i).getName() == "null") {
+                index = i ;
+                return index ;
+            }
+        }
+        return index ;
+    }
+
+    public void addToActiveDeck(Card card) throws DeckIsFull{
+        if (countActiveCard() < 6) {
+            int index = findSlot() ;
+            this.active_deck.remove(index) ;
             this.active_deck.add(index, card) ;
         }
         else {
@@ -44,8 +70,9 @@ public class Player {
     }
 
     public void removeFromActiveDeck(int index) throws IndexInvalid{
-        if (index >= 0 && index < this.active_deck.size()) {
+        if (index >= 0 && index < countActiveCard()) {
             this.active_deck.remove(index) ;
+            this.active_deck.add(new NullCard()) ;
         }
         else {
             throw new IndexInvalid() ;
@@ -70,6 +97,33 @@ public class Player {
             throw new DeckIsEmpty() ;
         }
         this.deck.removeCards(length);
+    }
+
+    public void harvest(int index) {
+        try {
+            if (countActiveCard() <= 0) {
+                throw new ActiveDeckFull() ;
+            }
+            Product newProduct = this.field.getAndRemove(index) ;
+            addToActiveDeck(newProduct);
+        }
+        catch (ActiveDeckFull e) {
+            System.out.println(e.getMessage()) ;
+        }
+        catch (Throwable e) {
+            System.out.println(e.getMessage()) ;
+        }      
+    }
+
+    public void feed(int food_index, int animal_index) {
+        try {
+            Animal animal = (Animal)this.field.getElement(animal_index) ;
+            Product food = (Product)this.active_deck.get(food_index) ;
+            animal.feed(food) ;
+        }
+        catch(Throwable e) {
+            System.out.println(e.getMessage()) ;
+        }
     }
 }
 
