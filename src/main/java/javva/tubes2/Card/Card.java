@@ -3,10 +3,18 @@ package javva.tubes2.Card;
 public class Card {
     private String name;
     private String type;
+    private String imagepath;
+
+    public Card(String nameString, String tyString, String imgpth){
+        name = nameString;
+        type = tyString;
+        imagepath = imgpth;
+    }
 
     public Card(String nameString, String tyString){
         name = nameString;
         type = tyString;
+        imagepath = "";
     }
 
     public void setName(String name) {
@@ -23,5 +31,13 @@ public class Card {
 
     public String getType() {
         return type;
+    }
+
+    public String getPath() {
+        return this.imagepath;
+    }
+
+    public void setPath(String path) {
+        this.imagepath = path ;
     }
 }

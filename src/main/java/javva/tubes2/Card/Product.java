@@ -4,11 +4,18 @@ public class Product extends Card{
     private Integer addedWeight;
     private Integer addedMoney;
 
-    Product(String nameString, String tyString, Integer addWeight, Integer addMoney){
-        super(nameString, tyString);
+    public Product(String nameString, String tyString, String imgpth, Integer addWeight, Integer addMoney){
+        super(nameString, tyString, imgpth);
 
         addedWeight = addWeight;
         addedMoney = addMoney;
+    }
+
+    public Product(Product p) {
+        super(p.getName(), p.getType(), p.getPath()) ;
+
+        addedWeight = p.getAddedWeight() ;
+        addedMoney = p.getAddedMoney() ;
     }
 
     public Integer getAddedMoney() {
