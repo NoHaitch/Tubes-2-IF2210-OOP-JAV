@@ -165,6 +165,18 @@ public class Player {
         }
     }
 
+    public void moveField(int start_index, int dest_index) {
+        try {
+            Harvestable stuff = this.field.getElement(start_index) ;
+            if (stuff.getName() != "null") {
+                this.field.addElement(stuff, dest_index);
+            }
+        }
+        catch(Throwable e) {
+            System.out.println(e.getMessage()) ;
+        }
+    }
+
     // public static void main(String[] args) {
     //     Player player = new Player() ;
     //     Card animal = new Animal("LandShark", "Carnivore", "", new Product("SharkFin", "Product", "", 12, 500), 0, 20) ;
