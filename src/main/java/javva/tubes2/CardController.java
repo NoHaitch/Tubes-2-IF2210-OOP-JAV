@@ -47,6 +47,7 @@ public class CardController {
         }
         catch(Exception e){
             System.out.println("Image not found :" + card.getImgSrc() );
+            card_image.setImage(null);
         }
 
     }

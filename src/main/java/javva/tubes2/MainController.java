@@ -159,7 +159,7 @@ public class MainController implements Initializable  {
 
     }
 
-    // Others
+    // Generate
     private List<TempCard> generateRandom(int len){
         List<TempCard> tempCards = new ArrayList<>();
         for(int i = 0; i<len; i++){
@@ -210,6 +210,16 @@ public class MainController implements Initializable  {
 
         }
         return tempCards;
+    }
+
+
+    private List<CardController> generateEmpty(int len){
+        List<CardController> controllers = new ArrayList<>();
+        for(int i = 0; i<len; i++){
+            CardController cardController = new CardController();
+            controllers.add(cardController);
+        }
+        return controllers;
     }
 
 
