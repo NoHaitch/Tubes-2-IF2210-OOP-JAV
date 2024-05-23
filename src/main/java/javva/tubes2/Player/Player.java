@@ -34,15 +34,6 @@ public class Player {
         return this.field ;
     }
 
-    public void addField(Card stuff, int index) {
-        try {
-            this.field.addElement((Harvestable)stuff, index);
-        }
-        catch (Throwable e) {
-            System.out.println(e.getMessage()) ;
-        }
-    }
-
     public int getCapacity() {
         return this.deck.getCapacity() ;
     }
