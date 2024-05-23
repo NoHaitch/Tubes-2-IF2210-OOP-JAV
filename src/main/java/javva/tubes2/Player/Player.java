@@ -1,6 +1,6 @@
 package javva.tubes2.Player;
 import javva.tubes2.Card.* ;
-
+import javva.tubes2.Shop;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -165,6 +165,41 @@ public class Player {
         }
     }
 
+    public void buy(String productName){
+        try {
+            Shop shop = Shop.getInstance();
+            if (getGulden() >= shop.getPrice(productName)) {
+                if (getActiveDeck().size()!=6){
+                    addToActiveDeck(new Card(productName, "Product"));
+                    shop.removeProduct(productName);
+                    addGulden(-shop.getPrice(productName));
+                } else {
+                    throw new ActiveDeckFull();
+                }
+            } else {
+                throw new NotEnoughMoney();
+            }
+        } catch (Throwable e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    public void sell(int index){
+        try {
+            Shop shop = Shop.getInstance();
+            if (this.active_deck.get(index).getType() == "Product"){
+                removeFromActiveDeck(index);
+                String productName = this.active_deck.get(index).getName();
+                shop.addProduct(productName);
+                addGulden(shop.getPrice(productName));
+            } else {
+                throw new NotSellable();
+            }
+        } catch (Throwable e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
     // public static void main(String[] args) {
     //     Player player = new Player() ;
     //     Card animal = new Animal("LandShark", "Carnivore", "", new Product("SharkFin", "Product", "", 12, 500), 0, 20) ;
@@ -198,5 +233,17 @@ class IndexInvalid extends Exception {
 class ActiveDeckFull extends Exception {
     ActiveDeckFull(){
         super("Active deck is full!");
+    }
+}
+
+class NotEnoughMoney extends Exception {
+    NotEnoughMoney(){
+        super("Gulden is not enough for this action!");
+    }
+}
+
+class NotSellable extends Exception {
+    NotSellable(){
+        super("Card is not sellable since it's not a product");
     }
 }

@@ -13,7 +13,7 @@ public class Deck {
 
 
     public Deck(int capacity) {
-        CardConfig cardConfig = new CardConfig() ;
+        CardConfig cardConfig = CardConfig.getInstance() ;
         deck = new ArrayList<>() ;
         deck.addAll(cardConfig.getAnimalConfig()) ;
         deck.addAll(cardConfig.getPlantConfig()) ;
