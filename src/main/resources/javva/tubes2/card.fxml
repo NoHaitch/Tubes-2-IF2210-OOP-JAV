@@ -10,7 +10,7 @@
 
 <AnchorPane fx:id="card_background" prefHeight="136.0" prefWidth="111.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="javva.tubes2.CardController">
    <children>
-      <VBox fx:id="card_frame" alignment="CENTER" layoutX="9.0" layoutY="11.0" onDragDetected="#dragDetected" onDragDropped="#dragDropped" onDragOver="#dragOver" onMouseClicked="#showInfo" onMouseEntered="#onHover" onMouseExited="#onExitingHover" prefHeight="117.0" prefWidth="95.0" styleClass="card" stylesheets="@style.css" AnchorPane.bottomAnchor="8.200000000000003" AnchorPane.leftAnchor="9.0" AnchorPane.rightAnchor="8.599999999999994" AnchorPane.topAnchor="11.0">
+      <VBox fx:id="card_frame" alignment="CENTER" layoutX="9.0" layoutY="11.0" onDragDetected="#dragDetected" onDragDone="#dragDone" onDragDropped="#dragDropped" onDragEntered="#dragEntered" onDragExited="#dragExited" onDragOver="#dragOver" onMouseClicked="#showInfo" onMouseEntered="#onHover" onMouseExited="#onExitingHover" prefHeight="117.0" prefWidth="95.0" styleClass="card" stylesheets="@style.css" AnchorPane.bottomAnchor="8.200000000000003" AnchorPane.leftAnchor="9.0" AnchorPane.rightAnchor="8.599999999999994" AnchorPane.topAnchor="11.0">
          <children>
             <HBox alignment="BOTTOM_CENTER" prefHeight="74.0" prefWidth="76.0">
                <children>

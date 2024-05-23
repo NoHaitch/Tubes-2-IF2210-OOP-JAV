@@ -28,10 +28,8 @@ import javafx.stage.StageStyle;
 import org.w3c.dom.ls.LSOutput;
 
 public class MainController implements Initializable  {
-    // Attributes
-    private GaussianBlur blur;
-    private List<TempCard> list_of_cards = new ArrayList<>();
-    private List<CardController> controllers = generateEmpty(20);
+    // Constant
+    public static String BEARZONE = "FDC7C7";
 
     // GridPanes
     @FXML
@@ -48,6 +46,8 @@ public class MainController implements Initializable  {
     private Label player_11;
     @FXML
     private Label turn_label;
+    @FXML
+    private Label information;
 
     // Buttons
     @FXML
@@ -67,13 +67,16 @@ public class MainController implements Initializable  {
     @FXML
     private AnchorPane pane;
 
+    // Attributes
+    private GaussianBlur blur;
+    private List<TempCard> list_of_cards = new ArrayList<>();
+    private List<CardController> field_controllers = new ArrayList<>();
+    private List<CardController> active_deck_controllers = new ArrayList<>();
 
     //  Methods
     // Buttons
     @FXML
-    void nextTurn(ActionEvent event) {
-    }
-
+    void nextTurn(ActionEvent event) {}
     @FXML
     void loadPlugin(ActionEvent event) {
 //        load_plugin_button.setDisable(true);
@@ -85,7 +88,6 @@ public class MainController implements Initializable  {
 
         renderLoadPlugin();
     }
-
     @FXML
     void loadState(ActionEvent event) {
         load_plugin_button.setDisable(false);
@@ -97,7 +99,6 @@ public class MainController implements Initializable  {
 
         renderLoadState();
     }
-
     @FXML
     void saveState(ActionEvent event) {
         load_plugin_button.setDisable(false);
@@ -109,7 +110,6 @@ public class MainController implements Initializable  {
 
         renderSaveState();
     }
-
     @FXML
     void showEnemyField(ActionEvent event) {
         load_plugin_button.setDisable(false);
@@ -119,12 +119,8 @@ public class MainController implements Initializable  {
         save_state_button.setDisable(false);
         shop_button.setDisable(false);
 
-        field.getChildren().clear();
-        active_deck.getChildren().clear();
-        renderField(generateRandom(20));
-        renderActiveDeck();
-    }
 
+    }
     @FXML
     void showMyField(ActionEvent event) {
         load_plugin_button.setDisable(false);
@@ -134,12 +130,7 @@ public class MainController implements Initializable  {
         save_state_button.setDisable(false);
         shop_button.setDisable(false);
 
-        field.getChildren().clear();
-        active_deck.getChildren().clear();
-        renderField(generateRandom(20));
-        renderActiveDeck();
     }
-
     @FXML
     void showShop(ActionEvent event) {
         load_plugin_button.setDisable(false);
@@ -153,11 +144,83 @@ public class MainController implements Initializable  {
     }
 
 
+    private void setInformationLabel(String text){
+        information.setText(text);
+    }
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        renderField(generateRandom(20));
-        renderActiveDeck();
+        // Rendering the field
+        try {
+            Integer column = 0;
+            Integer row = 0;
+            for (int i = 0; i < 20; i++) {
+                TempCard empty = new TempCard();
+                FXMLLoader fxmlLoader = new FXMLLoader();
+                fxmlLoader.setLocation(MainController.class.getResource("card.fxml"));
+                AnchorPane anchorPane = fxmlLoader.load();
 
+                CardController cardController = fxmlLoader.getController();
+                cardController.setData(empty);
+
+                // adding card controller for further manipulation
+                field_controllers.add(cardController);
+
+                // Add the anchorPane to the GridPane
+                field.add(anchorPane, column, row);
+
+                // Set margin around the anchorPane
+//                GridPane.setMargin(anchorPane, new Insets(10)); // Set a uniform margin
+                column++;
+                if (column == 5) {
+                    column = 0;
+                    row++;
+                }
+            }
+        }
+        catch (IOException e) {
+            System.out.println("Gagal me-load ladang");;
+        }
+
+        // Rendering active deck
+        try {
+            Integer column = 0;
+            Integer row = 0;
+            for (int i = 0; i < 6; i++) {
+                TempCard empty = new TempCard();
+                FXMLLoader fxmlLoader = new FXMLLoader();
+                fxmlLoader.setLocation(MainController.class.getResource("card.fxml"));
+                AnchorPane anchorPane = fxmlLoader.load();
+
+                CardController cardController = fxmlLoader.getController();
+                cardController.setData(empty);
+
+                // adding card controller to further manipulation
+                active_deck_controllers.add(cardController);
+                // Add the anchorPane to the GridPane
+                active_deck.add(anchorPane, column, row);
+
+                // Set margin around the anchorPane
+                GridPane.setMargin(anchorPane, new Insets(10)); // Set a uniform margin
+                column ++;
+            }
+        }
+        catch (IOException e) {
+            System.out.println("Gagal me-load deck aktif");
+        }
+
+        // Testing buat render active deck
+        for (int i = 0; i < 6; i++) {
+            TempCard change = new TempCard();
+            change.setName("Chiken");
+            change.setImgSrc("/javva/tubes2/images/Hewan/chicken.png");
+            setActiveDeckCard(i, change);
+        }
+
+        // Testing set bear zone
+        List<Integer> area = new ArrayList<>(List.of(1, 3, 4, 5, 6, 9, 19));
+        setBearZone(area);
+        removeBearZone();
     }
 
     // Generate
@@ -213,29 +276,6 @@ public class MainController implements Initializable  {
         return tempCards;
     }
 
-
-    private List<CardController> generateEmpty(int len){
-        List<CardController> new_controllers = new ArrayList<>();
-        TempCard temp = new TempCard();
-        temp.setName("Chicken");
-        temp.setImgSrc("/javva/tubes2/images/Chicken.png");
-
-        for(int i = 0; i<len; i++){
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("Card.fxml"));
-            try {
-                Pane pane = loader.load();  // This loads the FXML and instantiates the controller
-            } catch (IOException e) {
-                System.out.println("Failed to load");
-            }
-            CardController cardController = loader.getController();
-            cardController.setData(temp);
-            new_controllers.add(cardController);
-
-        }
-        return new_controllers;
-    }
-
-
     // Renders
     public void renderLoadState(){
         FXMLLoader loader = new FXMLLoader(getClass().getResource("load-state.fxml"));
@@ -259,7 +299,6 @@ public class MainController implements Initializable  {
         // Tampilkan popup
         popupStage.show();
     }
-
     public void renderLoadPlugin(){
         FXMLLoader loader = new FXMLLoader(getClass().getResource("load-plugin.fxml"));
 
@@ -282,7 +321,6 @@ public class MainController implements Initializable  {
         // Tampilkan popup
         popupStage.show();
     }
-
     public void renderSaveState(){
         FXMLLoader loader = new FXMLLoader(getClass().getResource("save-state.fxml"));
 
@@ -305,7 +343,6 @@ public class MainController implements Initializable  {
         // Tampilkan popup
         popupStage.show();
     }
-
     public void renderShop(){
         FXMLLoader loader = new FXMLLoader(getClass().getResource("shop.fxml"));
         Parent root = null;
@@ -328,64 +365,29 @@ public class MainController implements Initializable  {
         popupStage.show();
     }
 
-    public void renderField(List<TempCard> cards ){
-        // Render the card field
-        list_of_cards.clear();
-        list_of_cards.addAll(cards);
-        int column = 0;
-        int row = 0;
-        try {
-            for (int i = 0; i < 20; i++) {
-                FXMLLoader fxmlLoader = new FXMLLoader();
-                fxmlLoader.setLocation(MainController.class.getResource("card.fxml"));
-                AnchorPane anchorPane = fxmlLoader.load();
-
-                CardController cardController = fxmlLoader.getController();
-                cardController.setData(list_of_cards.get(i));
-
-                // Add the anchorPane to the GridPane
-                field.add(anchorPane, column, row);
-
-                // Set margin around the anchorPane
-                GridPane.setMargin(anchorPane, new Insets(0)); // Set a uniform margin
-
-                // Increment column and row for the next card
-                column++;
-                if (column == 5) {
-                    column = 0;
-                    row++;
-                }
-            }
-        }
-        catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+    // Getters
+    public TempCard getFieldCard(int id){
+        return field_controllers.get(id).getCard();
+    }
+    public TempCard getActiveDeckCard(int id){
+        return active_deck_controllers.get(id).getCard();
     }
 
-    public void renderActiveDeck(){
-        try {
-            Integer column = 0;
-            Integer row = 0;
-            for (int i = 0; i < 6; i++) {
-                TempCard empty = new TempCard();
-                FXMLLoader fxmlLoader = new FXMLLoader();
-                fxmlLoader.setLocation(MainController.class.getResource("card.fxml"));
-                AnchorPane anchorPane = fxmlLoader.load();
-
-                CardController cardController = fxmlLoader.getController();
-                cardController.setData(empty);
-
-                // Add the anchorPane to the GridPane
-                active_deck.add(anchorPane, column, row);
-
-                // Set margin around the anchorPane
-                GridPane.setMargin(anchorPane, new Insets(10)); // Set a uniform margin
-                column ++;
-            }
-        }
-        catch (IOException e) {
-            throw new RuntimeException(e);
+    // Setters
+    public void setFieldCard(int id, TempCard card){
+        field_controllers.get(id).setData(card);
+    }
+    public void setActiveDeckCard(int id, TempCard card){
+        field_controllers.get(id).setData(card);
+    }
+    public void setBearZone(List<Integer> ids){
+        for (Integer id : ids){
+            field_controllers.get(id).setCardBackground(BEARZONE);
         }
     }
-
+    public void removeBearZone(){
+        for (CardController field: field_controllers){
+            field.setCardBackground(null);
+        }
+    }
 }
