@@ -12,7 +12,7 @@ public class Player {
 
     public Player() {
         this.gulden = 0 ;
-        this.deck = new Deck() ;
+        this.deck = new Deck(40) ;
         this.active_deck = new ArrayList<>() ;
         for (int i = 0 ; i < 6 ; i++) {
             active_deck.add(new NullCard()) ;
@@ -20,8 +20,23 @@ public class Player {
         field = new Field(20);
     }
 
-    public Player(int gulden) {
+    public Player(int gulden, int deck_capacity) {
         this.gulden = gulden ;
+        this.deck = new Deck(deck_capacity) ;
+        this.active_deck = new ArrayList<>() ;
+        for (int i = 0 ; i < 6 ; i++) {
+            active_deck.add(new NullCard()) ;
+        }
+        field = new Field(20);        
+    }
+
+    public void addField(Card stuff, int index) {
+        try {
+            this.field.addElement((Harvestable)stuff, index);
+        }
+        catch (Throwable e) {
+            System.out.println(e.getMessage()) ;
+        }
     }
 
     public int getCapacity() {
@@ -134,6 +149,10 @@ public class Player {
         catch(Throwable e) {
             System.out.println(e.getMessage()) ;
         }
+    }
+
+    public void addToField(Card card) {
+
     }
 
     public static void main(String[] args) {
