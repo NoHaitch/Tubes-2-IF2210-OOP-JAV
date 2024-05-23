@@ -165,6 +165,18 @@ public class Player {
         }
     }
 
+    public void moveField(int start_index, int dest_index) {
+        try {
+            Harvestable stuff = this.field.getElement(start_index) ;
+            if (stuff.getName() != "null") {
+                this.field.addElement(stuff, dest_index);
+            }
+        }
+        catch(Throwable e) {
+            System.out.println(e.getMessage()) ;
+        }
+    }
+
     public void buy(String productName){
         try {
             Shop shop = Shop.getInstance();

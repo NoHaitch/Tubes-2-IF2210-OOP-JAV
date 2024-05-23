@@ -80,13 +80,13 @@ public class Animal extends Harvestable{
         }
 
         if(getType().equals("Herbivore")){
-            if(feed.getType().equals("Plants")){
+            if(feed.getType().equals("Vegetable")){
                 weight += feed.getAddedWeight();
                 return;
             }
         }
 
-        if(feed.getType().equals("Plants") || feed.getType().equals("Meat")){
+        if(feed.getType().equals("Vegetable") || feed.getType().equals("Meat")){
             weight += feed.getAddedWeight();
         }
     }
