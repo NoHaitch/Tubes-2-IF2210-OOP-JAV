@@ -53,10 +53,4 @@ public class Shop {
             prices.put(product.getName(), product.getAddedMoney());
         }
     }
-
-    public static void main(String[] args){
-        Shop shop = new Shop();
-        shop.createPricesMap();
-        System.out.println(shop.getPrice("Pumpkin"));
-    }
 }
