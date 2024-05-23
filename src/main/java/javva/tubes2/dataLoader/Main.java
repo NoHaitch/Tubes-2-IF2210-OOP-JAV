@@ -1,37 +1,39 @@
 package javva.tubes2.dataLoader;
 
-import plugin.JSONDataLoader;
-import plugin.YAMLDataLoader;
+import java.util.List;
+
+import javva.tubes2.Player;
+
 
 public class Main {
     public static void main(String[] args) throws Exception {
-        Test test = new Test(1, 2, 3, 4, 5);
+//        String jarFilePath = "./JSONDataLoader.jar";
+//        String className = "plugin.JSONDataLoader";
+//        PluginLoader.readClassFromJar(jarFilePath, className);
+//
+//        Test test = new Test(1, 2, 3, 4, 5);
 
-        // TEST JSON SAVE LOAD
-        // use save
-        DataLoader dataPlugin = new JSONDataLoader();
-        dataPlugin.saveData(test, "temp.json");
+//        String jarFilePath = "./JSONDataLoader.jar";
+//        PluginLoader.loadClassesFromJar(jarFilePath);
 
-        // use load
-        Test test2 = (Test) dataPlugin.loadData("temp.json", Test.class.getName());
-        test2.printTest();
 
-        // TEST YAML SAVE LOAD
-        // use save
-        dataPlugin = new YAMLDataLoader();
-        dataPlugin.saveData(test, "temp.yaml");
+//        List<Class<?>> loadedClasses = PluginLoader.loadClassesFromJar("./JSONDataLoader.jar");
+//        System.out.println("Loaded classes:");
+//        for (Class<?> clazz : loadedClasses) {
+//            System.out.println(clazz.getName());
+//        }
 
-        // use load
-        Test test3 = (Test) dataPlugin.loadData("temp.yaml", Test.class.getName());
-        test3.printTest();
+        SaveManager saveManager = SaveManager.getInstance();
 
-        // TEST TXT SAVE LOAD
-        // use save
-        dataPlugin = new TXTDataLoader();
-        dataPlugin.saveData(test, "temp.txt");
+        Player player1 = new Player(1000);
 
-        // use load
-        Test test4 = (Test) dataPlugin.loadData("temp.txt", Test.class.getName());
-        test4.printTest();
+        Player player2 = new Player(2000);
+
+        saveManager.saveGame(player1, player2, "result", "txt");
+
+        saveManager.loadPlayer("result", "player1", "txt");
+        saveManager.loadPlayer("result", "player2", "txt");
+        saveManager.loadGameState("result", "txt");
+
     }
 }
