@@ -136,8 +136,6 @@ public class Player {
         }
     }
 
-    public void 
-
     public static void main(String[] args) {
         Player player = new Player() ;
 
