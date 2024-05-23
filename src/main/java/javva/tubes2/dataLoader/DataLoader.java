@@ -1,6 +1,6 @@
 package javva.tubes2.dataLoader;
 
-import javva.tubes2.Player;
+import javva.tubes2.Player.Player;
 
 /**
  * Data Loader Interface  <br>
@@ -42,4 +42,9 @@ public interface DataLoader {
      * @throws Exception file not found, failed to load
      */
     Object loadGameState(String filePath) throws Exception;
+
+    /**
+     * @return file  format
+     */
+    String getFileFormat();
 }
