@@ -38,6 +38,7 @@ public class CardController {
 
     public void setData(TempCard card){
         this.card = card;
+        System.out.println();
         card_name.setText(card.getName());
         card_background.setStyle("-fx-background-color: " + card.getHexColor() + ";");
 

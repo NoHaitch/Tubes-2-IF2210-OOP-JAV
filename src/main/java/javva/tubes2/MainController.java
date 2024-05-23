@@ -22,6 +22,7 @@ import java.util.ResourceBundle;
 import java.util.Random;
 import javafx.scene.control.Button;
 import javafx.scene.effect.GaussianBlur;
+import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import org.w3c.dom.ls.LSOutput;
@@ -30,6 +31,7 @@ public class MainController implements Initializable  {
     // Attributes
     private GaussianBlur blur;
     private List<TempCard> list_of_cards = new ArrayList<>();
+    private List<CardController> controllers = generateEmpty(20);
 
     // GridPanes
     @FXML
@@ -95,7 +97,6 @@ public class MainController implements Initializable  {
 
         renderLoadState();
     }
-
 
     @FXML
     void saveState(ActionEvent event) {
@@ -214,12 +215,24 @@ public class MainController implements Initializable  {
 
 
     private List<CardController> generateEmpty(int len){
-        List<CardController> controllers = new ArrayList<>();
+        List<CardController> new_controllers = new ArrayList<>();
+        TempCard temp = new TempCard();
+        temp.setName("Chicken");
+        temp.setImgSrc("/javva/tubes2/images/Chicken.png");
+
         for(int i = 0; i<len; i++){
-            CardController cardController = new CardController();
-            controllers.add(cardController);
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("Card.fxml"));
+            try {
+                Pane pane = loader.load();  // This loads the FXML and instantiates the controller
+            } catch (IOException e) {
+                System.out.println("Failed to load");
+            }
+            CardController cardController = loader.getController();
+            cardController.setData(temp);
+            new_controllers.add(cardController);
+
         }
-        return controllers;
+        return new_controllers;
     }
 
 
@@ -269,8 +282,6 @@ public class MainController implements Initializable  {
         // Tampilkan popup
         popupStage.show();
     }
-
-
 
     public void renderSaveState(){
         FXMLLoader loader = new FXMLLoader(getClass().getResource("save-state.fxml"));
