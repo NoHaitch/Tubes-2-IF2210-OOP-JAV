@@ -151,8 +151,14 @@ public class Player {
         }
     }
 
-    public void addToField(Card card) {
-
+    public void addToField(int card_index, int field_index) {
+        try {
+            this.field.addElement((Harvestable)this.active_deck.get(card_index), field_index);
+            removeFromActiveDeck(card_index);
+        }
+        catch(Throwable e) {
+            System.out.println(e.getMessage()) ;
+        }
     }
 
     public static void main(String[] args) {
