@@ -38,6 +38,12 @@ public class Player {
 
     // return pointer to active_deck. Jadi perubahan yang terjadi akan tersimpan.
     public List<Card> getActiveDeck() {
+        List<Card> result = new ArrayList<>() ;
+        for (int i = 0 ; i < 6 ; i++) {
+            if(this.active_deck.get(i).getName() != "null") {
+                result.add(active_deck.get(i)) ;
+            }
+        }
         return this.active_deck ;
     }
 
@@ -128,6 +134,25 @@ public class Player {
         catch(Throwable e) {
             System.out.println(e.getMessage()) ;
         }
+    }
+
+    public void 
+
+    public static void main(String[] args) {
+        Player player = new Player() ;
+
+        
+        
+        
+        // System.out.println("aa");
+        // Deck tes = new Deck() ;
+        // List<Card> hand = tes.drawCards(1) ;
+        // System.out.println(hand.size());
+        // String name = hand.get(0).getName() ;
+        // System.out.println(hand.get(0).getName()); 
+
+        // hand.remove(0) ;
+        // tes.removeCards(1);
     }
 }
 
