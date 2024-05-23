@@ -78,11 +78,40 @@ public class Player {
         return index ;
     }
 
+    public void drawToActiveDeck(List<Card> cards) {
+        if (countActiveCard() >= cards.size()) {
+            for (int i = 0 ; i < cards.size() ; i++) {
+                try {
+                    addToActiveDeck(cards.get(i));
+                }
+                catch(Throwable e) {
+                    System.out.println(e.getMessage()) ;
+                }
+            }
+        }
+    }
+
     public void addToActiveDeck(Card card) throws DeckIsFull{
         if (countActiveCard() < 6) {
             int index = findSlot() ;
             this.active_deck.remove(index) ;
             this.active_deck.add(index, card) ;
+        }
+        else {
+            throw new DeckIsFull() ;
+        }
+    }
+
+    public void addToActiveDeck(Card card, int index) throws DeckIsFull{
+        if (countActiveCard() < 6) {
+            try {
+                if (this.active_deck.get(index).getName() != "null") {
+                    this.active_deck.set(index, card) ;
+                }
+            }
+            catch (Throwable e) {
+                System.out.println(e.getMessage()) ;
+            }
         }
         else {
             throw new DeckIsFull() ;

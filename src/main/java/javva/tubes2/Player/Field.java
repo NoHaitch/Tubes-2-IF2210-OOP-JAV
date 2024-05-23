@@ -86,19 +86,39 @@ public class Field {
         return harvestret;
     }
 
-    public void useItem(Card item, int index) throws Throwable{
-        Harvestable target = getElement(index) ;
-        if (target.getName() == "null") {
+    public boolean useItem(Card item, int index) throws Throwable{
+        // Harvestable target = getElement(index) ;
+        if (getElement(index).getName() == "null") {
             throw new IndexInvalid() ;
         }
-        if (target.getType() == "Plant") {
-            target = (Plants) target ;
-        }
-        else {
-            target = (Animal) target ;
-        }
+
         if (item.getName() == "Accelerate") {
-            
+            if (getElement(index).getType() == "Plant") {
+                Plants target = (Plants)getElement(index) ;
+                target.setProgress(target.getProgress() + 2) ;
+            }
+            else {
+                Animal target = (Animal)getElement(index) ;
+                target.setWeight(target.getWeight() + 5) ;
+            }  
+            return true ;      
+        }
+        else if (item.getName() == "Delay") {
+            if (getElement(index).getType() == "Plant") {
+                Plants target = (Plants)getElement(index) ;
+                if (target.getProgress() < 0) {
+                    return false ;
+                }
+                target.setProgress(target.getProgress() - 2) ;
+            }
+            else {
+                Animal target = (Animal)getElement(index) ;
+                if (target.getWeight() < 0) {
+                    return false ;
+                }
+                target.setWeight(target.getWeight() - 5) ;
+            }  
+            return true ;
         }
     }
 }
