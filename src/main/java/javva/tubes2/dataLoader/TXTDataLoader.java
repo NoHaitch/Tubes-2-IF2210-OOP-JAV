@@ -4,7 +4,9 @@ import javva.tubes2.Player.Field;
 import javva.tubes2.Player.Player;
 import javva.tubes2.Card.Card;
 import javva.tubes2.Card.Plants;
+import javva.tubes2.Card.Product;
 import javva.tubes2.Card.Animal;
+import javva.tubes2.CardConfig;
 
 import java.io.File;
 import java.io.PrintWriter;
@@ -54,33 +56,43 @@ public class TXTDataLoader implements DataLoader {
         }
 
         // save field card amount
-//        Field field = player.getField();
+        Field field = player.getField();
         int count = 0;
-//        for(int i = 0; i < 20; i++){
-//            Card card = field.getElement(i);
-//            if(!card.getName().equals("null")){
-//                count++;
-//            }
-//        }
+        for(int i = 0; i < 20; i++){
+            try{
+                Card card = field.getElement(i);
+                if(!card.getName().equals("null")){
+                    count++;
+                }
+
+            } catch (Throwable e){
+                throw new Exception(e.getMessage());
+            }
+        }
         writer.println(count);
 
-//        for(int i = 0; i < 20; i++){
-//            Card card = field.getElement(i);
-//            if(card.getName().equals("null")){
-//                continue;
-//            }
-//
-//            // save item location and name
-//            writer.print((i + 1) + " ");
-//            writer.print(card.getName() + " ");
+        // save field cards
+        for(int i = 0; i < 20; i++){
+            try{
+                Card card = field.getElement(i);
+                if(!card.getName().equals("null")){
+                    count++;
+                }
 
-//            // save item progress and items
-//            if (card instanceof Plants) {
-//                Plants plant = (Plants) card;
-//                writer.print(plant.getProgress() + " ");
-//                // TODO: add item amount
-//            }
-//        }
+                // save item location and name
+                writer.print((i + 1) + " ");
+                writer.print(card.getName() + " ");
+
+                // save item progress and items
+                if (card instanceof Plants plant) {
+                    writer.print(plant.getProgress() + " ");
+                    // TODO: add item amount
+                    // TODO: add items
+                }
+            } catch (Throwable e){
+                throw new Exception(e.getMessage());
+            }
+        }
 
         writer.close();
     }
@@ -145,35 +157,120 @@ public class TXTDataLoader implements DataLoader {
         System.out.println("[LoadPlayer] Active Card Amount: " + active_card_amount);
 
         // get active cards
-        List<Card> activeCards = new ArrayList<>(active_card_amount);
-        for (int i = 0; i < active_card_amount; i++) {
-            String location = scanner.next();
+        CardConfig card_config = new CardConfig();
+        List<Animal> animal_config = card_config.getAnimalConfig();
+        List<Plants> plant_config = card_config.getPlantConfig();
+        List<Product> product_config = card_config.getProductConfig();
+
+        List<Card> active_cards = new ArrayList<>(6);
+        Map<Integer, String> temp_active_name = new HashMap<>();
+
+        // get active card data
+        for(int i = 0; i < active_card_amount; i++){
+            int location = scanner.nextInt();
             String card_name = scanner.next();
-            Card card = new Card(card_name, "ACTIVE");
-            player.addToActiveDeck(card);
+            temp_active_name.put(location, card_name);
         }
 
-        // get field card amount
-        int field_card_amount = scanner.nextInt();
-        System.out.println("[LoadPlayer] Field Card Amount: " + field_card_amount);
+        // place on active deck
+        for(int i = 0; i < 6; i++){
+            if(temp_active_name.containsKey(i)) {
+                boolean found = false;
+                for (Animal animal : animal_config) {
+                    if (animal.getName().equalsIgnoreCase(temp_active_name.get(i))) {
+                        Animal new_animal = new Animal(animal);
+                        player.addToActiveDeck(new_animal);
+                        found = true;
+                        break;
+                    }
+                }
+
+                for (Plants plant : plant_config){
+                    if(found){
+                        break;
+                    }
+
+                    if (plant.getName().equalsIgnoreCase(temp_active_name.get(i))) {
+                        Plants new_plant = new Plants(plant);
+                        player.addToActiveDeck(new_plant);
+                        found = true;
+                        break;
+                    }
+                }
+
+                for (Product product : product_config){
+                    if(found){
+                        break;
+                    }
+
+                    if (product.getName().equalsIgnoreCase(temp_active_name.get(i))) {
+                        Product new_product = new Product(product);
+                        player.addToActiveDeck(new_product);
+                        found = true;
+                        break;
+                    }
+                }
+
+                // TODO: Check items
+
+                throw new Exception("Card not found");
+            }
+        }
 
         // get field cards
-        for (int i = 0; i < field_card_amount; i++) {
-            String location = scanner.next();
-            String card = scanner.next();
-            int weight = scanner.nextInt();
-            int amountOfItems = scanner.nextInt();
-            System.out.println("[LoadPlayer] Field Card: " + location + " " + card + " " + weight + " " + amountOfItems + " ");
+        Map<Integer, String> temp_name = new HashMap<>();
+        Map<Integer, Integer> temp_progres = new HashMap<>();
+        Map<Integer, List<String>> temp_item = new HashMap<>();
+
+        // get field cards data
+        for (int i = 0; i < active_card_amount; i++) {
+            Integer location = scanner.nextInt();
+            String card_name = scanner.next();
+            int progress = scanner.nextInt();
+            int item_amount = scanner.nextInt();
+
+            temp_name.put(location, card_name);
+            temp_progres.put(location, progress);
             List<String> items = new ArrayList<>();
-            for (int j = 0; j < amountOfItems; j++) {
+            for (int j = 0; j < item_amount; j++) {
                 items.add(scanner.next());
-                System.out.println("[LoadPlayer] " + (j + 1) + " Item: " + items.get(j));
+            }
+            temp_item.put(location, items);
+        }
+
+        // add all cards sorted using location
+        for(int i = 1; i < active_card_amount+1; i++){
+            boolean found = false;
+            for(Animal animal : animal_config){
+                if(found){
+                    break;
+                }
+                if(animal.getName().equalsIgnoreCase(temp_name.get(i))){
+                    Animal new_animal = new Animal(animal);
+                    new_animal.setWeight(temp_progres.get(i));
+                    // TODO: add item
+                    player.addToActiveDeck(new_animal);
+                    found = true;
+                }
             }
 
+            for(Plants plant : plant_config){
+                if(found){
+                    break;
+                }
+
+                if(plant.getName().equalsIgnoreCase(temp_name.get(i))){
+                    Plants new_plant = new Plants(plant);
+                    new_plant.setProgress(temp_progres.get(i));
+                    // TODO: add item
+                    player.addToActiveDeck(new_plant);
+                    found = true;
+                }
+            }
         }
 
         scanner.close();
-        return null;
+        return player;
     }
 
     /**
