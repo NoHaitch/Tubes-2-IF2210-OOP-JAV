@@ -12,7 +12,7 @@ public class CardConfig {
     private List<Animal> animalConfig;
     private List<Plants> plantConfig;
 
-    public CardConfig(){
+    private CardConfig(){
         productConfig = new ArrayList<>();
         productConfig.addLast(new Product("SharkFin", "Product", "", 12, 500));
         productConfig.addLast(new Product("Milk", "Product", "", 4, 100));
@@ -36,6 +36,17 @@ public class CardConfig {
         plantConfig.addLast(new Plants("CornSeed", "Plant", "", new Product("Corn", "Product", "", 3, 150), 3));
         plantConfig.addLast(new Plants("PumpkinSeed", "Plant", "", new Product("Pumpkin", "Product", "", 10, 500), 5));
         plantConfig.addLast(new Plants("StrawberrySeed", "Plant", "", new Product("Strawberry", "Product", "", 5, 350), 4));
+    }
+
+    /* Singleton Pattern */
+    private static CardConfig instance = null;
+
+    /* Singleton Instance Getter */
+    public static CardConfig getInstance() {
+        if (instance == null) {
+            instance = new CardConfig();
+        }
+        return instance;
     }
 
     public List<Product> getProductConfig(){
