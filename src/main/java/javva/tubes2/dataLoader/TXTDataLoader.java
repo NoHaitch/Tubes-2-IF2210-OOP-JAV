@@ -1,6 +1,6 @@
 package javva.tubes2.dataLoader;
 
-import javva.tubes2.Player;
+import javva.tubes2.Player.Player;
 
 import java.io.File;
 import java.io.PrintWriter;
@@ -11,6 +11,19 @@ import java.util.*;
  */
 public class TXTDataLoader implements DataLoader {
     /**
+     * File format for this plugin
+     */
+    private final String format = "txt";
+
+    /**
+     * @return file format
+     */
+    @Override
+    public String getFileFormat() {
+        return format;
+    }
+
+    /**
      * Save player data to text file
      *
      * @param player   Player data
@@ -18,7 +31,6 @@ public class TXTDataLoader implements DataLoader {
      * @throws Exception data not correct, failed to save
      */
     public void savePlayer(Player player, String filePath) throws Exception {
-        // TODO: USE PLAYER ATTRIBUTE
         // initialize file
         PrintWriter writer = new PrintWriter(filePath);
 
@@ -26,7 +38,7 @@ public class TXTDataLoader implements DataLoader {
         writer.println(player.getGulden());
 
         // save deck amount
-        writer.println(37);
+        writer.println(player.getCapacity());
 
         // save active card amount
         writer.println(3);

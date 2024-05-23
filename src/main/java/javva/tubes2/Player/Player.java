@@ -12,7 +12,7 @@ public class Player {
 
     public Player() {
         this.gulden = 0 ;
-        this.deck = new Deck() ;
+        this.deck = new Deck(40) ;
         this.active_deck = new ArrayList<>() ;
         for (int i = 0 ; i < 6 ; i++) {
             active_deck.add(new NullCard()) ;
@@ -20,8 +20,27 @@ public class Player {
         field = new Field(20);
     }
 
-    public Player(int gulden) {
+    public Player(int gulden, int deck_capacity) {
         this.gulden = gulden ;
+        this.deck = new Deck(deck_capacity) ;
+        this.active_deck = new ArrayList<>() ;
+        for (int i = 0 ; i < 6 ; i++) {
+            active_deck.add(new NullCard()) ;
+        }
+        field = new Field(20);        
+    }
+
+    public void addField(Card stuff, int index) {
+        try {
+            this.field.addElement((Harvestable)stuff, index);
+        }
+        catch (Throwable e) {
+            System.out.println(e.getMessage()) ;
+        }
+    }
+
+    public int getCapacity() {
+        return this.deck.getCapacity() ;
     }
 
     public int getGulden() {
@@ -34,6 +53,12 @@ public class Player {
 
     // return pointer to active_deck. Jadi perubahan yang terjadi akan tersimpan.
     public List<Card> getActiveDeck() {
+        List<Card> result = new ArrayList<>() ;
+        for (int i = 0 ; i < 6 ; i++) {
+            if(this.active_deck.get(i).getName() != "null") {
+                result.add(active_deck.get(i)) ;
+            }
+        }
         return this.active_deck ;
     }
 
@@ -124,6 +149,33 @@ public class Player {
         catch(Throwable e) {
             System.out.println(e.getMessage()) ;
         }
+    }
+
+    public void addToField(int card_index, int field_index) {
+        try {
+            this.field.addElement((Harvestable)this.active_deck.get(card_index), field_index);
+            removeFromActiveDeck(card_index);
+        }
+        catch(Throwable e) {
+            System.out.println(e.getMessage()) ;
+        }
+    }
+
+    public static void main(String[] args) {
+        Player player = new Player() ;
+
+        
+        
+        
+        // System.out.println("aa");
+        // Deck tes = new Deck() ;
+        // List<Card> hand = tes.drawCards(1) ;
+        // System.out.println(hand.size());
+        // String name = hand.get(0).getName() ;
+        // System.out.println(hand.get(0).getName()); 
+
+        // hand.remove(0) ;
+        // tes.removeCards(1);
     }
 }
 

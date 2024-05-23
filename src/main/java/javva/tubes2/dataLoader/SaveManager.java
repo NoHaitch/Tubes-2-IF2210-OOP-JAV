@@ -3,7 +3,7 @@ package javva.tubes2.dataLoader;
 import java.util.*;
 import java.io.File;
 
-import javva.tubes2.Player;
+import javva.tubes2.Player.Player;
 
 /**
  * Managed game save and load <br>
@@ -76,7 +76,15 @@ public class SaveManager {
     public void loadPlugins(String jarPath) throws Exception {
         try {
             // load plugins
-            PluginLoader.loadClassesFromJar(jarPath);
+            List<?> classesLoaded = PluginLoader.loadClassesFromJar(jarPath);
+
+            for(Object obj : classesLoaded) {
+                Class<?> dataLoaderClass = (Class<?>) obj;
+                DataLoader dataLoader = (DataLoader) dataLoaderClass.getDeclaredConstructor().newInstance();
+                addSaveFormat(dataLoader.getFileFormat(), dataLoaderClass);
+            }
+
+
         } catch (Exception e) {
             throw new Exception("[SaveManager] Failed to load plugins");
         }

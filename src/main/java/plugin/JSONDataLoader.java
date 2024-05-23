@@ -5,13 +5,26 @@ import java.io.FileWriter;
 import java.lang.reflect.Field;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import javva.tubes2.Player;
+import javva.tubes2.Player.Player;
 import javva.tubes2.dataLoader.DataLoader;
 
 /**
  * Plugin to save and load data to JSON file
  */
 public class JSONDataLoader implements DataLoader {
+    /**
+     * File format for this plugin
+     */
+    private final String format = "json";
+
+    /**
+     * @return file format
+     */
+    @Override
+    public String getFileFormat() {
+        return format;
+    }
+
     /**
      * Save player data to JSON file
      *
