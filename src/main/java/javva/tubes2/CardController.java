@@ -6,6 +6,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
@@ -50,6 +51,27 @@ public class CardController {
 
     }
 
+    // Mouse activity
+    public void dragDetected(MouseEvent event){
+        Dragboard db = card_frame.startDragAndDrop(TransferMode.ANY);
+
+        ClipboardContent cb = new ClipboardContent();
+        cb.putString("Test");
+        dragged_item = card;
+
+        db.setContent(cb);
+        event.consume();
+        System.out.println("dragDetected");
+    }
+    public void dragOver(DragEvent event){
+        System.out.println("You hovering while dragging on " + card.getName());
+        event.acceptTransferModes(TransferMode.ANY);
+    }
+    public void dragDropped(){
+        card = dragged_item;
+        setData(card);
+        System.out.println("Dropped");
+    }
     public void onExitingHover(){
         setCardColor("");
     }
