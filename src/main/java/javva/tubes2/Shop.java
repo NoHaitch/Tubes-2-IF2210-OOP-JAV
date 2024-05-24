@@ -57,13 +57,7 @@ public class Shop {
     }
 
     public List<Map.Entry<String, Integer>> getShopItemsList(){
-        List<Map.Entry<String, Integer>> ret = new ArrayList<>();
-        for (Map.Entry<String, Integer> entry : products.entrySet()) {
-            if (entry.getValue() != 0) {
-                ret.add(entry);
-            }
-        }
-        return ret;
+        return new ArrayList<>(products.entrySet());
     }
 
     public Integer getPrice(String productName){

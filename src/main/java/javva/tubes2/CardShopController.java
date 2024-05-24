@@ -10,7 +10,7 @@ import javafx.scene.layout.VBox;
 
 import java.net.URL;
 import java.util.ResourceBundle;
-
+import javva.tubes2.Card.*;
 public class CardShopController{
 
     @FXML
@@ -28,19 +28,25 @@ public class CardShopController{
     @FXML
     private Label jumlah;
 
-    private TempCard card;
+    private Product card;
 
-    public void setData(TempCard card){
+    public void setData(Product card, int price, int stock){
+        // Set kartu
         this.card = card;
+        // Set label nama
         card_name.setText(card.getName());
-
+        // Set gambar
         try{
-            Image image = new Image(getClass().getResourceAsStream((card.getImgSrc())));
+            Image image = new Image(getClass().getResourceAsStream((card.getPath())));
             card_image.setImage(image);
         }
         catch(Exception e){
-            System.out.println("Image not found :" + card.getImgSrc() );
+            System.out.println("Image not found :" + card.getPath() );
         }
+        // set harga
+        harga.setText(Integer.toString(price));
+        // set stok
+        jumlah.setText(Integer.toString(stock));
     }
 
 

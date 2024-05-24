@@ -1,9 +1,32 @@
 package javva.tubes2.Card;
 
 public class Harvestable extends Card{
-    protected Product product;
-    private boolean protect ;
-    private boolean trap ;
+    private Product product;
+    private Boolean attacked;
+    private Boolean protect;
+    private Boolean trap;
+    
+    public Harvestable(String nameString, String tyString){
+        super(nameString, tyString, "");
+        product = new Product(nameString, tyString, tyString, null, null);
+        protect = false;
+        trap = false;
+    }
+
+    public Harvestable(String nameString, String tyString, String imgString, Product prod){
+        super(nameString, tyString, imgString);
+        product = prod;
+        protect = false;
+        trap = false;
+    }
+
+    public Harvestable(String nameString, String tyString, String imgPath, Product prod, Boolean protect, Boolean trap){
+        super(nameString, tyString, imgPath);
+        product = prod;
+        this.protect = protect;
+        this.trap = trap;
+
+    }
 
     public boolean getTrap() {
         return this.trap ;
@@ -36,23 +59,13 @@ public class Harvestable extends Card{
         return false;
     }
 
-    public Harvestable(String nameString, String tyString, String imgPath, Product prod){
-        super(nameString, tyString, imgPath);
-        product = prod;
-        this.protect = false ;
-        this.trap = false ;
+
+    public Boolean getAttacked() {
+        return attacked;
     }
 
-    public Harvestable(String nameString, String tyString, String imgPath, Product prod, boolean protect, boolean trap){
-        super(nameString, tyString, imgPath);
-        product = prod;
-        this.protect = protect ;
-        this.trap = trap ;
-    }
-
-    public Harvestable(String nameString, String tyString){
-        super(nameString, tyString, "");
-        product = new Product(nameString, tyString, tyString, null, null);
+    public void setAttacked(Boolean attacked) {
+        this.attacked = attacked;
     }
 }
 

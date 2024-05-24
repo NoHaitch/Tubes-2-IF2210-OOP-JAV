@@ -4,6 +4,7 @@ import java.util.*;
 import java.io.File;
 
 import javva.tubes2.Player.Player;
+import javva.tubes2.Shop;
 
 /**
  * Managed game save and load <br>
@@ -69,37 +70,15 @@ public class SaveManager {
     }
 
     /**
-     * Load dataloader plugins from jar file
-     *
-     * @param jarPath relative path to jar file
-     */
-    public void loadPlugins(String jarPath) throws Exception {
-        try {
-            // load plugins
-            List<?> classesLoaded = PluginLoader.loadClassesFromJar(jarPath);
-
-            for(Object obj : classesLoaded) {
-                Class<?> dataLoaderClass = (Class<?>) obj;
-                DataLoader dataLoader = (DataLoader) dataLoaderClass.getDeclaredConstructor().newInstance();
-                addSaveFormat(dataLoader.getFileFormat(), dataLoaderClass);
-            }
-
-
-        } catch (Exception e) {
-            throw new Exception("[SaveManager] Failed to load plugins");
-        }
-    }
-
-    /**
      * Save the Game
      *
      * @param player1    player 1 object
      * @param player2    player 2 object
      *                                     TODO: pass Game object
-     * @param folderPath relative path to save folder
+     * @param folder_path relative path to save folder
      * @param format     file format
      */
-    public void saveGame(Player player1, Player player2, String folderPath, String format) throws Exception {
+    public void saveGame(Player player1, Player player2, Shop shop, Integer current_turn, String folder_path, String format) throws Exception {
         // check format
         Class<?> dataLoaderClass = getDataLoaderClass(format);
         if (dataLoaderClass == null) {
@@ -112,24 +91,24 @@ public class SaveManager {
             DataLoader dataLoader = (DataLoader) dataLoaderClass.getDeclaredConstructor().newInstance();
 
             // create folder if folder not exist
-            File folder = new File(folderPath);
+            File folder = new File(folder_path);
             if (!folder.exists()) {
-                System.out.println("[SaveManager] Folder not found: " + folderPath);
+                System.out.println("[SaveManager] Folder not found: " + folder_path);
                 if (folder.mkdirs()) {
-                    System.out.println("[SaveManager] Folder created at: " + folderPath);
+                    System.out.println("[SaveManager] Folder created at: " + folder_path);
                 } else {
-                    System.out.println("[SaveManager] Failed to create folder at: " + folderPath);
+                    System.out.println("[SaveManager] Failed to create folder at: " + folder_path);
                 }
             }
 
             // save game state
-            dataLoader.saveGameState(folderPath + "/gamestate." + format);
+            dataLoader.saveGameState(folder_path + "/gamestate." + format, shop, current_turn);
 
             // save player1
-            dataLoader.savePlayer(player1, folderPath + "/player1." + format);
+            dataLoader.savePlayer(player1, folder_path + "/player1." + format);
 
             // save player 2
-            dataLoader.savePlayer(player2, folderPath + "/player2." + format);
+            dataLoader.savePlayer(player2, folder_path + "/player2." + format);
 
         } catch (Exception e) {
             throw new Exception("Failed to save game");
@@ -139,13 +118,13 @@ public class SaveManager {
     /**
      * Load player object from file
      *
-     * @param folderPath relative path to save folder
+     * @param folder_path relative path to save folder
      * @param filename file name without extension
      * @param format file format
      * @return player object
      * @throws Exception file not found, corrupted save
      */
-    public Player loadPlayer(String folderPath, String filename, String format) throws Exception {
+    public Player loadPlayer(String folder_path, String filename, String format) throws Exception {
         Class<?> dataLoaderClass = getDataLoaderClass(format);
         if (dataLoaderClass == null) {
             throw new Exception("Format not found");
@@ -154,9 +133,9 @@ public class SaveManager {
         try {
             DataLoader dataLoader = (DataLoader) dataLoaderClass.getDeclaredConstructor().newInstance();
 
-            return dataLoader.loadPlayer(folderPath + "/" + filename + "." + format);
+            return dataLoader.loadPlayer(folder_path + "/" + filename + "." + format);
 
-        } catch (Exception e) {
+        } catch (Throwable e) {
             throw new Exception("Failed to load player object");
         }
     }
@@ -164,12 +143,12 @@ public class SaveManager {
     /**
      * Load game state from file
      *
-     * @param folderPath relative path to save folder
+     * @param folder_path relative path to save folder
      * @param format     file format
      * @return Game object
      * @throws Exception file not found, corrupted save
      */
-    public Object loadGameState(String folderPath, String format) throws Exception {
+    public Object loadGameState(String folder_path, String format) throws Exception {
         Class<?> dataLoaderClass = getDataLoaderClass(format);
         if (dataLoaderClass == null) {
             throw new Exception("Format not found");
@@ -178,7 +157,7 @@ public class SaveManager {
         try {
             DataLoader dataLoader = (DataLoader) dataLoaderClass.getDeclaredConstructor().newInstance();
 
-            return dataLoader.loadGameState(folderPath + "/gamestate." + format);
+            return dataLoader.loadGameState(folder_path + "/gamestate." + format);
 
         } catch (Exception e) {
             throw new Exception("Failed to load game state");
