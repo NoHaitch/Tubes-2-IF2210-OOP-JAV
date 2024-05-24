@@ -8,6 +8,7 @@ module javva.tubes2 {
     requires com.fasterxml.jackson.dataformat.yaml;
 
     exports javva.tubes2.Player;
+    exports javva.tubes2.Card;
     exports javva.tubes2.dataLoader to com.fasterxml.jackson.databind;
     exports plugin;
 }

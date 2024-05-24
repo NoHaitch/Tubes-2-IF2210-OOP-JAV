@@ -2,6 +2,15 @@ package javva.tubes2.Card;
 
 public class Harvestable extends Card{
     private Product product;
+    private Boolean protected_flag;
+    private Boolean attacked;
+
+    public Harvestable(String nameString, String tyString){
+        super(nameString, tyString, "");
+        product = new Product(nameString, tyString, tyString, null, null);
+        protected_flag = false;
+    }
+
     private boolean protect ;
     private boolean trap ;
 
@@ -39,20 +48,14 @@ public class Harvestable extends Card{
     public Harvestable(String nameString, String tyString, String imgPath, Product prod){
         super(nameString, tyString, imgPath);
         product = prod;
-        this.protect = false ;
-        this.trap = false ;
     }
 
-    public Harvestable(String nameString, String tyString, String imgPath, Product prod, boolean protect, boolean trap){
-        super(nameString, tyString, imgPath);
-        product = prod;
-        this.protect = protect ;
-        this.trap = trap ;
+    public Boolean getAttacked() {
+        return attacked;
     }
 
-    public Harvestable(String nameString, String tyString){
-        super(nameString, tyString, "");
-        product = new Product(nameString, tyString, tyString, null, null);
+    public void setAttacked(Boolean attacked) {
+        this.attacked = attacked;
     }
 }
 
