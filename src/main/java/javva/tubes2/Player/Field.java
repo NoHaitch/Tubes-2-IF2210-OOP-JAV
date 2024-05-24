@@ -99,7 +99,7 @@ public class Field extends Thread{
     }
 
     public boolean useAccelerate(int field_index) throws Throwable{
-        if (getElement(field_index).getType() == "Plant") {
+        if (getElement(field_index).getType().equals("Plant")) {
             Plants target = (Plants)getElement(field_index) ;
             target.setProgress(target.getProgress() + 2) ;
         }
@@ -111,7 +111,7 @@ public class Field extends Thread{
     }
 
     public boolean useDelay(int field_index) throws Throwable {
-        if (getElement(field_index).getType() == "Plant") {
+        if (getElement(field_index).getType().equals("Plant")) {
             Plants target = (Plants)getElement(field_index) ;
             if (target.getProgress() < 0) {
                 return false ;
@@ -129,7 +129,7 @@ public class Field extends Thread{
     }
 
     public boolean useInstantHarvest(int field_index) throws Throwable{
-        if (getElement(field_index).getType() == "Plant") {
+        if (getElement(field_index).getType().equals("Plant")) {
             Plants target = (Plants)getElement(field_index) ;
             target.setProgress(target.getHarvestLimit());
             return true ;
@@ -324,8 +324,7 @@ public class Field extends Thread{
     }
 
     public synchronized void printContent(){
-
-        while (bear_attack == true) {
+        if(bear_attack){
             try {
                 wait();
             } catch (Throwable e){
