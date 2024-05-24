@@ -5,5 +5,7 @@ public class Item extends Card{
         super(nameString, tyString, imgpth) ;
     }
 
-    
+    public Item(Item item) {
+        super(item.getName(), item.getType(), item.getPath()) ;
+    }
 }

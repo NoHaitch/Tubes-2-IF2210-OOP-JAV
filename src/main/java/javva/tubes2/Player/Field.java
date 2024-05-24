@@ -1,19 +1,20 @@
 package javva.tubes2.Player;
+
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
+import java.util.concurrent.TimeUnit;
 
-import javva.tubes2.Card.Animal;
-import javva.tubes2.Card.Plants;
-import javva.tubes2.Card.Card;
-import javva.tubes2.Card.Harvestable;
-import javva.tubes2.Card.NullCard;
-import javva.tubes2.Card.Product;
+import javva.tubes2.Card.*;
+import java.lang.Thread;
 
-public class Field {
-    private List<Harvestable> content;
+public class Field extends Thread{
+    public ArrayList<Harvestable> content;
     private int capacity;
+    private Boolean bear_attack;
+    public ArrayList<Integer> available_integer;
     private List<Integer> protect ;
-
+    
     Field(int cap){
         capacity = cap;
         content = new ArrayList<>(capacity);
@@ -21,14 +22,27 @@ public class Field {
             content.add(i, new NullCard());
         }
         protect = new ArrayList<>() ;
+        bear_attack = false;
+        available_integer = generateAvailInteger();
     }
 
-    public Harvestable getElement(int index) throws Throwable{
+    Field(){
+        capacity = 20;
+        content = new ArrayList<>(capacity);
+        for(int i = 0 ; i < 20 ; i++){
+            content.add(i, new NullCard());
+        }
+        bear_attack = false;
+        protect = new ArrayList<>() ;
+        available_integer = generateAvailInteger();
+    }
+
+    public synchronized Harvestable getElement(int index) throws Throwable{
         if(index >= capacity || index < 0){
             throw new IndexOutOfRange();
         }
 
-        if(content.get(index).getName() == "null"){
+        if(content.get(index).getName().equals("null")){
             throw new EmptyElement();
         }
         return content.get(index);
@@ -49,13 +63,18 @@ public class Field {
             throw new IndexOutOfRange();
         }
 
-        if(content.get(index).getName() == "null"){
+        if(content.get(index).getName().equals("null")){
             throw new EmptyElement();
         }
         content.set(index, new NullCard());
+        for(int i = 0 ; i < protect.size() ; i++){
+            if(protect.get(i) == index){
+                protect.remove(i);
+            }
+        }
     }
 
-    public Product getAndRemove(int index) throws Throwable{
+    public synchronized Product getAndRemove(int index) throws Throwable{
         if(index >= capacity || index < 0){
             throw new IndexOutOfRange();
         }
@@ -87,7 +106,7 @@ public class Field {
     }
 
     public boolean useAccelerate(int field_index) throws Throwable{
-        if (getElement(field_index).getType() == "Plant") {
+        if (getElement(field_index).getType().equals("Plant")) {
             Plants target = (Plants)getElement(field_index) ;
             target.setProgress(target.getProgress() + 2) ;
         }
@@ -99,7 +118,7 @@ public class Field {
     }
 
     public boolean useDelay(int field_index) throws Throwable {
-        if (getElement(field_index).getType() == "Plant") {
+        if (getElement(field_index).getType().equals("Plant")) {
             Plants target = (Plants)getElement(field_index) ;
             if (target.getProgress() < 0) {
                 return false ;
@@ -117,7 +136,7 @@ public class Field {
     }
 
     public boolean useInstantHarvest(int field_index) throws Throwable{
-        if (getElement(field_index).getType() == "Plant") {
+        if (getElement(field_index).getType().equals("Plant")) {
             Plants target = (Plants)getElement(field_index) ;
             target.setProgress(target.getHarvestLimit());
             return true ;
@@ -244,6 +263,119 @@ public class Field {
     //         return false ;
     //     }
     // }
+    private ArrayList<Integer> generateAvailInteger(Integer row, Integer column){
+        ArrayList<Integer> ret = new ArrayList<>();
+        
+        for(int i = 0 ; i <= row - 2; i++){
+            for(int j = 0 ; j <= column - 3 ; j++){
+                ret.add(j + i*column);
+            }
+        }
+        
+        return ret;
+    }
+
+    private ArrayList<Integer> generateAvailInteger(){
+        return generateAvailInteger(4,5);
+    }
+
+    private ArrayList<Integer> getBearGrid(){
+        ArrayList<Integer> ret = new ArrayList<>();
+        Integer range = available_integer.size();
+
+        Integer index = new Random().nextInt(range);
+        index = available_integer.get(index);
+
+        for(int i = 0 ; i < 2 ; i++){
+            for(int j = 0 ; j < 3 ; j++){
+                ret.add(index + i*5 + j);
+            }
+        }
+
+        return ret;
+    }
+
+    public void initiateBearEvent(){
+        bear_attack = true;
+        System.out.println("Attack begin");
+
+        ArrayList<Integer> attack_zone = getBearGrid();
+
+        try {
+            Thread.sleep(4*1000);
+        } catch (Throwable e){
+
+        }
+        
+        bearDestroy(attack_zone);
+        System.out.println("Attack finished");
+        bear_attack = false;
+        
+    }
+
+    public void run(){
+        initiateBearEvent();
+    }
+
+    public synchronized void bearDestroy(ArrayList<Integer> destroy_zone){
+        System.out.println(destroy_zone);
+        for(int i = 0 ; i < destroy_zone.size() ; i++){
+            if(!content.get(destroy_zone.get(i)).getName().equals("null") && !protect.contains(i)){
+                try {
+                    removeElement(destroy_zone.get(i));
+                } catch (Throwable e) {
+                    System.out.println(e.getMessage());
+                }
+            }
+        }
+        notifyAll();
+    }
+
+    public synchronized void printContent(){
+        if(bear_attack){
+            try {
+                System.out.println("nigga");
+                wait();
+            } catch (Throwable e){
+
+            }
+        }
+        for(int i = 0 ; i < 4 ; i++){
+            for(int j = 0 ; j < 5 ; j++){
+                System.out.print(content.get(i*5 + j).getName().substring(0,3) + " ");
+            }
+            System.out.println("");
+        }
+    }
+
+    public static void main(String args[]){
+        Field yoi = new Field();
+
+        for(int i = 0 ; i < 20 ; i++){
+            try{
+                yoi.addElement(new Animal("aaa", "aaa", "aaaa", null, 3,4), i);
+            } catch(Throwable e){
+                System.out.println(e.getMessage());
+            }
+        }
+        try {
+            // yoi.removeElement(0);
+
+        } catch (Throwable e){
+
+        }
+
+        yoi.start();
+
+        try {
+            TimeUnit.SECONDS.sleep(1);
+        } catch (Throwable e){
+
+        }
+        
+        yoi.printContent();
+
+    }
 }
 
 class IndexOutOfRange extends Throwable{
