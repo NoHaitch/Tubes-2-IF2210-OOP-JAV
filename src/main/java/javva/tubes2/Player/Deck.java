@@ -21,7 +21,7 @@ public class Deck {
         this.capacity = capacity;
 
         for (int i = 0 ; i < deck.size() ; i++) {
-            if (deck.get(i).getName() == "Bear") {
+            if (deck.get(i).getName().equals("Bear")) {
                 deck.remove(i) ;
                 break ;
             }
