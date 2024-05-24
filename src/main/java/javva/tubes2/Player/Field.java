@@ -33,6 +33,7 @@ public class Field extends Thread{
             content.add(i, new NullCard());
         }
         bear_attack = false;
+        protect = new ArrayList<>() ;
         available_integer = generateAvailInteger();
     }
 
@@ -309,7 +310,7 @@ public class Field extends Thread{
         bearDestroy(attack_zone);
         System.out.println("Attack finished");
         bear_attack = false;
-        notifyAll();
+        
     }
 
     public void run(){
@@ -327,6 +328,7 @@ public class Field extends Thread{
                 }
             }
         }
+        notifyAll();
     }
 
     public synchronized void printContent(){
