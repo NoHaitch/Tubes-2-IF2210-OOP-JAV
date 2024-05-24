@@ -9,7 +9,7 @@ import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 
 import java.util.List;
-
+import javva.tubes2.Card.*;
 public class CardInfoController {
 
     @FXML
@@ -30,19 +30,19 @@ public class CardInfoController {
     @FXML
     private Button panen_button;
 
-    private TempCard card;
+    private Card card;
 
     @FXML
 
-    public void setData(TempCard card){
+    public void setData(Card card){
         this.card = card;
         item_name.setText(card.getName());
         try{
-            Image image = new Image(getClass().getResourceAsStream((card.getImgSrc())));
+            Image image = new Image(getClass().getResourceAsStream((card.getPath())));
             item_image.setImage(image);
         }
         catch(Exception e){
-            System.out.println("Image not found :" + card.getImgSrc() );
+            System.out.println("Image not found :" + card.getPath() );
         }
     }
 

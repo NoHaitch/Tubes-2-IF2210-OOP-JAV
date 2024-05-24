@@ -11,7 +11,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
-
+import javva.tubes2.Card.*;
 import java.io.IOException;
 
 public class CardController {
@@ -26,8 +26,8 @@ public class CardController {
     private Label card_name;
 
     // Attributes
-    private TempCard card;
-    private static TempCard dragged_item;
+    private Card card;
+    private static Card dragged_item;
     private static Boolean is_transferable_area = true;
     private static Boolean is_destroyable = false;
     private static Boolean is_area_clear = true;
@@ -75,7 +75,7 @@ public class CardController {
     }
     public void dragDone(){
         if (is_destroyable){
-            card = new TempCard();
+            card = new Card("","","");
             setData(card);
             is_destroyable = false;
         }
@@ -95,18 +95,17 @@ public class CardController {
     public void setCardColor(String color){
         card_frame.setStyle("-fx-background-color: " + color + ";");
     }
-    public void setData(TempCard card){
+    public void setData(Card card){
         this.card = card;
-        System.out.println();
         card_name.setText(card.getName());
-        card_background.setStyle("-fx-background-color: " + card.getHexColor() + ";");
+//        card_background.setStyle("-fx-background-color: " + null + ";");
 
         try{
-            Image image = new Image(getClass().getResourceAsStream((card.getImgSrc())));
+            Image image = new Image(getClass().getResourceAsStream((card.getPath())));
             card_image.setImage(image);
         }
         catch(Exception e){
-            System.out.println("Image not found :" + card.getImgSrc() );
+            System.out.println("Image not found : " + card.getPath());
             card_image.setImage(null);
         }
 
@@ -114,7 +113,7 @@ public class CardController {
 
 
     // GETTERS
-    public TempCard getCard(){
+    public Card getCard(){
         return card;
     }
 
@@ -122,8 +121,6 @@ public class CardController {
     public void showInfo() {
         FXMLLoader loader = new FXMLLoader(CardController.class.getResource("card-info.fxml"));
         Parent root = null;
-
-
         try {
             root = loader.load();
         } catch (IOException e) {
@@ -135,7 +132,7 @@ public class CardController {
         CardInfoController controller = loader.getController();
 
         if (controller != null) {
-            controller.setData(card);  // Assuming 'card' is a variable you want to pass to the controller
+            controller.setData(card);
         } else {
             System.out.println("Controller is null");
         }

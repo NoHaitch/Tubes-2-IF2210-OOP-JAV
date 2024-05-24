@@ -9,6 +9,7 @@ import javafx.scene.control.Button;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
+import javva.tubes2.Card.Product;
 
 import java.io.IOException;
 import java.net.URL;
@@ -25,7 +26,7 @@ public class ShopController implements Initializable {
     @FXML
     private GridPane shop_grid;
 
-    private List<TempCard> items = new ArrayList<>(); ;
+    private List<Product> items = new ArrayList<>(); ;
 
     @FXML
     private void close() {
@@ -40,7 +41,7 @@ public class ShopController implements Initializable {
     }
 
 
-    public void renderShopItems(List<TempCard> cards ){
+    public void renderShopItems(List<Product> cards ){
         // Render the card field
         items.addAll(cards);
         int column = 0;
@@ -52,7 +53,7 @@ public class ShopController implements Initializable {
                 AnchorPane anchorPane = fxmlLoader.load();
 
                 CardShopController cardShopController = fxmlLoader.getController();
-                cardShopController.setData(items.get(i));
+                cardShopController.setData(items.get(i),9999,10);
 
                 // Add the anchorPane to the GridPane
                 shop_grid.add(anchorPane, column, row);
@@ -73,10 +74,10 @@ public class ShopController implements Initializable {
         }
     }
 
-    private List<TempCard> generateRandom(int len){
-        List<TempCard> tempCards = new ArrayList<>();
+    private List<Product> generateRandom(int len){
+        List<Product> tempCards = new ArrayList<>();
         for(int i = 0; i<len; i++){
-            TempCard tempCard = new TempCard();
+            Product tempCard = new Product("","","",10,10000);
             // Generate random number
             Random random = new Random();
             int min = 1;
@@ -85,37 +86,37 @@ public class ShopController implements Initializable {
             switch(randomInRange){
                 case 1:
                     tempCard.setName("Chicken");
-                    tempCard.setImgSrc("/javva/tubes2/images/Hewan/chicken.png");
+                    tempCard.setPath("/javva/tubes2/images/Hewan/chicken.png");
                     tempCards.add(tempCard);
                     System.out.println("Chicken");
                     break;
                 case 2:
                     tempCard.setName("Bear");
-                    tempCard.setImgSrc("/javva/tubes2/images/Hewan/bear.png");
+                    tempCard.setPath("/javva/tubes2/images/Hewan/bear.png");
                     tempCards.add(tempCard);
                     System.out.println("Bear");
                     break;
                 case 3:
                     tempCard.setName("Cow");
-                    tempCard.setImgSrc("/javva/tubes2/images/Hewan/cow.png");
+                    tempCard.setPath("/javva/tubes2/images/Hewan/cow.png");
                     tempCards.add(tempCard);
                     System.out.println("Cow");
                     break;
                 case 4:
                     tempCard.setName("Hiu Darat");
-                    tempCard.setImgSrc("/javva/tubes2/images/Hewan/hiu_darat.png");
+                    tempCard.setPath("/javva/tubes2/images/Hewan/hiu_darat.png");
                     tempCards.add(tempCard);
                     System.out.println("Shark");
                     break;
                 case 5:
                     tempCard.setName("Horse");
-                    tempCard.setImgSrc("/javva/tubes2/images/Hewan/horse.png");
+                    tempCard.setPath("/javva/tubes2/images/Hewan/horse.png");
                     tempCards.add(tempCard);
                     System.out.println("Horse");
                     break;
                 case 6:
                     tempCard.setName("Sheep");
-                    tempCard.setImgSrc("/javva/tubes2/images/Hewan/sheep.png");
+                    tempCard.setPath("/javva/tubes2/images/Hewan/sheep.png");
                     tempCards.add(tempCard);
                     System.out.println("Sheep");
                     break;
