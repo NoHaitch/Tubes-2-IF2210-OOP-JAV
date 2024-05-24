@@ -20,6 +20,7 @@ import javafx.scene.control.Button;
 import javafx.scene.effect.GaussianBlur;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import javva.tubes2.Card.*;
 
 public class MainController implements Initializable  {
     // Constant
@@ -63,7 +64,7 @@ public class MainController implements Initializable  {
 
     // Attributes
     private GaussianBlur blur;
-    private List<TempCard> list_of_cards = new ArrayList<>();
+    private List<Card> list_of_cards = new ArrayList<>();
     private Stage stage_shop = new Stage();
     private Stage save_state_stage = new Stage();
     private Stage load_state_stage = new Stage();
@@ -80,7 +81,9 @@ public class MainController implements Initializable  {
     //  Methods
     // Buttons
     @FXML
-    void nextTurn(ActionEvent event) {}
+    void nextTurn(ActionEvent event) {
+        // Implement GUI
+    }
     @FXML
     void loadPlugin(ActionEvent event) {
 //        load_plugin_button.setDisable(true);
@@ -163,9 +166,9 @@ public class MainController implements Initializable  {
 
         // Testing buat render active deck
         for (int i = 0; i < 6; i++) {
-            TempCard change = new TempCard();
-            change.setName("Chiken");
-            change.setImgSrc("/javva/tubes2/images/Hewan/chicken.png");
+            Card change = new Card("","","");
+            change.setName("Chicken");
+            change.setPath("/javva/tubes2/images/Hewan/chicken.png");
             setActiveDeckCard(i, change);
         }
         shuffle_controller.setCards(generateRandom(3));
@@ -303,7 +306,7 @@ public class MainController implements Initializable  {
             Integer column = 0;
             Integer row = 0;
             for (int i = 0; i < 20; i++) {
-                TempCard empty = new TempCard();
+                Card empty = new Card("","","");
                 FXMLLoader fxmlLoader = new FXMLLoader();
                 fxmlLoader.setLocation(MainController.class.getResource("card.fxml"));
                 AnchorPane anchorPane = fxmlLoader.load();
@@ -335,7 +338,7 @@ public class MainController implements Initializable  {
             Integer column = 0;
             Integer row = 0;
             for (int i = 0; i < 6; i++) {
-                TempCard empty = new TempCard();
+                Card empty = new Card("","","");
                 FXMLLoader fxmlLoader = new FXMLLoader();
                 fxmlLoader.setLocation(MainController.class.getResource("card.fxml"));
                 AnchorPane anchorPane = fxmlLoader.load();
@@ -361,18 +364,18 @@ public class MainController implements Initializable  {
 
 
     // Getters
-    public TempCard getFieldCard(int id){
+    public Card getFieldCard(int id){
         return field_controllers.get(id).getCard();
     }
-    public TempCard getActiveDeckCard(int id){
+    public Card getActiveDeckCard(int id){
         return active_deck_controllers.get(id).getCard();
     }
 
     // Setters
-    public void setFieldCard(int id, TempCard card){
+    public void setFieldCard(int id, Card card){
         field_controllers.get(id).setData(card);
     }
-    public void setActiveDeckCard(int id, TempCard card){
+    public void setActiveDeckCard(int id, Card card){
         active_deck_controllers.get(id).setData(card);
     }
     public void setBearZone(List<Integer> ids){
@@ -387,10 +390,10 @@ public class MainController implements Initializable  {
     }
 
     // Generate
-    private List<TempCard> generateRandom(int len){
-        List<TempCard> tempCards = new ArrayList<>();
+    private List<Card> generateRandom(int len){
+        List<Card> cards = new ArrayList<>();
         for(int i = 0; i<len; i++){
-            TempCard tempCard = new TempCard();
+            Card card = new Card("","","");
             // Generate random number
             Random random = new Random();
             int min = 1;
@@ -398,45 +401,45 @@ public class MainController implements Initializable  {
             int randomInRange = random.nextInt(max - min + 1) + min;
             switch(randomInRange){
                 case 1:
-                    tempCard.setName("Chicken");
-                    tempCard.setImgSrc("/javva/tubes2/images/Hewan/chicken.png");
-                    tempCards.add(tempCard);
+                    card.setName("Chicken");
+                    card.setPath("/javva/tubes2/images/Hewan/chicken.png");
+                    cards.add(card);
                     System.out.println("Chicken");
                     break;
                 case 2:
-                    tempCard.setName("Bear");
-                    tempCard.setImgSrc("/javva/tubes2/images/Hewan/bear.png");
-                    tempCards.add(tempCard);
+                    card.setName("Bear");
+                    card.setPath("/javva/tubes2/images/Hewan/bear.png");
+                    cards.add(card);
                     System.out.println("Bear");
                     break;
                 case 3:
-                    tempCard.setName("Cow");
-                    tempCard.setImgSrc("/javva/tubes2/images/Hewan/cow.png");
-                    tempCards.add(tempCard);
+                    card.setName("Cow");
+                    card.setPath("/javva/tubes2/images/Hewan/cow.png");
+                    cards.add(card);
                     System.out.println("Cow");
                     break;
                 case 4:
-                    tempCard.setName("Hiu Darat");
-                    tempCard.setImgSrc("/javva/tubes2/images/Hewan/hiu_darat.png");
-                    tempCards.add(tempCard);
+                    card.setName("Hiu Darat");
+                    card.setPath("/javva/tubes2/images/Hewan/hiu_darat.png");
+                    cards.add(card);
                     System.out.println("Shark");
                     break;
                 case 5:
-                    tempCard.setName("Horse");
-                    tempCard.setImgSrc("/javva/tubes2/images/Hewan/horse.png");
-                    tempCards.add(tempCard);
+                    card.setName("Horse");
+                    card.setPath("/javva/tubes2/images/Hewan/horse.png");
+                    cards.add(card);
                     System.out.println("Horse");
                     break;
                 case 6:
-                    tempCard.setName("Sheep");
-                    tempCard.setImgSrc("/javva/tubes2/images/Hewan/sheep.png");
-                    tempCards.add(tempCard);
+                    card.setName("Sheep");
+                    card.setPath("/javva/tubes2/images/Hewan/sheep.png");
+                    cards.add(card);
                     System.out.println("Sheep");
                     break;
             }
 
         }
-        return tempCards;
+        return cards;
     }
 
 }

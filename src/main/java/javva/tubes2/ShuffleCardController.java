@@ -15,9 +15,10 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
+import javva.tubes2.Card.*;
 
 public class ShuffleCardController implements Initializable {
-    private List<TempCard> cards = new ArrayList<>();
+    private List<Card> cards = new ArrayList<>();
 
     @FXML
     private GridPane card_grid;
@@ -42,18 +43,18 @@ public class ShuffleCardController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         // Initialize empty
         for (int i = 0;i<4; i++){
-            TempCard temp = new TempCard();
+            Card temp = new Card("","","");
             cards.add(temp);
         }
 
         renderShuffled();
     }
 
-    public List<TempCard> getCards(){
+    public List<Card> getCards(){
         return cards;
     }
 
-    public void setCards(List<TempCard> temp){
+    public void setCards(List<Card> temp){
         cards=temp;
     }
 
