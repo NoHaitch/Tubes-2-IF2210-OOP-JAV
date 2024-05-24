@@ -1,12 +1,11 @@
 package javva.tubes2.dataLoader;
 
+import javafx.util.Pair;
+import javva.tubes2.Card.*;
 import javva.tubes2.Player.Field;
 import javva.tubes2.Player.Player;
-import javva.tubes2.Card.Card;
-import javva.tubes2.Card.Plants;
-import javva.tubes2.Card.Product;
-import javva.tubes2.Card.Animal;
 import javva.tubes2.CardConfig;
+import javva.tubes2.Shop;
 
 import java.io.File;
 import java.io.PrintWriter;
@@ -29,12 +28,12 @@ public class TXTDataLoader implements DataLoader {
      * Save player data to text file
      *
      * @param player   Player data
-     * @param filePath relative path to result folder
+     * @param file_path relative path to result folder
      * @throws Exception data not correct, failed to save
      */
-    public void savePlayer(Player player, String filePath) throws Exception {
+    public void savePlayer(Player player, String file_path) throws Exception {
         // initialize file
-        PrintWriter writer = new PrintWriter(filePath);
+        PrintWriter writer = new PrintWriter(file_path);
 
         // save gulden
         writer.println(player.getGulden());
@@ -86,8 +85,25 @@ public class TXTDataLoader implements DataLoader {
                 // save item progress and items
                 if (card instanceof Plants plant) {
                     writer.print(plant.getProgress() + " ");
-                    // TODO: add item amount
-                    // TODO: add items
+
+                    int itemAmount = 0;
+                    if (plant.getProtect()) itemAmount++;
+                    if (plant.getTrap()) itemAmount++;
+
+                    writer.println(itemAmount);
+                    if (plant.getProtect()) writer.println("PROTECT ");
+                    if (plant.getTrap()) writer.println("TRAP ");
+                } else {
+                    Animal animal = (Animal) card;
+                    writer.print(animal.getWeight() + " ");
+
+                    int itemAmount = 0;
+                    if (animal.getProtect()) itemAmount++;
+                    if (animal.getTrap()) itemAmount++;
+
+                    writer.println(itemAmount);
+                    if (animal.getProtect()) writer.println("PROTECT ");
+                    if (animal.getTrap()) writer.println("TRAP ");
                 }
             } catch (Throwable e){
                 throw new Exception(e.getMessage());
@@ -98,33 +114,29 @@ public class TXTDataLoader implements DataLoader {
     }
 
     /**
-     * save game data to text file
+     * Save game data to file
      *
-     * @param filePath relative path to result folder
-     * @throws Exception data not correct, failed to save
+     * @param file_path relative path to result folder
+     * @param shop Shop object
+     * @param current_turn current game turn
+     * @throws Exception file not found, failed to save
      */
-    public void saveGameState(String filePath) throws Exception {
-        // TODO: USE GAME ATTRIBUTE
+    @Override
+    public void saveGameState(String file_path, Shop shop, Integer current_turn) throws Exception {
         // initialize file
-        PrintWriter writer = new PrintWriter(filePath);
+        PrintWriter writer = new PrintWriter(file_path);
 
         // save current turn
-        writer.println(1);
+        writer.println(current_turn);
+
+        // shop
+        List<Map.Entry<String, Integer>> shop_item_list = shop.getShopItemsList();
 
         // save amount of shop items
-        writer.println(5);
+        writer.println(shop_item_list.size());
 
-        // Save shop items
-        Map<String, Integer> tempShop = new HashMap<>();
-        tempShop.put("SIRIP_HIU", 5);
-        tempShop.put("SUSU", 2);
-        tempShop.put("DAGING_DOMBA", 3);
-        tempShop.put("DAGING_KUDA", 10);
-        tempShop.put("DAGING_BERUANG", 1);
-
-        for (String key : tempShop.keySet()) {
-            writer.print(key + " ");
-            writer.println(tempShop.get(key));
+        for (Map.Entry<String, Integer> item : shop_item_list) {
+            writer.println(item.getKey() + " " + item.getValue());
         }
 
         writer.close();
@@ -133,13 +145,13 @@ public class TXTDataLoader implements DataLoader {
     /**
      * Load player data from text file
      *
-     * @param filePath relative path to result folder
+     * @param file_path relative path to result folder
      * @return Player object, null if failed to load
      * @throws Exception data not correct, corrupted save
      */
-    public Player loadPlayer(String filePath) throws Exception {
+    public Player loadPlayer(String file_path) throws Exception {
         // load file
-        Scanner scanner = new Scanner(new File(filePath));
+        Scanner scanner = new Scanner(new File(file_path));
 
         // get gulden
         int gulden = scanner.nextInt();
@@ -157,10 +169,11 @@ public class TXTDataLoader implements DataLoader {
         System.out.println("[LoadPlayer] Active Card Amount: " + active_card_amount);
 
         // get active cards
-        CardConfig card_config = new CardConfig();
+        CardConfig card_config = CardConfig.getInstance();
         List<Animal> animal_config = card_config.getAnimalConfig();
         List<Plants> plant_config = card_config.getPlantConfig();
         List<Product> product_config = card_config.getProductConfig();
+        List<Item> item_config = card_config.getItemConfig();
 
         List<Card> active_cards = new ArrayList<>(6);
         Map<Integer, String> temp_active_name = new HashMap<>();
@@ -179,7 +192,7 @@ public class TXTDataLoader implements DataLoader {
                 for (Animal animal : animal_config) {
                     if (animal.getName().equalsIgnoreCase(temp_active_name.get(i))) {
                         Animal new_animal = new Animal(animal);
-                        player.addToActiveDeck(new_animal);
+                        player.addToActiveDeck(new_animal, i);
                         found = true;
                         break;
                     }
@@ -192,7 +205,7 @@ public class TXTDataLoader implements DataLoader {
 
                     if (plant.getName().equalsIgnoreCase(temp_active_name.get(i))) {
                         Plants new_plant = new Plants(plant);
-                        player.addToActiveDeck(new_plant);
+                        player.addToActiveDeck(new_plant, i);
                         found = true;
                         break;
                     }
@@ -205,17 +218,32 @@ public class TXTDataLoader implements DataLoader {
 
                     if (product.getName().equalsIgnoreCase(temp_active_name.get(i))) {
                         Product new_product = new Product(product);
-                        player.addToActiveDeck(new_product);
+                        player.addToActiveDeck(new_product, i);
                         found = true;
                         break;
                     }
                 }
 
-                // TODO: Check items
+                for (Item item : item_config) {
+                    if (found) {
+                        break;
+                    }
 
-                throw new Exception("Card not found");
+                    if (item.getName().equalsIgnoreCase(temp_active_name.get(i))) {
+                        Item new_item = new Item(item);
+                        player.addToActiveDeck(new_item, i);
+                        break;
+                    }
+                }
+
+                if (!found) {
+                    throw new Exception("Card not found");
+                }
             }
         }
+
+        // get field card amount
+        int field_card_amount = scanner.nextInt();
 
         // get field cards
         Map<Integer, String> temp_name = new HashMap<>();
@@ -223,7 +251,7 @@ public class TXTDataLoader implements DataLoader {
         Map<Integer, List<String>> temp_item = new HashMap<>();
 
         // get field cards data
-        for (int i = 0; i < active_card_amount; i++) {
+        for (int i = 0; i < field_card_amount; i++) {
             Integer location = scanner.nextInt();
             String card_name = scanner.next();
             int progress = scanner.nextInt();
@@ -239,7 +267,7 @@ public class TXTDataLoader implements DataLoader {
         }
 
         // add all cards sorted using location
-        for(int i = 1; i < active_card_amount+1; i++){
+        for (int i = 1; i < field_card_amount + 1; i++) {
             boolean found = false;
             for(Animal animal : animal_config){
                 if(found){
@@ -248,8 +276,16 @@ public class TXTDataLoader implements DataLoader {
                 if(animal.getName().equalsIgnoreCase(temp_name.get(i))){
                     Animal new_animal = new Animal(animal);
                     new_animal.setWeight(temp_progres.get(i));
-                    // TODO: add item
-                    player.addToActiveDeck(new_animal);
+
+                    for (String elmt : temp_item.get(i)) {
+                        if (elmt.equalsIgnoreCase("PROTECT")) {
+                            new_animal.setProtect(true);
+                        } else if (elmt.equalsIgnoreCase("TRAP")) {
+                            new_animal.setTrap(true);
+                        }
+                    }
+
+                    player.addField(new_animal, i - 1);
                     found = true;
                 }
             }
@@ -262,8 +298,16 @@ public class TXTDataLoader implements DataLoader {
                 if(plant.getName().equalsIgnoreCase(temp_name.get(i))){
                     Plants new_plant = new Plants(plant);
                     new_plant.setProgress(temp_progres.get(i));
-                    // TODO: add item
-                    player.addToActiveDeck(new_plant);
+
+                    for (String elmt : temp_item.get(i)) {
+                        if (elmt.equalsIgnoreCase("PROTECT")) {
+                            new_plant.setProtect(true);
+                        } else if (elmt.equalsIgnoreCase("TRAP")) {
+                            new_plant.setTrap(true);
+                        }
+                    }
+
+                    player.addField(new_plant, i - 1);
                     found = true;
                 }
             }
@@ -273,36 +317,38 @@ public class TXTDataLoader implements DataLoader {
         return player;
     }
 
+
     /**
-     * Load game data from text file
+     * Load game state from file
      *
-     * @param filePath relative path to result folder
-     * @return Game data, null if failed to load
-     * @throws Exception data not correct, corrupted save
+     * @param file_path relative path to result folder
+     * @return Pair, first is Shop, second is turn
+     * @throws Exception file not found, failed to load
      */
-    public Object loadGameState(String filePath) throws Exception {
-        // TODO: USE GAME ATTRIBUTE
+    @Override
+    public Pair<Shop, Integer> loadGameState(String file_path) throws Exception {
         // load file
-        Scanner scanner = new Scanner(new File(filePath));
+        Scanner scanner = new Scanner(new File(file_path));
 
         // load current turn
         int turn = scanner.nextInt();
         System.out.println("[LoadGameState] Turn: " + turn);
+
+        Shop shop = Shop.getInstance();
 
         // save amount of shop items
         int shop_item_amount = scanner.nextInt();
         System.out.println("[LoadGameState] Shop Item Amount: " + shop_item_amount);
 
         // Save shop items
-        Map<String, Integer> tempShop = new HashMap<>();
         for (int i = 0; i < shop_item_amount; i++) {
             String item_name = scanner.next();
             int item_amount = scanner.nextInt();
-            tempShop.put(item_name, item_amount);
+            for (int j = 0; j < item_amount; j++) shop.addProduct(item_name);
             System.out.println("[LoadGameState] Shop Item: " + item_name + " " + item_amount);
         }
 
         scanner.close();
-        return null;
+        return new Pair<>(shop, turn);
     }
 }
