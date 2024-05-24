@@ -27,6 +27,7 @@ public class CardController {
 
     // Attributes
     public Card card;
+    private String type = "field";    // field : bisa di drag + liat info, deck : bisa di drag tapi gabisa liat info, view: gabisa diliat infonya dan gabisa di drag
     private static Card dragged_item;
     private static Boolean is_transferable_area = true;
     private static Boolean is_destroyable = false;
@@ -44,6 +45,10 @@ public class CardController {
         System.out.println(is_transferable_area);
     }
     public void dragDetected(MouseEvent event){
+
+        if(type.equals("view")){
+            return;
+        }
         Dragboard db = card_frame.startDragAndDrop(TransferMode.ANY);
 
         ClipboardContent cb = new ClipboardContent();
@@ -114,7 +119,9 @@ public class CardController {
         }
 
     }
-
+    public void setType(String type){
+        this.type =type;
+    }
 
     // GETTERS
     public Card getCard(){
@@ -123,6 +130,10 @@ public class CardController {
 
     // RENDERS
     public void showInfo() {
+        if (type.equals("view") || type.equals("deck")){
+            return;
+        }
+
         FXMLLoader loader = new FXMLLoader(CardController.class.getResource("card-info.fxml"));
         Parent root = null;
         try {
