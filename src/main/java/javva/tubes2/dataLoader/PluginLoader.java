@@ -19,6 +19,31 @@ import java.lang.reflect.Method;
  * Class loaded must be an implementation of DataLoader Interface
  */
 public class PluginLoader {
+
+    /**
+     * Load dataloader plugins from jar file
+     *
+     * @param jarPath relative path to jar file
+     */
+    public void loadPlugins(String jarPath) throws Exception {
+        try {
+            // load plugins
+            List<?> classesLoaded = PluginLoader.loadClassesFromJar(jarPath);
+
+            for (Object obj : classesLoaded) {
+                Class<?> dataLoaderClass = (Class<?>) obj;
+                DataLoader dataLoader = (DataLoader) dataLoaderClass.getDeclaredConstructor().newInstance();
+                SaveManager saveManager = SaveManager.getInstance();
+                saveManager.addSaveFormat(dataLoader.getFileFormat(), dataLoaderClass);
+            }
+
+
+        } catch (Exception e) {
+            throw new Exception("[SaveManager] Failed to load plugins");
+        }
+    }
+
+
     /**
      * Load classes from .jar file <br>
      * Load all class that is an implementation of DataLoader Interface <br>

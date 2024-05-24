@@ -70,28 +70,6 @@ public class SaveManager {
     }
 
     /**
-     * Load dataloader plugins from jar file
-     *
-     * @param jarPath relative path to jar file
-     */
-    public void loadPlugins(String jarPath) throws Exception {
-        try {
-            // load plugins
-            List<?> classesLoaded = PluginLoader.loadClassesFromJar(jarPath);
-
-            for(Object obj : classesLoaded) {
-                Class<?> dataLoaderClass = (Class<?>) obj;
-                DataLoader dataLoader = (DataLoader) dataLoaderClass.getDeclaredConstructor().newInstance();
-                addSaveFormat(dataLoader.getFileFormat(), dataLoaderClass);
-            }
-
-
-        } catch (Exception e) {
-            throw new Exception("[SaveManager] Failed to load plugins");
-        }
-    }
-
-    /**
      * Save the Game
      *
      * @param player1    player 1 object
