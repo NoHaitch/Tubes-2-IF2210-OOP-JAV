@@ -19,6 +19,7 @@ import javva.tubes2.Card.*;
 
 public class ShuffleCardController implements Initializable {
     private List<Card> cards = new ArrayList<>();
+    private List<CardController> controllers = new ArrayList<>();
 
     @FXML
     private GridPane card_grid;
@@ -42,20 +43,21 @@ public class ShuffleCardController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         // Initialize empty
-        for (int i = 0;i<4; i++){
-            Card temp = new Card("","","");
-            cards.add(temp);
-        }
-
         renderShuffled();
     }
 
-    public List<Card> getCards(){
-        return cards;
+    public void setData(List<Card> cards) {
+        emptyField();
+        for (int i = 0; i < cards.size(); i++) {
+            controllers.get(i).setData(cards.get(i));
+        }
     }
 
-    public void setCards(List<Card> temp){
-        cards=temp;
+    private void emptyField(){
+        for (CardController controller: controllers) {
+            Card new_card = new NullCard();
+            controller.setData(new_card);
+        }
     }
 
     private void renderShuffled(){
@@ -64,18 +66,20 @@ public class ShuffleCardController implements Initializable {
         int row = 0;
         try {
             for (int i = 0; i < 4; i++) {
+                Card new_card = new NullCard();
+
                 FXMLLoader fxmlLoader = new FXMLLoader();
                 fxmlLoader.setLocation(MainController.class.getResource("card.fxml"));
                 AnchorPane anchorPane = fxmlLoader.load();
 
                 CardController cardController = fxmlLoader.getController();
-                cardController.setData(cards.get(i));
+                cardController.setData(new_card);
+                cardController.setType("view");
+                controllers.add(cardController);
 
                 // Add the anchorPane to the GridPane
                 card_grid.add(anchorPane, column, row);
 
-                // Set margin around the anchorPane
-                GridPane.setMargin(anchorPane, new Insets(0)); // Set a uniform margin
 
                 // Increment column and row for the next card
                 column++;
@@ -89,6 +93,7 @@ public class ShuffleCardController implements Initializable {
             throw new RuntimeException(e);
         }
     }
+
 
 
 }
