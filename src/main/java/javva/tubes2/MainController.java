@@ -34,6 +34,8 @@ public class MainController implements Initializable  {
     private GridPane active_deck;
     @FXML
     private GridPane field;
+    @FXML
+    private GridPane card_grid;
 
     // Labels
     @FXML
@@ -220,7 +222,13 @@ public class MainController implements Initializable  {
         renderLoadPlugin();
         renderSaveState();
         renderShop();
-        renderShuffle();
+
+        
+        try {
+            renderShuffled(game.current_player.drawCards());
+        } catch (Throwable e){
+
+        }
         player_1.setText(game.player1.getGulden() + "");
         player_2.setText(game.player1.getGulden() + "");
 
@@ -305,29 +313,43 @@ public class MainController implements Initializable  {
         // Tampilkan popup
 //        popupStage.show();
     }
-    public void renderShuffle(){
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("card-shuffle.fxml"));
+    private void renderShuffled(List<Card> cards){
+        // Pastiin gridnya kosong dlu
+        card_grid.getChildren().clear();
 
-        Parent root = null;
+        // Render the card field
+        int column = 0;
+        int row = 0;
         try {
-            root = loader.load();
-        } catch (IOException e) {
-            System.out.println("Failed to load");
-            e.printStackTrace();
-            return; // Return here to prevent further execution in case of error
+            for (int i = 0; i < 4; i++) {
+                FXMLLoader fxmlLoader = new FXMLLoader();
+                fxmlLoader.setLocation(MainController.class.getResource("card.fxml"));
+                AnchorPane anchorPane = fxmlLoader.load();
+
+                CardController cardController = fxmlLoader.getController();
+                if(i < cards.size()){
+                    cardController.setData(cards.get(i));
+                } else {
+                    cardController.setData(new NullCard());
+                }
+
+                cardController.setType("view");
+
+                // Add the anchorPane to the GridPane
+                card_grid.add(anchorPane, column, row);
+                
+
+                // Increment column and row for the next card
+                column++;
+                if (column == 2) {
+                    column = 0;
+                    row++;
+                }
+            }
         }
-
-        shuffle_controller = loader.getController();
-
-        // Membuat stage baru untuk popup
-
-        shuffle_stage.initStyle(StageStyle.TRANSPARENT); // Use TRANSPARENT instead of UNDECORATED to allow transparency
-        Scene scene = new Scene(root);
-        scene.setFill(null); // Set the Scene's background to transparent
-        shuffle_stage.setScene(scene);
-
-        // Tampilkan popup
-//        popupStage.show();
+        catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
     public void renderShop(){
         FXMLLoader loader = new FXMLLoader(getClass().getResource("shop.fxml"));
