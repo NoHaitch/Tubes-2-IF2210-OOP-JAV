@@ -38,7 +38,7 @@
                                     </HBox>
                                     <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0">
                                        <children>
-                                          <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="21.0" prefWidth="862.0" text="Keterangan, bisa diisi informasi lagi tahap apa atau gimana" textFill="#0eab79" HBox.hgrow="ALWAYS">
+                                          <Label fx:id="information" alignment="CENTER" contentDisplay="CENTER" prefHeight="21.0" prefWidth="862.0" text="Keterangan, bisa diisi informasi lagi tahap apa atau gimana" textFill="#0eab79" HBox.hgrow="ALWAYS">
                                              <font>
                                                 <Font name="System Bold" size="15.0" />
                                              </font>
