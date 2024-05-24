@@ -1,11 +1,11 @@
 package javva.tubes2.GameMaster;
 
 import javva.tubes2.Player.*;
+import javva.tubes2.CardConfig;
+import javva.tubes2.Shop;
 import javva.tubes2.Card.*;
 
 import java.util.*;
-
-import javva.tubes2.Shop;
 
 public class GameMaster {
     public Player current_player;
@@ -13,18 +13,19 @@ public class GameMaster {
     public Player player1;
     public Player player2;
 
-
     public Boolean player_turn = true;
 
     public int turn = 0;
     public int avail_deck_count = 40;
 
     public Shop main_shop;
+    public CardConfig config;
 
     public GameMaster(){
         player1 = new Player();
         player2 = new Player();
         current_player = player1;
+        config = CardConfig.getInstance();
     }
 
     public void changeTurn(){
