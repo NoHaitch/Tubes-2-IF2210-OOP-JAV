@@ -86,21 +86,164 @@ public class Field {
         return harvestret;
     }
 
-    public void useItem(Card item, int index) throws Throwable{
-        Harvestable target = getElement(index) ;
-        if (target.getName() == "null") {
-            throw new IndexInvalid() ;
-        }
-        if (target.getType() == "Plant") {
-            target = (Plants) target ;
+    public boolean useAccelerate(int field_index) throws Throwable{
+        if (getElement(field_index).getType() == "Plant") {
+            Plants target = (Plants)getElement(field_index) ;
+            target.setProgress(target.getProgress() + 2) ;
         }
         else {
-            target = (Animal) target ;
+            Animal target = (Animal)getElement(field_index) ;
+            target.setWeight(target.getWeight() + 5) ;
+        }  
+        return true ; 
+    }
+
+    public boolean useDelay(int field_index) throws Throwable {
+        if (getElement(field_index).getType() == "Plant") {
+            Plants target = (Plants)getElement(field_index) ;
+            if (target.getProgress() < 0) {
+                return false ;
+            }
+            target.setProgress(target.getProgress() - 2) ;
         }
-        if (item.getName() == "Accelerate") {
-            
+        else {
+            Animal target = (Animal)getElement(field_index) ;
+            if (target.getWeight() < 0) {
+                return false ;
+            }
+            target.setWeight(target.getWeight() - 5) ;
+        }  
+        return true ;
+    }
+
+    public boolean useInstantHarvest(int field_index) throws Throwable{
+        if (getElement(field_index).getType() == "Plant") {
+            Plants target = (Plants)getElement(field_index) ;
+            target.setProgress(target.getHarvestLimit());
+            return true ;
+        }
+        else {
+            Animal target = (Animal)getElement(field_index) ;
+            target.setWeight(target.getHarvestWeight());
+            return true ;
+        } 
+    }
+
+    public boolean useDestroy(int field_index) throws Throwable {
+        if (getElement(field_index).getProtect()) {
+            getElement(field_index).setProtect(false); ;
+            return true ;
+        }
+        else {
+            removeElement(field_index);
+            return true ;
+        }    
+    }
+
+    public boolean useProtect(int field_index) throws Throwable {
+        if (getElement(field_index).getProtect()) {
+            return false ; // sudah memiliki efek protect
+        }
+        else {
+            getElement(field_index).setProtect(true) ;
+            return true ;
+        }   
+    }
+
+    public boolean useTrap(int field_index) throws Throwable {
+        if (getElement(field_index).getTrap()) {
+            return false ;
+        }         
+        else {
+            getElement(field_index).setTrap(true) ;
+            return true ;
         }
     }
+
+    // public boolean useItem(Card item, int index) throws Throwable{
+    //     // Harvestable target = getElement(index) ;
+    //     if (getElement(index).getName() == "null") {
+    //         return false ;
+    //     }
+
+    //     if (item.getName() == "Accelerate") {
+    //         if (getElement(index).getType() == "Plant") {
+    //             Plants target = (Plants)getElement(index) ;
+    //             target.setProgress(target.getProgress() + 2) ;
+    //         }
+    //         else {
+    //             Animal target = (Animal)getElement(index) ;
+    //             target.setWeight(target.getWeight() + 5) ;
+    //         }  
+    //         return true ;      
+    //     }
+    //     else if (item.getName() == "Delay") {
+    //         if (getElement(index).getType() == "Plant") {
+    //             Plants target = (Plants)getElement(index) ;
+    //             if (target.getProgress() < 0) {
+    //                 return false ;
+    //             }
+    //             target.setProgress(target.getProgress() - 2) ;
+    //         }
+    //         else {
+    //             Animal target = (Animal)getElement(index) ;
+    //             if (target.getWeight() < 0) {
+    //                 return false ;
+    //             }
+    //             target.setWeight(target.getWeight() - 5) ;
+    //         }  
+    //         return true ;
+    //     }
+    //     else if (item.getName() == "InstantHarvest") {
+    //         if (getElement(index).getType() == "Plant") {
+    //             Plants target = (Plants)getElement(index) ;
+    //             target.setProgress(target.getHarvestLimit());
+    //             return true ;
+    //         }
+    //         else {
+    //             Animal target = (Animal)getElement(index) ;
+    //             target.setWeight(target.getHarvestWeight());
+    //             return true ;
+    //         }  
+    //     }
+    //     else if (item.getName() == "Destroy") {
+    //         // if (getElement(index).getName() == "null") {
+    //         //     return false ;
+    //         // }
+    //         if (getElement(index).getProtect()) {
+    //             getElement(index).setProtect(false); ;
+    //             return true ;
+    //         }
+    //         else {
+    //             removeElement(index);
+    //             return true ;
+    //         }
+    //     }
+    //     else if (item.getName() == "Protect") {
+    //         // if (getElement(index).getName() == "null") {
+    //         //     return false ;
+    //         // }
+    //         if (getElement(index).getProtect()) {
+    //             return false ; // sudah memiliki efek protect
+    //         }
+    //         else {
+    //             getElement(index).setProtect(true) ;
+    //             return true ;
+    //         }          
+    //     }
+    //     else if (item.getName() == "Trap") {
+    //         if (getElement(index).getTrap()) {
+    //             return false ;
+    //         }         
+    //         else {
+    //             getElement(index).setTrap(true) ;
+    //             return true ;
+    //         }
+    //     }
+    //     else {
+    //         return false ;
+    //     }
+    // }
 }
 
 class IndexOutOfRange extends Throwable{

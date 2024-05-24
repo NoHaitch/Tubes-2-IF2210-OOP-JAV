@@ -6,11 +6,13 @@ import java.util.ArrayList;
 import javva.tubes2.Card.Product;
 import javva.tubes2.Card.Animal;
 import javva.tubes2.Card.Plants;
+import javva.tubes2.Card.Item;
 
 public class CardConfig {
     private List<Product> productConfig;
     private List<Animal> animalConfig;
     private List<Plants> plantConfig;
+    private List<Item> itemConfig ;
 
     private CardConfig(){
         productConfig = new ArrayList<>();
@@ -36,6 +38,15 @@ public class CardConfig {
         plantConfig.addLast(new Plants("CornSeed", "Plant", "", new Product("Corn", "Product", "", 3, 150), 3));
         plantConfig.addLast(new Plants("PumpkinSeed", "Plant", "", new Product("Pumpkin", "Product", "", 10, 500), 5));
         plantConfig.addLast(new Plants("StrawberrySeed", "Plant", "", new Product("Strawberry", "Product", "", 5, 350), 4));
+
+        itemConfig = new ArrayList<>() ;
+        itemConfig.addLast(new Item("Accelerate", "Item", ""));
+        itemConfig.addLast(new Item("Delay", "Item", ""));
+        itemConfig.addLast(new Item("InstantHarvest", "Item", ""));
+        itemConfig.addLast(new Item("Destroy", "Item", ""));
+        itemConfig.addLast(new Item("Protect", "Item", ""));
+        itemConfig.addLast(new Item("Trap", "Item", ""));
+
     }
 
     /* Singleton Pattern */
@@ -59,5 +70,9 @@ public class CardConfig {
 
     public List<Plants> getPlantConfig(){
         return plantConfig;
+    }
+
+    public List<Item> getItemConfig() {
+        return itemConfig ;
     }
 }

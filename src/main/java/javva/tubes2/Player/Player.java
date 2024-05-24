@@ -87,11 +87,47 @@ public class Player {
         return index ;
     }
 
+    // Menambahkan list ke kartu aktif dan mengurangi deck dengan jumlah yang diambil
+    public void drawToActiveDeck(List<Card> cards) {
+        if (countActiveCard() >= cards.size()) {
+            try {
+                takeCards(cards.size());
+            }
+            catch(Throwable e) {
+                System.out.println(e.getMessage()) ;
+            }
+            for (int i = 0 ; i < cards.size() ; i++) {
+                try {
+                    addToActiveDeck(cards.get(i));
+                }
+                catch(Throwable e) {
+                    System.out.println(e.getMessage()) ;
+                }
+            }
+        }
+    }
+
     public void addToActiveDeck(Card card) throws DeckIsFull{
         if (countActiveCard() < 6) {
             int index = findSlot() ;
             this.active_deck.remove(index) ;
             this.active_deck.add(index, card) ;
+        }
+        else {
+            throw new DeckIsFull() ;
+        }
+    }
+
+    public void addToActiveDeck(Card card, int index) throws DeckIsFull{
+        if (countActiveCard() < 6) {
+            try {
+                if (this.active_deck.get(index).getName() != "null") {
+                    this.active_deck.set(index, card) ;
+                }
+            }
+            catch (Throwable e) {
+                System.out.println(e.getMessage()) ;
+            }
         }
         else {
             throw new DeckIsFull() ;
@@ -212,6 +248,55 @@ public class Player {
         }
     }
 
+    // index = index Item Card yang digunakan dari active deck, tPlayer = Player yang menerima efek pada ladangnya, field_index = index Card yang menerima efek pada ladang
+    public void useItem(int index, Player tPlayer, int field_index) {
+        try { 
+            if (active_deck.get(index).getType() != "Item" || tPlayer.getField().getElement(field_index).getName() == "null") {
+                throw new NotItem() ;
+            }
+            else if (active_deck.get(index).getName() == "Accelerate") {
+                boolean result = tPlayer.getField().useAccelerate(field_index) ;
+                if (result) {
+                    removeFromActiveDeck(index);
+                }
+            }
+            else if (active_deck.get(index).getName() == "Delay") {
+                boolean result = tPlayer.getField().useDelay(field_index) ;
+                if (result) {
+                    removeFromActiveDeck(index);
+                } 
+            }
+            else if (active_deck.get(index).getName() == "InstantHarvest") {
+                boolean result = tPlayer.getField().useDelay(field_index) ;
+                if (result) {
+                    removeFromActiveDeck(index);
+                    harvest(field_index);
+                } 
+            }
+            else if (active_deck.get(index).getName() == "Destroy") {
+                boolean result = tPlayer.getField().useDestroy(field_index) ;
+                if (result) {
+                    removeFromActiveDeck(index);
+                }      
+            }
+            else if (active_deck.get(index).getName() == "Protect") {
+                boolean result = tPlayer.getField().useProtect(field_index) ;
+                if (result) {
+                    removeFromActiveDeck(index);
+                } 
+            }
+            else if (active_deck.get(index).getName() == "Trap") {
+                boolean result = tPlayer.getField().useTrap(field_index) ;
+                if (result) {
+                    removeFromActiveDeck(index);
+                } 
+            }
+        }
+        catch(Throwable e) {
+            System.out.println(e.getMessage()) ;
+        }
+    }
+
     // public static void main(String[] args) {
     //     Player player = new Player() ;
     //     Card animal = new Animal("LandShark", "Carnivore", "", new Product("SharkFin", "Product", "", 12, 500), 0, 20) ;
@@ -257,5 +342,11 @@ class NotEnoughMoney extends Exception {
 class NotSellable extends Exception {
     NotSellable(){
         super("Card is not sellable since it's not a product");
+    }
+}
+
+class NotItem extends Exception {
+    NotItem() {
+        super("Card is not item") ;
     }
 }

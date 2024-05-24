@@ -17,6 +17,7 @@ public class Deck {
         deck = new ArrayList<>() ;
         deck.addAll(cardConfig.getAnimalConfig()) ;
         deck.addAll(cardConfig.getPlantConfig()) ;
+        deck.addAll(cardConfig.getItemConfig()) ;
         this.capacity = capacity;
 
         for (int i = 0 ; i < deck.size() ; i++) {
