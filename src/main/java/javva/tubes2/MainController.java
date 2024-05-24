@@ -6,14 +6,10 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
-
-import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.GridPane;
-
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -22,10 +18,8 @@ import java.util.ResourceBundle;
 import java.util.Random;
 import javafx.scene.control.Button;
 import javafx.scene.effect.GaussianBlur;
-import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
-import org.w3c.dom.ls.LSOutput;
 
 public class MainController implements Initializable  {
     // Constant
@@ -72,6 +66,12 @@ public class MainController implements Initializable  {
     private List<TempCard> list_of_cards = new ArrayList<>();
     private List<CardController> field_controllers = new ArrayList<>();
     private List<CardController> active_deck_controllers = new ArrayList<>();
+    private ShopController shop_controller = new ShopController();
+    private Stage stage_shop = new Stage();
+    private Stage save_state_stage = new Stage();
+    private Stage load_state_stage = new Stage();
+    private Stage load_plugin_stage = new Stage();
+    private Stage shuffle_stage = new Stage();
 
     //  Methods
     // Buttons
@@ -86,7 +86,7 @@ public class MainController implements Initializable  {
         save_state_button.setDisable(false);
         shop_button.setDisable(false);
 
-        renderLoadPlugin();
+        load_plugin_stage.show();
     }
     @FXML
     void loadState(ActionEvent event) {
@@ -97,7 +97,7 @@ public class MainController implements Initializable  {
         save_state_button.setDisable(false);
         shop_button.setDisable(false);
 
-        renderLoadState();
+        load_state_stage.show();
     }
     @FXML
     void saveState(ActionEvent event) {
@@ -108,7 +108,7 @@ public class MainController implements Initializable  {
 //        save_state_button.setDisable(true);
         shop_button.setDisable(false);
 
-        renderSaveState();
+        save_state_stage.show();
     }
     @FXML
     void showEnemyField(ActionEvent event) {
@@ -139,7 +139,7 @@ public class MainController implements Initializable  {
         my_field_button.setDisable(false);
         save_state_button.setDisable(false);
 //        shop_button.setDisable(true);
-        renderShop();
+        stage_shop.show();
 
     }
 
@@ -150,64 +150,12 @@ public class MainController implements Initializable  {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        // Rendering the field
-        try {
-            Integer column = 0;
-            Integer row = 0;
-            for (int i = 0; i < 20; i++) {
-                TempCard empty = new TempCard();
-                FXMLLoader fxmlLoader = new FXMLLoader();
-                fxmlLoader.setLocation(MainController.class.getResource("card.fxml"));
-                AnchorPane anchorPane = fxmlLoader.load();
-
-                CardController cardController = fxmlLoader.getController();
-                cardController.setData(empty);
-
-                // adding card controller for further manipulation
-                field_controllers.add(cardController);
-
-                // Add the anchorPane to the GridPane
-                field.add(anchorPane, column, row);
-
-                // Set margin around the anchorPane
-//                GridPane.setMargin(anchorPane, new Insets(10)); // Set a uniform margin
-                column++;
-                if (column == 5) {
-                    column = 0;
-                    row++;
-                }
-            }
-        }
-        catch (IOException e) {
-            System.out.println("Gagal me-load ladang");;
-        }
-
-        // Rendering active deck
-        try {
-            Integer column = 0;
-            Integer row = 0;
-            for (int i = 0; i < 6; i++) {
-                TempCard empty = new TempCard();
-                FXMLLoader fxmlLoader = new FXMLLoader();
-                fxmlLoader.setLocation(MainController.class.getResource("card.fxml"));
-                AnchorPane anchorPane = fxmlLoader.load();
-
-                CardController cardController = fxmlLoader.getController();
-                cardController.setData(empty);
-
-                // adding card controller to further manipulation
-                active_deck_controllers.add(cardController);
-                // Add the anchorPane to the GridPane
-                active_deck.add(anchorPane, column, row);
-
-                // Set margin around the anchorPane
-                GridPane.setMargin(anchorPane, new Insets(10)); // Set a uniform margin
-                column ++;
-            }
-        }
-        catch (IOException e) {
-            System.out.println("Gagal me-load deck aktif");
-        }
+        renderIntitiate();
+        renderLoadState();
+        renderLoadPlugin();
+        renderSaveState();
+        renderShop();
+        renderShuffle();
 
         // Testing buat render active deck
         for (int i = 0; i < 6; i++) {
@@ -217,10 +165,8 @@ public class MainController implements Initializable  {
             setActiveDeckCard(i, change);
         }
 
-        // Testing set bear zone
-        List<Integer> area = new ArrayList<>(List.of(1, 3, 4, 5, 6, 9, 19));
-        setBearZone(area);
-        removeBearZone();
+        shuffle_stage.show();
+
     }
 
     // Generate
@@ -290,14 +236,13 @@ public class MainController implements Initializable  {
         }
 
         // Membuat stage baru untuk popup
-        Stage popupStage = new Stage();
-        popupStage.initStyle(StageStyle.TRANSPARENT); // Use TRANSPARENT instead of UNDECORATED to allow transparency
+        load_state_stage.initStyle(StageStyle.TRANSPARENT); // Use TRANSPARENT instead of UNDECORATED to allow transparency
         Scene scene = new Scene(root);
         scene.setFill(null); // Set the Scene's background to transparent
-        popupStage.setScene(scene);
+        load_state_stage.setScene(scene);
 
         // Tampilkan popup
-        popupStage.show();
+//        load_state_stage.show();
     }
     public void renderLoadPlugin(){
         FXMLLoader loader = new FXMLLoader(getClass().getResource("load-plugin.fxml"));
@@ -312,14 +257,13 @@ public class MainController implements Initializable  {
         }
 
         // Membuat stage baru untuk popup
-        Stage popupStage = new Stage();
-        popupStage.initStyle(StageStyle.TRANSPARENT); // Use TRANSPARENT instead of UNDECORATED to allow transparency
+        load_plugin_stage.initStyle(StageStyle.TRANSPARENT); // Use TRANSPARENT instead of UNDECORATED to allow transparency
         Scene scene = new Scene(root);
         scene.setFill(null); // Set the Scene's background to transparent
-        popupStage.setScene(scene);
+        load_plugin_stage.setScene(scene);
 
         // Tampilkan popup
-        popupStage.show();
+//        load_plugin_stage.show();
     }
     public void renderSaveState(){
         FXMLLoader loader = new FXMLLoader(getClass().getResource("save-state.fxml"));
@@ -334,14 +278,36 @@ public class MainController implements Initializable  {
         }
 
         // Membuat stage baru untuk popup
-        Stage popupStage = new Stage();
-        popupStage.initStyle(StageStyle.TRANSPARENT); // Use TRANSPARENT instead of UNDECORATED to allow transparency
+
+        save_state_stage.initStyle(StageStyle.TRANSPARENT); // Use TRANSPARENT instead of UNDECORATED to allow transparency
         Scene scene = new Scene(root);
         scene.setFill(null); // Set the Scene's background to transparent
-        popupStage.setScene(scene);
+        save_state_stage.setScene(scene);
 
         // Tampilkan popup
-        popupStage.show();
+//        popupStage.show();
+    }
+    public void renderShuffle(){
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("card-shuffle.fxml"));
+
+        Parent root = null;
+        try {
+            root = loader.load();
+        } catch (IOException e) {
+            System.out.println("Failed to load");
+            e.printStackTrace();
+            return; // Return here to prevent further execution in case of error
+        }
+
+        // Membuat stage baru untuk popup
+
+        shuffle_stage.initStyle(StageStyle.TRANSPARENT); // Use TRANSPARENT instead of UNDECORATED to allow transparency
+        Scene scene = new Scene(root);
+        scene.setFill(null); // Set the Scene's background to transparent
+        shuffle_stage.setScene(scene);
+
+        // Tampilkan popup
+//        popupStage.show();
     }
     public void renderShop(){
         FXMLLoader loader = new FXMLLoader(getClass().getResource("shop.fxml"));
@@ -355,15 +321,78 @@ public class MainController implements Initializable  {
         }
 
         // Membuat stage baru untuk popup
-        Stage popupStage = new Stage();
-        popupStage.initStyle(StageStyle.TRANSPARENT); // Use TRANSPARENT instead of UNDECORATED to allow transparency
+        stage_shop.initStyle(StageStyle.TRANSPARENT); // Use TRANSPARENT instead of UNDECORATED to allow transparency
         Scene scene = new Scene(root);
         scene.setFill(null); // Set the Scene's background to transparent
-        popupStage.setScene(scene);
+        stage_shop.setScene(scene);
 
         // Tampilkan popup
-        popupStage.show();
+//        stage_shop.show();
+
     }
+    public void renderIntitiate(){
+        // Rendering the field
+        Boolean game_stopped = false;
+        try {
+            Integer column = 0;
+            Integer row = 0;
+            for (int i = 0; i < 20; i++) {
+                TempCard empty = new TempCard();
+                FXMLLoader fxmlLoader = new FXMLLoader();
+                fxmlLoader.setLocation(MainController.class.getResource("card.fxml"));
+                AnchorPane anchorPane = fxmlLoader.load();
+
+                CardController cardController = fxmlLoader.getController();
+                cardController.setData(empty);
+
+                // adding card controller for further manipulation
+                field_controllers.add(cardController);
+
+                // Add the anchorPane to the GridPane
+                field.add(anchorPane, column, row);
+
+                // Set margin around the anchorPane
+//                GridPane.setMargin(anchorPane, new Insets(10)); // Set a uniform margin
+                column++;
+                if (column == 5) {
+                    column = 0;
+                    row++;
+                }
+            }
+        }
+        catch (IOException e) {
+            System.out.println("Gagal me-load ladang");
+        }
+
+        // Rendering active deck
+        try {
+            Integer column = 0;
+            Integer row = 0;
+            for (int i = 0; i < 6; i++) {
+                TempCard empty = new TempCard();
+                FXMLLoader fxmlLoader = new FXMLLoader();
+                fxmlLoader.setLocation(MainController.class.getResource("card.fxml"));
+                AnchorPane anchorPane = fxmlLoader.load();
+
+                CardController cardController = fxmlLoader.getController();
+                cardController.setData(empty);
+
+                // adding card controller to further manipulation
+                active_deck_controllers.add(cardController);
+                // Add the anchorPane to the GridPane
+                active_deck.add(anchorPane, column, row);
+
+                // Set margin around the anchorPane
+                GridPane.setMargin(anchorPane, new Insets(10)); // Set a uniform margin
+                column ++;
+            }
+        }
+        catch (IOException e) {
+            System.out.println("Gagal me-load deck aktif");
+        }
+
+    }
+
 
     // Getters
     public TempCard getFieldCard(int id){
@@ -378,7 +407,7 @@ public class MainController implements Initializable  {
         field_controllers.get(id).setData(card);
     }
     public void setActiveDeckCard(int id, TempCard card){
-        field_controllers.get(id).setData(card);
+        active_deck_controllers.get(id).setData(card);
     }
     public void setBearZone(List<Integer> ids){
         for (Integer id : ids){
