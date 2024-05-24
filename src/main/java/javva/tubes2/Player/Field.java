@@ -3,6 +3,7 @@ package javva.tubes2.Player;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.concurrent.TimeUnit;
 
 import javva.tubes2.Card.*;
 import java.lang.Thread;
@@ -65,6 +66,11 @@ public class Field extends Thread{
             throw new EmptyElement();
         }
         content.set(index, new NullCard());
+        for(int i = 0 ; i < protect.size() ; i++){
+            if(protect.get(i) == index){
+                protect.remove(i);
+            }
+        }
     }
 
     public synchronized Product getAndRemove(int index) throws Throwable{
@@ -288,7 +294,7 @@ public class Field extends Thread{
         return ret;
     }
 
-    public synchronized void initiateBearEvent(){
+    public void initiateBearEvent(){
         bear_attack = true;
         System.out.println("Attack begin");
 
@@ -310,10 +316,10 @@ public class Field extends Thread{
         initiateBearEvent();
     }
 
-    public void bearDestroy(ArrayList<Integer> destroy_zone){
+    public synchronized void bearDestroy(ArrayList<Integer> destroy_zone){
         System.out.println(destroy_zone);
         for(int i = 0 ; i < destroy_zone.size() ; i++){
-            if(!content.get(destroy_zone.get(i)).getName().equals("null")){
+            if(!content.get(destroy_zone.get(i)).getName().equals("null") && !protect.contains(i)){
                 try {
                     removeElement(destroy_zone.get(i));
                 } catch (Throwable e) {
@@ -326,6 +332,7 @@ public class Field extends Thread{
     public synchronized void printContent(){
         if(bear_attack){
             try {
+                System.out.println("nigga");
                 wait();
             } catch (Throwable e){
 
@@ -355,12 +362,11 @@ public class Field extends Thread{
         } catch (Throwable e){
 
         }
-        // yoi.printContent();
 
         yoi.start();
 
         try {
-            Thread.sleep(20);
+            TimeUnit.SECONDS.sleep(1);
         } catch (Throwable e){
 
         }
