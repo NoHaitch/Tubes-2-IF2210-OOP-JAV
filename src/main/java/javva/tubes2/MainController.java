@@ -405,8 +405,10 @@ public class MainController implements Initializable  {
 
                 try {
                     cardController.setData(player.getField().getElement(i));
+                    cardController.setType("field");
                 } catch (Throwable e){
                     cardController.setData(new NullCard());
+                    cardController.setType("field");
                 }
                 
                 // adding card controller for further manipulation
@@ -443,6 +445,7 @@ public class MainController implements Initializable  {
 
                 // adding card controller to further manipulation
                 active_deck_controllers.add(cardController);
+                active_deck_controllers.get(i).setType("deck");
                 // Add the anchorPane to the GridPane
                 active_deck.add(anchorPane, column, row);
 
@@ -495,33 +498,33 @@ public class MainController implements Initializable  {
 //         }
         renderField(game.current_player);
 
-
+        renderDeck(game.current_player);
         // Rendering active deck
-        try {
-            Integer column = 0;
-            Integer row = 0;
-            for (int i = 0; i < 6; i++) {
-                Card empty = new NullCard();
-                FXMLLoader fxmlLoader = new FXMLLoader();
-                fxmlLoader.setLocation(MainController.class.getResource("card.fxml"));
-                AnchorPane anchorPane = fxmlLoader.load();
+        // try {
+        //     Integer column = 0;
+        //     Integer row = 0;
+        //     for (int i = 0; i < 6; i++) {
+        //         Card empty = new NullCard();
+        //         FXMLLoader fxmlLoader = new FXMLLoader();
+        //         fxmlLoader.setLocation(MainController.class.getResource("card.fxml"));
+        //         AnchorPane anchorPane = fxmlLoader.load();
 
-                CardController cardController = fxmlLoader.getController();
-                cardController.setData(empty);
+        //         CardController cardController = fxmlLoader.getController();
+        //         cardController.setData(empty);
 
-                // adding card controller to further manipulation
-                active_deck_controllers.add(cardController);
-                // Add the anchorPane to the GridPane
-                active_deck.add(anchorPane, column, row);
+        //         // adding card controller to further manipulation
+        //         active_deck_controllers.add(cardController);
+        //         // Add the anchorPane to the GridPane
+        //         active_deck.add(anchorPane, column, row);
 
-                // Set margin around the anchorPane
-                GridPane.setMargin(anchorPane, new Insets(10)); // Set a uniform margin
-                column ++;
-            }
-        }
-        catch (IOException e) {
-            System.out.println("Gagal me-load deck aktif");
-        }
+        //         // Set margin around the anchorPane
+        //         GridPane.setMargin(anchorPane, new Insets(10)); // Set a uniform margin
+        //         column ++;
+        //     }
+        // }
+        // catch (IOException e) {
+        //     System.out.println("Gagal me-load deck aktif");
+        // }
 
     }
 
