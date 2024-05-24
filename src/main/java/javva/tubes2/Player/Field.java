@@ -74,6 +74,14 @@ public class Field extends Thread{
         }
     }
 
+    public ArrayList<Harvestable> getContent() {
+        return content;
+    }
+
+    public void setContent(ArrayList<Harvestable> content) {
+        this.content = content;
+    }
+
     public synchronized Product getAndRemove(int index) throws Throwable{
         if(index >= capacity || index < 0){
             throw new IndexOutOfRange();

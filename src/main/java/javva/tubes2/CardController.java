@@ -26,7 +26,7 @@ public class CardController {
     private Label card_name;
 
     // Attributes
-    private Card card;
+    public Card card;
     private static Card dragged_item;
     private static Boolean is_transferable_area = true;
     private static Boolean is_destroyable = false;
@@ -66,7 +66,7 @@ public class CardController {
         event.acceptTransferModes(TransferMode.ANY);
     }
     public void dragDropped(){
-        if  (is_transferable_area & is_area_clear){
+        if  (is_transferable_area && is_area_clear){
             card = dragged_item;
             setData(card);
             System.out.println("Dropped");
@@ -75,7 +75,7 @@ public class CardController {
     }
     public void dragDone(){
         if (is_destroyable){
-            card = new Card("","","");
+            card = new NullCard();
             setData(card);
             is_destroyable = false;
         }
@@ -97,7 +97,11 @@ public class CardController {
     }
     public void setData(Card card){
         this.card = card;
-        card_name.setText(card.getName());
+        if(!card.getName().equals("null")){
+            card_name.setText(card.getName());
+        } else {
+            card_name.setText("");
+        }
 //        card_background.setStyle("-fx-background-color: " + null + ";");
 
         try{

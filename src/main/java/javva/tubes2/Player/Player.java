@@ -1,6 +1,8 @@
 package javva.tubes2.Player;
 import javva.tubes2.Card.* ;
 import javva.tubes2.Shop;
+
+import java.io.ObjectInputStream.GetField;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,6 +36,10 @@ public class Player {
         return this.field ;
     }
 
+    public void setField(Field field) {
+        this.field = field;
+    }
+
     public void addField(Card stuff, int index) {
         try {
             this.field.addElement((Harvestable)stuff, index);
@@ -55,6 +61,12 @@ public class Player {
         this.gulden += gulden ;
     }
 
+    public void setActive_deck(List<Card> active_deck) {
+        this.active_deck = active_deck;
+    }
+
+
+    
     // return pointer to active_deck. Jadi perubahan yang terjadi akan tersimpan.
     public List<Card> getActiveDeck() {
         List<Card> result = new ArrayList<>() ;
