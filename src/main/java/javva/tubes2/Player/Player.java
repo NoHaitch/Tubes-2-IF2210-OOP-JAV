@@ -34,6 +34,16 @@ public class Player {
         return this.field ;
     }
 
+    public void addField(int card_index, int field_index) {
+        try {
+            this.field.addElement((Harvestable)this.active_deck.get(card_index), field_index);
+            removeFromActiveDeck(card_index);
+        }
+        catch(Throwable e) {
+            System.out.println(e.getMessage()) ;
+        }
+    }
+
     public void addField(Card stuff, int index) {
         try {
             this.field.addElement((Harvestable)stuff, index);
@@ -187,16 +197,6 @@ public class Player {
             Animal animal = (Animal)this.field.getElement(animal_index) ;
             Product food = (Product)this.active_deck.get(food_index) ;
             animal.feed(food) ;
-        }
-        catch(Throwable e) {
-            System.out.println(e.getMessage()) ;
-        }
-    }
-
-    public void addToField(int card_index, int field_index) {
-        try {
-            this.field.addElement((Harvestable)this.active_deck.get(card_index), field_index);
-            removeFromActiveDeck(card_index);
         }
         catch(Throwable e) {
             System.out.println(e.getMessage()) ;
