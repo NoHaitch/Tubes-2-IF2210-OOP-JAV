@@ -59,7 +59,7 @@ public class Player {
     public List<Card> getActiveDeck() {
         List<Card> result = new ArrayList<>() ;
         for (int i = 0 ; i < 6 ; i++) {
-            if(this.active_deck.get(i).getName() != "null") {
+            if(!this.active_deck.get(i).getName().equals("null")) {
                 result.add(active_deck.get(i)) ;
             }
         }
@@ -69,7 +69,7 @@ public class Player {
     public int countActiveCard() {
         int count = 0;
         for(int i = 0 ; i < 6 ; i++) {
-            if (active_deck.get(i).getName() != "null") {
+            if (!active_deck.get(i).getName().equals("null")) {
                 count += 1 ;
             }
         }
@@ -79,7 +79,7 @@ public class Player {
     public int findSlot() {
         int index = -1 ;
         for (int i = 0 ; i < 6 ; i++) {
-            if (active_deck.get(i).getName() == "null") {
+            if (active_deck.get(i).getName().equals("null")) {
                 index = i ;
                 return index ;
             }
@@ -121,7 +121,7 @@ public class Player {
     public void addToActiveDeck(Card card, int index) throws DeckIsFull{
         if (countActiveCard() < 6) {
             try {
-                if (this.active_deck.get(index).getName() != "null") {
+                if (!this.active_deck.get(index).getName().equals("null")) {
                     this.active_deck.set(index, card) ;
                 }
             }
@@ -204,7 +204,7 @@ public class Player {
     public void moveField(int start_index, int dest_index) {
         try {
             Harvestable stuff = this.field.getElement(start_index) ;
-            if (stuff.getName() != "null") {
+            if (!stuff.getName().equals("null")) {
                 this.field.addElement(stuff, dest_index);
             }
         }
@@ -235,7 +235,7 @@ public class Player {
     public void sell(int index){
         try {
             Shop shop = Shop.getInstance();
-            if (this.active_deck.get(index).getType() == "Product"){
+            if (this.active_deck.get(index).getType().equals("Product")){
                 removeFromActiveDeck(index);
                 String productName = this.active_deck.get(index).getName();
                 shop.addProduct(productName);
@@ -251,41 +251,41 @@ public class Player {
     // index = index Item Card yang digunakan dari active deck, tPlayer = Player yang menerima efek pada ladangnya, field_index = index Card yang menerima efek pada ladang
     public void useItem(int index, Player tPlayer, int field_index) {
         try { 
-            if (active_deck.get(index).getType() != "Item" || tPlayer.getField().getElement(field_index).getName() == "null") {
+            if (!active_deck.get(index).getType().equals("Item")|| tPlayer.getField().getElement(field_index).getName().equals("null")) {
                 throw new NotItem() ;
             }
-            else if (active_deck.get(index).getName() == "Accelerate") {
+            else if (active_deck.get(index).getName().equals("Accelerate")) {
                 boolean result = tPlayer.getField().useAccelerate(field_index) ;
                 if (result) {
                     removeFromActiveDeck(index);
                 }
             }
-            else if (active_deck.get(index).getName() == "Delay") {
+            else if (active_deck.get(index).getName().equals("Delay")) {
                 boolean result = tPlayer.getField().useDelay(field_index) ;
                 if (result) {
                     removeFromActiveDeck(index);
                 } 
             }
-            else if (active_deck.get(index).getName() == "InstantHarvest") {
+            else if (active_deck.get(index).getName().equals("InstantHarvest")) {
                 boolean result = tPlayer.getField().useDelay(field_index) ;
                 if (result) {
                     removeFromActiveDeck(index);
                     harvest(field_index);
                 } 
             }
-            else if (active_deck.get(index).getName() == "Destroy") {
+            else if (active_deck.get(index).getName().equals("Destroy")) {
                 boolean result = tPlayer.getField().useDestroy(field_index) ;
                 if (result) {
                     removeFromActiveDeck(index);
                 }      
             }
-            else if (active_deck.get(index).getName() == "Protect") {
+            else if (active_deck.get(index).getName().equals("Protect")) {
                 boolean result = tPlayer.getField().useProtect(field_index) ;
                 if (result) {
                     removeFromActiveDeck(index);
                 } 
             }
-            else if (active_deck.get(index).getName() == "Trap") {
+            else if (active_deck.get(index).getName().equals("Trap")) {
                 boolean result = tPlayer.getField().useTrap(field_index) ;
                 if (result) {
                     removeFromActiveDeck(index);
