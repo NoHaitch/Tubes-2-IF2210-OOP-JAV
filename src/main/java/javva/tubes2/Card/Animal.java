@@ -14,6 +14,14 @@ public class Animal extends Harvestable{
         activeEffect = "";
     }
 
+    public Animal(String nameString, String tyString, String imgpth, Product productRet, Integer wInteger, Integer harvbInteger, boolean protect, boolean trap){
+        super(nameString, tyString, imgpth, productRet, protect, trap);
+
+        weight = wInteger;
+        harvestWeight = harvbInteger;
+        activeEffect = "";
+    }
+
     public Animal(Animal a) {
         super(a.getName(), a.getType(), a.getPath(), a.getProduct()) ;
 
@@ -80,13 +88,13 @@ public class Animal extends Harvestable{
         }
 
         if(getType().equals("Herbivore")){
-            if(feed.getType().equals("Plants")){
+            if(feed.getType().equals("Vegetable")){
                 weight += feed.getAddedWeight();
                 return;
             }
         }
 
-        if(feed.getType().equals("Plants") || feed.getType().equals("Meat")){
+        if(feed.getType().equals("Vegetable") || feed.getType().equals("Meat")){
             weight += feed.getAddedWeight();
         }
     }

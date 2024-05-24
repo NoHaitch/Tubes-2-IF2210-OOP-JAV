@@ -14,18 +14,38 @@ public class Shop {
     private Map<String, Integer> prices;
 
     /* CONSTRUCTOR */
-    public Shop(){
+    private Shop(){
+        CardConfig config = CardConfig.getInstance();
+        List<Product> productConfig = config.getProductConfig();
         products = new HashMap<String, Integer>();
-        createPricesMap();
+        for (Product p : productConfig){
+            products.put(p.getName(), 0);
+        }
+        createPricesMap(productConfig);
+    }
+
+    /* Singleton Pattern */
+    private static Shop instance = null;
+
+    /* Singleton Instance Getter */
+    public static Shop getInstance() {
+        if (instance == null) {
+            instance = new Shop();
+        }
+        return instance;
     }
 
     /* METHODS */
     public void addProduct(String productName){
-        products.merge(productName, 1, Integer::sum);
+        products.put(productName, products.get(productName) + 1);
     }
 
-    public void removeProduct(String productName){
-        products.put(productName, products.get(productName)-1);
+    public void removeProduct(String productName) throws NotRemovableProduct{
+        if (isSoldOut(productName)){
+            throw new NotRemovableProduct();
+        } else {
+            products.put(productName, products.get(productName) - 1);
+        }
     }
 
     public Integer getQuantity(String productName){
@@ -37,20 +57,28 @@ public class Shop {
     }
 
     public List<Map.Entry<String, Integer>> getShopItemsList(){
-        return new ArrayList<>(products.entrySet());
+        List<Map.Entry<String, Integer>> ret = new ArrayList<>();
+        for (Map.Entry<String, Integer> entry : products.entrySet()) {
+            if (entry.getValue() != 0) {
+                ret.add(entry);
+            }
+        }
+        return ret;
     }
 
     public Integer getPrice(String productName){
         return prices.get(productName);
     }
 
-    public void createPricesMap(){
+    public void createPricesMap(List<Product> productConfig){
         /* Insert prices for each product */
         prices = new HashMap<String, Integer>();
-        CardConfig config = new CardConfig();
-        List<Product> productConfig = config.getProductConfig();
         for(Product product : productConfig){
             prices.put(product.getName(), product.getAddedMoney());
         }
+    }
+
+    public class NotRemovableProduct extends Exception{
+        NotRemovableProduct(){super("No item to be removed");}
     }
 }

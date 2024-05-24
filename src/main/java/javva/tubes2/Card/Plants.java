@@ -12,6 +12,13 @@ public class Plants extends Harvestable{
         activeEffect = "";
     }
 
+    public Plants(String nameString, String tyString, String imgpth, Product retProduct, Integer harvestLim, boolean protect, boolean trap){
+        super(nameString, tyString, imgpth, retProduct, protect, trap);
+        progress = 0;
+        harvestLimit = harvestLim;
+        activeEffect = "";
+    }
+
     public Plants(Plants p) {
         super(p.getName(), p.getType(), p.getPath(), p.getProduct()) ;
 

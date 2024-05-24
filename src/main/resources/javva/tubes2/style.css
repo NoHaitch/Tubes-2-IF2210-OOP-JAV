@@ -3,8 +3,6 @@
     -fx-background-radius: 100;
     -fx-pref-width: 132px;
     -fx-pref-height: 37px;
-    /*-fx-border-color: white; !* Set border color to white *!*/
-    /*-fx-border-width: 2px;*/
     -fx-border-radius: 100;
     -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.5), 5, 0, 0, 2);
 }

@@ -1,6 +1,6 @@
 package javva.tubes2.Player;
 import javva.tubes2.Card.* ;
-
+import javva.tubes2.Shop;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -59,7 +59,7 @@ public class Player {
     public List<Card> getActiveDeck() {
         List<Card> result = new ArrayList<>() ;
         for (int i = 0 ; i < 6 ; i++) {
-            if(this.active_deck.get(i).getName() != "null") {
+            if(!this.active_deck.get(i).getName().equals("null")) {
                 result.add(active_deck.get(i)) ;
             }
         }
@@ -69,7 +69,7 @@ public class Player {
     public int countActiveCard() {
         int count = 0;
         for(int i = 0 ; i < 6 ; i++) {
-            if (active_deck.get(i).getName() != "null") {
+            if (!active_deck.get(i).getName().equals("null")) {
                 count += 1 ;
             }
         }
@@ -79,7 +79,7 @@ public class Player {
     public int findSlot() {
         int index = -1 ;
         for (int i = 0 ; i < 6 ; i++) {
-            if (active_deck.get(i).getName() == "null") {
+            if (active_deck.get(i).getName().equals("null")) {
                 index = i ;
                 return index ;
             }
@@ -87,11 +87,47 @@ public class Player {
         return index ;
     }
 
+    // Menambahkan list ke kartu aktif dan mengurangi deck dengan jumlah yang diambil
+    public void drawToActiveDeck(List<Card> cards) {
+        if (countActiveCard() >= cards.size()) {
+            try {
+                takeCards(cards.size());
+            }
+            catch(Throwable e) {
+                System.out.println(e.getMessage()) ;
+            }
+            for (int i = 0 ; i < cards.size() ; i++) {
+                try {
+                    addToActiveDeck(cards.get(i));
+                }
+                catch(Throwable e) {
+                    System.out.println(e.getMessage()) ;
+                }
+            }
+        }
+    }
+
     public void addToActiveDeck(Card card) throws DeckIsFull{
         if (countActiveCard() < 6) {
             int index = findSlot() ;
             this.active_deck.remove(index) ;
             this.active_deck.add(index, card) ;
+        }
+        else {
+            throw new DeckIsFull() ;
+        }
+    }
+
+    public void addToActiveDeck(Card card, int index) throws DeckIsFull{
+        if (countActiveCard() < 6) {
+            try {
+                if (!this.active_deck.get(index).getName().equals("null")) {
+                    this.active_deck.set(index, card) ;
+                }
+            }
+            catch (Throwable e) {
+                System.out.println(e.getMessage()) ;
+            }
         }
         else {
             throw new DeckIsFull() ;
@@ -165,6 +201,102 @@ public class Player {
         }
     }
 
+    public void moveField(int start_index, int dest_index) {
+        try {
+            Harvestable stuff = this.field.getElement(start_index) ;
+            if (!stuff.getName().equals("null")) {
+                this.field.addElement(stuff, dest_index);
+            }
+        }
+        catch(Throwable e) {
+            System.out.println(e.getMessage()) ;
+        }
+    }
+
+    public void buy(String productName){
+        try {
+            Shop shop = Shop.getInstance();
+            if (getGulden() >= shop.getPrice(productName)) {
+                if (getActiveDeck().size()!=6){
+                    addToActiveDeck(new Card(productName, "Product"));
+                    shop.removeProduct(productName);
+                    addGulden(-shop.getPrice(productName));
+                } else {
+                    throw new ActiveDeckFull();
+                }
+            } else {
+                throw new NotEnoughMoney();
+            }
+        } catch (Throwable e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    public void sell(int index){
+        try {
+            Shop shop = Shop.getInstance();
+            if (this.active_deck.get(index).getType().equals("Product")){
+                removeFromActiveDeck(index);
+                String productName = this.active_deck.get(index).getName();
+                shop.addProduct(productName);
+                addGulden(shop.getPrice(productName));
+            } else {
+                throw new NotSellable();
+            }
+        } catch (Throwable e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    // index = index Item Card yang digunakan dari active deck, tPlayer = Player yang menerima efek pada ladangnya, field_index = index Card yang menerima efek pada ladang
+    public void useItem(int index, Player tPlayer, int field_index) {
+        try { 
+            if (!active_deck.get(index).getType().equals("Item")|| tPlayer.getField().getElement(field_index).getName().equals("null")) {
+                throw new NotItem() ;
+            }
+            else if (active_deck.get(index).getName().equals("Accelerate")) {
+                boolean result = tPlayer.getField().useAccelerate(field_index) ;
+                if (result) {
+                    removeFromActiveDeck(index);
+                }
+            }
+            else if (active_deck.get(index).getName().equals("Delay")) {
+                boolean result = tPlayer.getField().useDelay(field_index) ;
+                if (result) {
+                    removeFromActiveDeck(index);
+                } 
+            }
+            else if (active_deck.get(index).getName().equals("InstantHarvest")) {
+                boolean result = tPlayer.getField().useDelay(field_index) ;
+                if (result) {
+                    removeFromActiveDeck(index);
+                    harvest(field_index);
+                } 
+            }
+            else if (active_deck.get(index).getName().equals("Destroy")) {
+                boolean result = tPlayer.getField().useDestroy(field_index) ;
+                if (result) {
+                    removeFromActiveDeck(index);
+                }      
+            }
+            else if (active_deck.get(index).getName().equals("Protect")) {
+                boolean result = tPlayer.getField().useProtect(field_index) ;
+                if (result) {
+                    removeFromActiveDeck(index);
+                } 
+            }
+            else if (active_deck.get(index).getName().equals("Trap")) {
+                boolean result = tPlayer.getField().useTrap(field_index) ;
+                if (result) {
+                    removeFromActiveDeck(index);
+                } 
+            }
+        }
+        catch(Throwable e) {
+            System.out.println(e.getMessage()) ;
+        }
+    }
+
     // public static void main(String[] args) {
     //     Player player = new Player() ;
     //     Card animal = new Animal("LandShark", "Carnivore", "", new Product("SharkFin", "Product", "", 12, 500), 0, 20) ;
@@ -198,5 +330,23 @@ class IndexInvalid extends Exception {
 class ActiveDeckFull extends Exception {
     ActiveDeckFull(){
         super("Active deck is full!");
+    }
+}
+
+class NotEnoughMoney extends Exception {
+    NotEnoughMoney(){
+        super("Gulden is not enough for this action!");
+    }
+}
+
+class NotSellable extends Exception {
+    NotSellable(){
+        super("Card is not sellable since it's not a product");
+    }
+}
+
+class NotItem extends Exception {
+    NotItem() {
+        super("Card is not item") ;
     }
 }
