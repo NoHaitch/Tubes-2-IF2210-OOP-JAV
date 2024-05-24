@@ -1,17 +1,14 @@
 package javva.tubes2.Card;
 
 public class Animal extends Harvestable{
-    private Product product;
     private Integer weight;
     private Integer harvestWeight;
-    private String activeEffect;
 
     public Animal(String nameString, String tyString, String imgpth, Product productRet, Integer wInteger, Integer harvbInteger){
         super(nameString, tyString, imgpth, productRet);
 
         weight = wInteger;
         harvestWeight = harvbInteger;
-        activeEffect = "";
     }
 
     public Animal(String nameString, String tyString, String imgpth, Product productRet, Integer wInteger, Integer harvbInteger, boolean protect, boolean trap){
@@ -19,7 +16,6 @@ public class Animal extends Harvestable{
 
         weight = wInteger;
         harvestWeight = harvbInteger;
-        activeEffect = "";
     }
 
     public Animal(Animal a) {
@@ -27,11 +23,6 @@ public class Animal extends Harvestable{
 
         weight = a.getWeight() ;
         harvestWeight = a.getHarvestWeight() ;
-        activeEffect = a.getActiveEffect() ;
-    }
-    
-    public Product getProduct() {
-        return product;
     }
 
     public Integer getWeight() {
@@ -42,10 +33,6 @@ public class Animal extends Harvestable{
         return harvestWeight;
     }
 
-    public void setProduct(Product product) {
-        this.product = product;
-    }
-
     public void setWeight(Integer weight) {
         this.weight = weight;
     }
@@ -54,18 +41,10 @@ public class Animal extends Harvestable{
         this.harvestWeight = harvestWeight;
     }
 
-    public String getActiveEffect() {
-        return activeEffect;
-    }
-
-    public void setActiveEffect(String activeEffect) {
-        this.activeEffect = activeEffect;
-    }
-
     @Override
     public Product harvest() throws NotReadyToHarvest{
         if(isHarvestReady()){
-            return product;
+            return product ;
         }
         throw new NotReadyToHarvest();
     }

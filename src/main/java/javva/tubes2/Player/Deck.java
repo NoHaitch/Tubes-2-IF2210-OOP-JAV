@@ -43,7 +43,7 @@ public class Deck {
         for (int i = 0 ; i < size ; i++) {
             result.addLast(this.deck.get(i));
         }
-
+        // System.out.println(result.get(0).getName()) ;
         return result ;
     }
 
