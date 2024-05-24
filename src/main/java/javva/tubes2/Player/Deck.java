@@ -4,20 +4,30 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import javva.tubes2.Card.Animal;
 import javva.tubes2.Card.Card;
+import javva.tubes2.Card.Item;
+import javva.tubes2.Card.Plants;
 import javva.tubes2.CardConfig ;
 
 public class Deck {
     private int capacity ;
     private List<Card> deck ;
+    private List<Animal> animal ;
+    private List<Plants> plants ;
+    private List<Item> item ;
 
 
     public Deck(int capacity) {
         CardConfig cardConfig = CardConfig.getInstance() ;
+        animal = cardConfig.getAnimalConfig() ;
+        plants = cardConfig.getPlantConfig() ;
+        item = cardConfig.getItemConfig() ;
+
         deck = new ArrayList<>() ;
-        deck.addAll(cardConfig.getAnimalConfig()) ;
-        deck.addAll(cardConfig.getPlantConfig()) ;
-        deck.addAll(cardConfig.getItemConfig()) ;
+        deck.addAll(animal) ;
+        deck.addAll(plants) ;
+        deck.addAll(item) ;
         this.capacity = capacity;
 
         for (int i = 0 ; i < deck.size() ; i++) {
@@ -41,9 +51,36 @@ public class Deck {
         List<Card> result = new ArrayList<>() ;
 
         for (int i = 0 ; i < size ; i++) {
-            result.addLast(this.deck.get(i));
+            boolean found = false ;
+            for (Animal addAnimal : this.animal) {
+                if (addAnimal.getName().equalsIgnoreCase(this.deck.get(i).getName())) {
+                    result.addLast(new Animal(addAnimal));
+                    found = true ;
+                    break ;
+                }   
+            }
+            if (found) {
+                continue ;
+            }
+            for (Plants addPlants : this.plants) {
+                if (addPlants.getName().equalsIgnoreCase(this.deck.get(i).getName())) {
+                    result.addLast(new Plants(addPlants));
+                    found = true ;
+                    break ;
+                }   
+            }       
+            if (found) {
+                continue ;
+            }
+            for (Item addItem : this.item) {
+                if (addItem.getName().equalsIgnoreCase(this.deck.get(i).getName())) {
+                    result.addLast(new Item(addItem));
+                    found = true ;
+                    break ;
+                }   
+            }                    
         }
-
+        // System.out.printlcfn(result.get(0).getName()) ;
         return result ;
     }
 

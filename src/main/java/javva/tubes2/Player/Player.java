@@ -101,7 +101,7 @@ public class Player {
 
     // Menambahkan list ke kartu aktif dan mengurangi deck dengan jumlah yang diambil
     public void drawToActiveDeck(List<Card> cards) {
-        if (countActiveCard() >= cards.size()) {
+        if (6 - countActiveCard() >= cards.size()) {
             try {
                 takeCards(cards.size());
             }
@@ -110,6 +110,7 @@ public class Player {
             }
             for (int i = 0 ; i < cards.size() ; i++) {
                 try {
+                    // System.out.println(cards.get(i).getName()) ;
                     addToActiveDeck(cards.get(i));
                 }
                 catch(Throwable e) {
@@ -121,6 +122,7 @@ public class Player {
 
     public void addToActiveDeck(Card card) throws DeckIsFull{
         if (countActiveCard() < 6) {
+            // System.out.println(card.getName()) ;
             int index = findSlot() ;
             this.active_deck.remove(index) ;
             this.active_deck.add(index, card) ;
@@ -158,7 +160,7 @@ public class Player {
 
     // Melihat maksimal 4 kartu dari atas deck tanpa mengubah deck.
     public List<Card> drawCards() throws ActiveDeckFull{
-        int draw_size = 6 - this.active_deck.size() ;
+        int draw_size = 6 - this.countActiveCard() ;
         if (draw_size <= 0) {
             throw new ActiveDeckFull() ;
         }
@@ -309,16 +311,26 @@ public class Player {
         }
     }
 
-    // public static void main(String[] args) {
-    //     Player player = new Player() ;
-    //     Card animal = new Animal("LandShark", "Carnivore", "", new Product("SharkFin", "Product", "", 12, 500), 0, 20) ;
-    //     player.addField(animal, 0);
-    //     try {
-    //         System.out.println(player.field.getElement(0).getName()) ;
-    //     }
-    //     catch(Throwable e) {
+    public static void main(String[] args) {
+        Player player = new Player() ;
+        Card animal = new Animal("LandShark", "Carnivore", "", new Product("SharkFin", "Product", "", 12, 500), 0, 20) ;
+        player.addField(animal, 0);
+        try {
+            System.out.println(player.field.getElement(0).getName()) ;
+            Animal temp = (Animal) player.field.getElement(0) ;
+            System.out.println(temp.getHarvestWeight()) ;
 
-    //     }
+            player.drawToActiveDeck(player.drawCards());
+            System.out.println("ABISDRAW") ;
+            for (int i = 0 ; i < 6 ; i++) {
+                System.out.println(player.getActiveDeck().get(i).getName()) ;
+            }
+
+        }
+        catch(Throwable e) {
+            System.out.println(e.getMessage()) ;
+        }
+    }
 }
 
 class DeckIsFull extends Exception {

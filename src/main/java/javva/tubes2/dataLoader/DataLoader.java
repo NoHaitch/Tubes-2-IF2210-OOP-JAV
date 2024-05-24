@@ -1,6 +1,9 @@
 package javva.tubes2.dataLoader;
 
+import javafx.util.Pair;
 import javva.tubes2.Player.Player;
+import javva.tubes2.Shop;
+
 
 /**
  * Data Loader Interface  <br>
@@ -12,39 +15,41 @@ public interface DataLoader {
      * Save player data to file
      *
      * @param player   Player data
-     * @param filePath relative path to result folder
+     * @param file_path relative path to result folder
      * @throws Exception file not found, failed to save
      */
-    void savePlayer(Player player, String filePath) throws Exception;
+    void savePlayer(Player player, String file_path) throws Exception;
 
     /**
      * Save game data to file
      *
-     * @param filePath relative path to result folder
+     * @param file_path relative path to result folder
+     * @param shop Shop object
+     * @param current_turn current game turn
      * @throws Exception file not found, failed to save
      */
-    void saveGameState(String filePath) throws Exception;
+    void saveGameState(String file_path, Shop shop, Integer current_turn) throws Exception;
 
     /**
      * Load player data from file
      *
-     * @param filePath relative path to result folder
+     * @param file_path relative path to result folder
      * @return Player object
      * @throws Exception file not found, failed to load
      */
-    Player loadPlayer(String filePath) throws Exception;
+    Player loadPlayer(String file_path) throws Throwable;
 
     /**
      * Load game state from file
      *
-     * @param filePath relative path to result folder
-     * @return Game state object
+     * @param file_path relative path to result folder
+     * @return Pair, first is Shop, second is turn
      * @throws Exception file not found, failed to load
      */
-    Object loadGameState(String filePath) throws Exception;
+    Pair<Shop, Integer> loadGameState(String file_path) throws Exception;
 
     /**
-     * @return file  format
+     * @return file format
      */
     String getFileFormat();
 }

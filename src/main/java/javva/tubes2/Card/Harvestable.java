@@ -1,8 +1,7 @@
 package javva.tubes2.Card;
 
 public class Harvestable extends Card{
-    private Product product;
-    private Boolean attacked;
+    protected Product product;
     private Boolean protect;
     private Boolean trap;
     
@@ -57,15 +56,6 @@ public class Harvestable extends Card{
     };
     public Boolean isHarvestReady(){
         return false;
-    }
-
-
-    public Boolean getAttacked() {
-        return attacked;
-    }
-
-    public void setAttacked(Boolean attacked) {
-        this.attacked = attacked;
     }
 }
 
