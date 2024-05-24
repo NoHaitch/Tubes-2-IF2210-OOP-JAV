@@ -4,11 +4,13 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.net.URLClassLoader;
-import java.util.Enumeration;
-import java.util.List;
-import java.util.ArrayList;
+import java.util.*;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+import java.lang.reflect.Method;
+
 
 /**
  * Plugin Loader <br>
@@ -93,17 +95,44 @@ public class PluginLoader {
     private static boolean isDataloaderImplementation(ClassLoader classLoader, String className) {
         try {
             Class<?> loadedClass = classLoader.loadClass(className);
+            Class<?> dataLoaderInterface = classLoader.loadClass("javva.tubes2.dataLoader.DataLoader");
 
             // Check if the loaded class implements the DataLoader interface
-            for (Class<?> iface : loadedClass.getInterfaces()) {
-                if (iface.getName().equals("javva.tubes2.dataLoader.DataLoader")) {
-                    return true;
+            List<Class<?>> interfaces = Stream.of(loadedClass.getInterfaces()).toList();
+            if (!interfaces.contains(dataLoaderInterface)) {
+                return false;
+            }
+
+            // Get all methods from the DataLoader interface
+            List<Method> interfaceMethods = Stream.of(dataLoaderInterface.getDeclaredMethods()).toList();
+
+            // Get all methods from the implementing class
+            List<Method> classMethods = Stream.of(loadedClass.getDeclaredMethods()).toList();
+            Set<String> classMethodSignatures = classMethods.stream()
+                    .map(PluginLoader::getMethodSignature)
+                    .collect(Collectors.toSet());
+
+            // Check if all interface methods are implemented in the class
+            for (Method method : interfaceMethods) {
+                if (!classMethodSignatures.contains(getMethodSignature(method))) {
+                    return false;
                 }
             }
+
+            return true;
         } catch (ClassNotFoundException e) {
             return false;
         }
+    }
 
-        return false;
+    /**
+     * Get the method signature <br>
+     * Method signature is the method name and its parameter types <br>
+     *
+     * @param method the method
+     * @return the method signature
+     */
+    private static String getMethodSignature(Method method) {
+        return method.getName() + Stream.of(method.getParameterTypes()).map(Class::getName).collect(Collectors.joining(","));
     }
 }

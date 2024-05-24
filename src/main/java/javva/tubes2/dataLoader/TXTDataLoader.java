@@ -1,6 +1,11 @@
 package javva.tubes2.dataLoader;
 
+import javafx.util.Pair;
+import javva.tubes2.Card.*;
+import javva.tubes2.Player.Field;
 import javva.tubes2.Player.Player;
+import javva.tubes2.CardConfig;
+import javva.tubes2.Shop;
 
 import java.io.File;
 import java.io.PrintWriter;
@@ -10,29 +15,25 @@ import java.util.*;
  * Plugin to save and load data to Text file
  */
 public class TXTDataLoader implements DataLoader {
-    /**
-     * File format for this plugin
-     */
-    private final String format = "txt";
 
     /**
      * @return file format
      */
     @Override
     public String getFileFormat() {
-        return format;
+        return "txt";
     }
 
     /**
      * Save player data to text file
      *
      * @param player   Player data
-     * @param filePath relative path to result folder
+     * @param file_path relative path to result folder
      * @throws Exception data not correct, failed to save
      */
-    public void savePlayer(Player player, String filePath) throws Exception {
+    public void savePlayer(Player player, String file_path) throws Exception {
         // initialize file
-        PrintWriter writer = new PrintWriter(filePath);
+        PrintWriter writer = new PrintWriter(file_path);
 
         // save gulden
         writer.println(player.getGulden());
@@ -40,69 +41,102 @@ public class TXTDataLoader implements DataLoader {
         // save deck amount
         writer.println(player.getCapacity());
 
+        // get active deck
+        List<Card> activeCards = player.getActiveDeck();
+        int activeCardSize = activeCards.size();
+
         // save active card amount
-        writer.println(3);
+        writer.println(activeCardSize);
 
         // save active cards
-        Map<String, String> tempActive = new HashMap<>();
-        tempActive.put("A01", "BERUANG");
-        tempActive.put("B01", "BERUANG");
-        tempActive.put("C01", "BERUANG");
-
-        for (String key : tempActive.keySet()) {
-            writer.print(key + " ");
-            writer.println(tempActive.get(key));
+        for (int i = 0; i < activeCardSize; i++) {
+            writer.print((i + 1) + " ");
+            writer.println(activeCards.get(i).getName());
         }
 
         // save field card amount
-        writer.println(1);
+        Field field = player.getField();
+        int count = 0;
+        for (int i = 0; i < 20; i++) {
+            try {
+                Card card = field.getElement(i);
+                if (!card.getName().equals("null")) {
+                    count++;
+                }
 
-        // save field cards location
-        String location = "A01";
-        String card = "DOMBA";
-        int weight = 10;
-        int amountOfItems = 3;
-        List<String> items = new ArrayList<>();
-        items.add("ACCELERATE");
-        items.add("DELAY");
-        items.add("PROTECT");
-        writer.print(location + " " + card + " " + weight + " " + amountOfItems + " ");
-        for (String item : items) {
-            writer.print(item + " ");
+            } catch (Throwable e) {
+                throw new Exception(e.getMessage());
+            }
         }
-        writer.println();
+        writer.println(count);
+
+        // save field cards
+        for (int i = 0; i < 20; i++) {
+            try {
+                Card card = field.getElement(i);
+                if (!card.getName().equals("null")) {
+                    count++;
+                }
+
+                // save item location and name
+                writer.print((i + 1) + " ");
+                writer.print(card.getName() + " ");
+
+                // save item progress and items
+                if (card instanceof Plants plant) {
+                    writer.print(plant.getProgress() + " ");
+
+                    int itemAmount = 0;
+                    if (plant.getProtect()) itemAmount++;
+                    if (plant.getTrap()) itemAmount++;
+
+                    writer.println(itemAmount);
+                    if (plant.getProtect()) writer.println("PROTECT ");
+                    if (plant.getTrap()) writer.println("TRAP ");
+                } else {
+                    Animal animal = (Animal) card;
+                    writer.print(animal.getWeight() + " ");
+
+                    int itemAmount = 0;
+                    if (animal.getProtect()) itemAmount++;
+                    if (animal.getTrap()) itemAmount++;
+
+                    writer.println(itemAmount);
+                    if (animal.getProtect()) writer.println("PROTECT ");
+                    if (animal.getTrap()) writer.println("TRAP ");
+                }
+            } catch (Throwable e) {
+                throw new Exception(e.getMessage());
+            }
+        }
 
         writer.close();
     }
 
     /**
-     * save game data to text file
+     * Save game data to file
      *
-     * @param filePath relative path to result folder
-     * @throws Exception data not correct, failed to save
+     * @param file_path relative path to result folder
+     * @param shop Shop object
+     * @param current_turn current game turn
+     * @throws Exception file not found, failed to save
      */
-    public void saveGameState(String filePath) throws Exception {
-        // TODO: USE GAME ATTRIBUTE
+    @Override
+    public void saveGameState(String file_path, Shop shop, Integer current_turn) throws Exception {
         // initialize file
-        PrintWriter writer = new PrintWriter(filePath);
+        PrintWriter writer = new PrintWriter(file_path);
 
         // save current turn
-        writer.println(1);
+        writer.println(current_turn);
+
+        // shop
+        List<Map.Entry<String, Integer>> shop_item_list = shop.getShopItemsList();
 
         // save amount of shop items
-        writer.println(5);
+        writer.println(shop_item_list.size());
 
-        // Save shop items
-        Map<String, Integer> tempShop = new HashMap<>();
-        tempShop.put("SIRIP_HIU", 5);
-        tempShop.put("SUSU", 2);
-        tempShop.put("DAGING_DOMBA", 3);
-        tempShop.put("DAGING_KUDA", 10);
-        tempShop.put("DAGING_BERUANG", 1);
-
-        for (String key : tempShop.keySet()) {
-            writer.print(key + " ");
-            writer.println(tempShop.get(key));
+        for (Map.Entry<String, Integer> item : shop_item_list) {
+            writer.println(item.getKey() + " " + item.getValue());
         }
 
         writer.close();
@@ -111,87 +145,210 @@ public class TXTDataLoader implements DataLoader {
     /**
      * Load player data from text file
      *
-     * @param filePath relative path to result folder
+     * @param file_path relative path to result folder
      * @return Player object, null if failed to load
      * @throws Exception data not correct, corrupted save
      */
-    public Player loadPlayer(String filePath) throws Exception {
-        // TODO: USE PLAYER ATTRIBUTE
+    public Player loadPlayer(String file_path) throws Exception {
         // load file
-        Scanner scanner = new Scanner(new File(filePath));
+        Scanner scanner = new Scanner(new File(file_path));
 
         // get gulden
         int gulden = scanner.nextInt();
         System.out.println("[LoadPlayer] Gulden: " + gulden);
 
-        // get deck amoung
+        // get deck amount
         int deck_amount = scanner.nextInt();
         System.out.println("[LoadPlayer] Deck Amount: " + deck_amount);
 
-        /// get active card amount
+        // initialize player
+        Player player = new Player(gulden, deck_amount);
+
+        // get active card amount
         int active_card_amount = scanner.nextInt();
         System.out.println("[LoadPlayer] Active Card Amount: " + active_card_amount);
 
         // get active cards
+        CardConfig card_config = CardConfig.getInstance();
+        List<Animal> animal_config = card_config.getAnimalConfig();
+        List<Plants> plant_config = card_config.getPlantConfig();
+        List<Product> product_config = card_config.getProductConfig();
+        List<Item> item_config = card_config.getItemConfig();
+
+        List<Card> active_cards = new ArrayList<>(6);
+        Map<Integer, String> temp_active_name = new HashMap<>();
+
+        // get active card data
         for (int i = 0; i < active_card_amount; i++) {
-            String location = scanner.next();
-            String card = scanner.next();
-            System.out.println("[LoadPlayer] Active Card: " + location + " " + card);
+            int location = scanner.nextInt();
+            String card_name = scanner.next();
+            temp_active_name.put(location, card_name);
+        }
+
+        // place on active deck
+        for (int i = 0; i < 6; i++) {
+            if (temp_active_name.containsKey(i)) {
+                boolean found = false;
+                for (Animal animal : animal_config) {
+                    if (animal.getName().equalsIgnoreCase(temp_active_name.get(i))) {
+                        Animal new_animal = new Animal(animal);
+                        player.addToActiveDeck(new_animal, i);
+                        found = true;
+                        break;
+                    }
+                }
+
+                for (Plants plant : plant_config) {
+                    if (found) {
+                        break;
+                    }
+
+                    if (plant.getName().equalsIgnoreCase(temp_active_name.get(i))) {
+                        Plants new_plant = new Plants(plant);
+                        player.addToActiveDeck(new_plant, i);
+                        found = true;
+                        break;
+                    }
+                }
+
+                for (Product product : product_config) {
+                    if (found) {
+                        break;
+                    }
+
+                    if (product.getName().equalsIgnoreCase(temp_active_name.get(i))) {
+                        Product new_product = new Product(product);
+                        player.addToActiveDeck(new_product, i);
+                        found = true;
+                        break;
+                    }
+                }
+
+                for (Item item : item_config) {
+                    if (found) {
+                        break;
+                    }
+
+                    if (item.getName().equalsIgnoreCase(temp_active_name.get(i))) {
+                        Item new_item = new Item(item);
+                        player.addToActiveDeck(new_item, i);
+                        break;
+                    }
+                }
+
+                if (!found) {
+                    throw new Exception("Card not found");
+                }
+            }
         }
 
         // get field card amount
         int field_card_amount = scanner.nextInt();
-        System.out.println("[LoadPlayer] Field Card Amount: " + field_card_amount);
 
         // get field cards
+        Map<Integer, String> temp_name = new HashMap<>();
+        Map<Integer, Integer> temp_progres = new HashMap<>();
+        Map<Integer, List<String>> temp_item = new HashMap<>();
+
+        // get field cards data
         for (int i = 0; i < field_card_amount; i++) {
-            String location = scanner.next();
-            String card = scanner.next();
-            int weight = scanner.nextInt();
-            int amountOfItems = scanner.nextInt();
-            System.out.println("[LoadPlayer] Field Card: " + location + " " + card + " " + weight + " " + amountOfItems + " ");
+            Integer location = scanner.nextInt();
+            String card_name = scanner.next();
+            int progress = scanner.nextInt();
+            int item_amount = scanner.nextInt();
+
+            temp_name.put(location, card_name);
+            temp_progres.put(location, progress);
             List<String> items = new ArrayList<>();
-            for (int j = 0; j < amountOfItems; j++) {
+            for (int j = 0; j < item_amount; j++) {
                 items.add(scanner.next());
-                System.out.println("[LoadPlayer] " + (j + 1) + " Item: " + items.get(j));
+            }
+            temp_item.put(location, items);
+        }
+
+        // add all cards sorted using location
+        for (int i = 1; i < field_card_amount + 1; i++) {
+            boolean found = false;
+            for (Animal animal : animal_config) {
+                if (found) {
+                    break;
+                }
+                if (animal.getName().equalsIgnoreCase(temp_name.get(i))) {
+                    Animal new_animal = new Animal(animal);
+                    new_animal.setWeight(temp_progres.get(i));
+
+                    for (String elmt : temp_item.get(i)) {
+                        if (elmt.equalsIgnoreCase("PROTECT")) {
+                            new_animal.setProtect(true);
+                        } else if (elmt.equalsIgnoreCase("TRAP")) {
+                            new_animal.setTrap(true);
+                        }
+                    }
+
+                    player.addField(new_animal, i - 1);
+                    found = true;
+                }
             }
 
+            for (Plants plant : plant_config) {
+                if (found) {
+                    break;
+                }
+
+                if (plant.getName().equalsIgnoreCase(temp_name.get(i))) {
+                    Plants new_plant = new Plants(plant);
+                    new_plant.setProgress(temp_progres.get(i));
+
+                    for (String elmt : temp_item.get(i)) {
+                        if (elmt.equalsIgnoreCase("PROTECT")) {
+                            new_plant.setProtect(true);
+                        } else if (elmt.equalsIgnoreCase("TRAP")) {
+                            new_plant.setTrap(true);
+                        }
+                    }
+
+                    player.addField(new_plant, i - 1);
+                    found = true;
+                }
+            }
         }
 
         scanner.close();
-        return null;
+        return player;
     }
 
+
     /**
-     * Load game data from text file
+     * Load game state from file
      *
-     * @param filePath relative path to result folder
-     * @return Game data, null if failed to load
-     * @throws Exception data not correct, corrupted save
+     * @param file_path relative path to result folder
+     * @return Pair, first is Shop, second is turn
+     * @throws Exception file not found, failed to load
      */
-    public Object loadGameState(String filePath) throws Exception {
-        // TODO: USE GAME ATTRIBUTE
+    @Override
+    public Pair<Shop, Integer> loadGameState(String file_path) throws Exception {
         // load file
-        Scanner scanner = new Scanner(new File(filePath));
+        Scanner scanner = new Scanner(new File(file_path));
 
         // load current turn
         int turn = scanner.nextInt();
         System.out.println("[LoadGameState] Turn: " + turn);
+
+        Shop shop = Shop.getInstance();
 
         // save amount of shop items
         int shop_item_amount = scanner.nextInt();
         System.out.println("[LoadGameState] Shop Item Amount: " + shop_item_amount);
 
         // Save shop items
-        Map<String, Integer> tempShop = new HashMap<>();
         for (int i = 0; i < shop_item_amount; i++) {
             String item_name = scanner.next();
             int item_amount = scanner.nextInt();
-            tempShop.put(item_name, item_amount);
+            for (int j = 0; j < item_amount; j++) shop.addProduct(item_name);
             System.out.println("[LoadGameState] Shop Item: " + item_name + " " + item_amount);
         }
 
         scanner.close();
-        return null;
+        return new Pair<>(shop, turn);
     }
 }
