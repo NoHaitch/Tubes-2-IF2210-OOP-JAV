@@ -27,6 +27,7 @@ public class CardController {
 
     // Attributes
     public Card card;
+    private String type = "field";    // field : bisa di drag + liat info, deck : bisa diliat info tapi gabisa di drag, view: gabisa diliat infonya dan gabisa di drag
     private static Card dragged_item;
     private static Boolean is_transferable_area = true;
     private static Boolean is_destroyable = false;
@@ -44,6 +45,10 @@ public class CardController {
         System.out.println(is_transferable_area);
     }
     public void dragDetected(MouseEvent event){
+
+        if(type.equals("view")){
+            return;
+        }
         Dragboard db = card_frame.startDragAndDrop(TransferMode.ANY);
 
         ClipboardContent cb = new ClipboardContent();

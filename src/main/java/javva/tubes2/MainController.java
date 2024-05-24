@@ -197,6 +197,7 @@ public class MainController implements Initializable  {
 
     }
 
+
     // Game utility
     public void safeField(){
         if(field_shown){
@@ -262,12 +263,10 @@ public class MainController implements Initializable  {
             // change.setPath("/javva/tubes2/images/Hewan/chicken.png");
             setActiveDeckCard(i, change);
         }
-        shuffle_controller.setCards(generateRandom(3));
-        shuffle_stage.show();
 
-//        while(shuffle_stage.isShowing()){
-//            System.out.println("Waiting ... ");
-//        }
+        javafx.application.Platform.runLater(() -> {
+            shuffle_stage.show();
+        });
 
     }
 
