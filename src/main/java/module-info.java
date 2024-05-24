@@ -7,7 +7,10 @@ module javva.tubes2 {
     requires com.fasterxml.jackson.databind;
     requires com.fasterxml.jackson.dataformat.yaml;
 
+    opens javva.tubes2 to javafx.fxml;
+    exports javva.tubes2;
     exports javva.tubes2.Player;
     exports javva.tubes2.dataLoader to com.fasterxml.jackson.databind;
     exports plugin;
 }
+
