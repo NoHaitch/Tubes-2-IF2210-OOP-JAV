@@ -80,7 +80,7 @@ public class MainController implements Initializable  {
     private Stage load_plugin_stage = new Stage();
     private Stage shuffle_stage = new Stage();
     private List<CardController> field_controllers = new ArrayList<>();
-    private ShopController shop_controller = new ShopController();
+    public ShopController shop_controller = new ShopController();
     private PluginController plugin_controller = new PluginController();
     private LoadController load_controller = new LoadController();
     private SaveController save_controller = new SaveController();
@@ -238,6 +238,8 @@ public class MainController implements Initializable  {
 
         CardController.main = this;
         CardInfoController.main = this;
+        CardShopController.main = this;
+        ShopController.main = this;
 
         renderInitiate();
         renderLoadState();
@@ -245,6 +247,7 @@ public class MainController implements Initializable  {
         renderSaveState();
         renderShop();
         renderShuffle();
+
 
         active_deck_number.setText("Deck Count : " + game.avail_deck_count);
 

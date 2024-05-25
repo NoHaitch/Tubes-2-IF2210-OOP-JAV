@@ -18,7 +18,7 @@ public class GameMaster {
     public int turn = 0;
     public int avail_deck_count = 40;
 
-    public Shop main_shop;
+    public Shop main_shop = Shop.getInstance();
     public CardConfig config;
 
     public GameMaster(){

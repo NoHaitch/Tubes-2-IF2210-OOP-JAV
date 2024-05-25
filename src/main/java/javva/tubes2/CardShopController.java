@@ -12,6 +12,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 import javva.tubes2.Card.*;
 public class CardShopController{
+    public static MainController main;
 
     @FXML
     private VBox card_frame;
@@ -30,12 +31,17 @@ public class CardShopController{
 
     @FXML
     public void buyItem(){
-
+        main.game.current_player.buy(card.getName());
     }
 
     @FXML
     public void Sell(){
-        
+        System.out.println(main.game.main_shop.getShopItemsList());
+        System.out.println(card.getName());
+        main.saveDeck();
+        main.game.current_player.sell(card);
+        main.renderActiveDeck(main.game.current_player);
+        main.shop_controller.renderShopItems();
     }
 
     private Product card;

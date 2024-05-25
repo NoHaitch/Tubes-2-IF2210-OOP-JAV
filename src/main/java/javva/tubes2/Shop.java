@@ -71,8 +71,13 @@ public class Shop {
             prices.put(product.getName(), product.getAddedMoney());
         }
     }
-
+    
+    public List<Product> getItemConfig(){
+        CardConfig config = CardConfig.getInstance();
+        return config.getProductConfig().stream().toList();
+    }
     public class NotRemovableProduct extends Exception{
         NotRemovableProduct(){super("No item to be removed");}
     }
+
 }

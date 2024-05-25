@@ -242,16 +242,25 @@ public class Player {
     public void sell(int index){
         try {
             Shop shop = Shop.getInstance();
-            if (this.active_deck.get(index).getType().equals("Product")){
-                removeFromActiveDeck(index);
+            if (this.active_deck.get(index) instanceof Product){
                 String productName = this.active_deck.get(index).getName();
+                System.out.println(productName);
                 shop.addProduct(productName);
                 addGulden(shop.getPrice(productName));
+                removeFromActiveDeck(index);
             } else {
                 throw new NotSellable();
             }
         } catch (Throwable e) {
             System.out.println(e.getMessage());
+        }
+    }
+
+    public void sell(Product product){
+        for(int i = 0 ; i < active_deck.size() ; i++){
+            if(product.getName().equals(active_deck.get(i).getName())){
+                sell(i);
+            }
         }
     }
 

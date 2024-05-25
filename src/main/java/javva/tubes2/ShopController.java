@@ -19,7 +19,8 @@ import java.util.Random;
 import java.util.ResourceBundle;
 
 public class ShopController implements Initializable {
-
+    public static MainController main;
+    
     @FXML
     private Button back_button;
 
@@ -37,23 +38,28 @@ public class ShopController implements Initializable {
     }
 
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        renderShopItems(generateRandom(9));
+        renderShopItems();
     }
 
 
-    public void renderShopItems(List<Product> cards ){
+    public void renderShopItems(){
+        shop_grid.getChildren().clear();
+        CardShopController.main = main;
         // Render the card field
-        items.addAll(cards);
+        // items.addAll(cards);
         int column = 0;
         int row = 0;
         try {
+
             for (int i = 0; i < 9; i++) {
                 FXMLLoader fxmlLoader = new FXMLLoader();
                 fxmlLoader.setLocation(MainController.class.getResource("card-shop.fxml"));
                 AnchorPane anchorPane = fxmlLoader.load();
 
                 CardShopController cardShopController = fxmlLoader.getController();
-                cardShopController.setData(items.get(i),9999,10);
+                // productConfig;
+                Product prod = main.game.main_shop.getItemConfig().get(i);
+                cardShopController.setData(prod,main.game.main_shop.getPrice(prod.getName()), main.game.main_shop.getQuantity(prod.getName()));
 
                 // Add the anchorPane to the GridPane
                 shop_grid.add(anchorPane, column, row);
