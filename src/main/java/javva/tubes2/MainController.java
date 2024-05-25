@@ -134,7 +134,11 @@ public class MainController implements Initializable  {
     }
     @FXML
     void loadState(ActionEvent event) {
+        load_controller.setGameMaster(this.game);
+        load_controller.load();
         load_state_stage.show();
+        renderField(game.current_player);
+        renderActiveDeck(game.current_player);
     }
     @FXML
     void saveState(ActionEvent event) {

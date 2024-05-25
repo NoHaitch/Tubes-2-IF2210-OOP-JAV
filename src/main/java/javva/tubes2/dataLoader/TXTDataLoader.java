@@ -126,7 +126,6 @@ public class TXTDataLoader implements DataLoader {
      * Save game data to file
      *
      * @param file_path relative path to result folder
-     * @param shop Shop object
      * @param current_turn current game turn
      * @throws Exception file not found, failed to save
      */
@@ -193,7 +192,6 @@ public class TXTDataLoader implements DataLoader {
         List<Product> product_config = card_config.getProductConfig();
         List<Item> item_config = card_config.getItemConfig();
 
-        List<Card> active_cards = new ArrayList<>(6);
         Map<Integer, String> temp_active_name = new HashMap<>();
 
         // get active card data
@@ -204,60 +202,60 @@ public class TXTDataLoader implements DataLoader {
         }
 
         // place on active deck
-        for (int i = 0; i < 6; i++) {
-            if (temp_active_name.containsKey(i)) {
-                boolean found = false;
-                for (Animal animal : animal_config) {
-                    if (animal.getName().equalsIgnoreCase(temp_active_name.get(i))) {
-                        Animal new_animal = new Animal(animal);
-                        player.addToActiveDeck(new_animal, i);
-                        found = true;
-                        break;
-                    }
-                }
-
-                for (Plants plant : plant_config) {
-                    if (found) {
-                        break;
-                    }
-
-                    if (plant.getName().equalsIgnoreCase(temp_active_name.get(i))) {
-                        Plants new_plant = new Plants(plant);
-                        player.addToActiveDeck(new_plant, i);
-                        found = true;
-                        break;
-                    }
-                }
-
-                for (Product product : product_config) {
-                    if (found) {
-                        break;
-                    }
-
-                    if (product.getName().equalsIgnoreCase(temp_active_name.get(i))) {
-                        Product new_product = new Product(product);
-                        player.addToActiveDeck(new_product, i);
-                        found = true;
-                        break;
-                    }
-                }
-
-                for (Item item : item_config) {
-                    if (found) {
-                        break;
-                    }
-
-                    if (item.getName().equalsIgnoreCase(temp_active_name.get(i))) {
-                        Item new_item = new Item(item);
-                        player.addToActiveDeck(new_item, i);
-                        break;
-                    }
-                }
-
-                if (!found) {
-                    throw new Exception("Card not found");
+        for (Integer location: temp_active_name.keySet()) {
+            boolean found = false;
+            for (Animal animal : animal_config) {
+                if (Objects.equals(animal.getName(), temp_active_name.get(location))) {
+                    Animal new_animal = new Animal(animal);
+                    player.addToActiveDeck(new_animal, location-1);
+                    found = true;
+                    break;
                 }
             }
+
+            for (Plants plant : plant_config) {
+                if (found) {
+                    break;
+                }
+
+                if (Objects.equals(plant.getName(), temp_active_name.get(location))) {
+                    Plants new_plant = new Plants(plant);
+                    player.addToActiveDeck(new_plant, location-1);
+                    found = true;
+                    break;
+                }
+            }
+
+            for (Product product : product_config) {
+                if (found) {
+                    break;
+                }
+
+                if (Objects.equals(product.getName(), temp_active_name.get(location))) {
+                    Product new_product = new Product(product);
+                    player.addToActiveDeck(new_product, location-1);
+                    found = true;
+                    break;
+                }
+            }
+
+            for (Item item : item_config) {
+                if (found) {
+                    break;
+                }
+
+                if (Objects.equals(item.getName(), temp_active_name.get(location))) {
+                    Item new_item = new Item(item);
+                    player.addToActiveDeck(new_item, location-1);
+                    found = true;
+                    break;
+                }
+            }
+
+            if (!found) {
+                throw new Exception("Card not found");
+            }
+
         }
 
         // get field card amount

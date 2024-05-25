@@ -33,7 +33,7 @@ public class SaveController implements Initializable {
     @FXML
     private Button save_button;
 
-    private SaveManager save_manager = SaveManager.getInstance(); ;
+    private SaveManager save_manager = SaveManager.getInstance();
 
     private GameMaster game_master ;
 

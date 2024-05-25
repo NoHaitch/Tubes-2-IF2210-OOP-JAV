@@ -132,7 +132,6 @@ public class SaveManager {
 
         try {
             DataLoader dataLoader = (DataLoader) dataLoaderClass.getDeclaredConstructor().newInstance();
-
             return dataLoader.loadPlayer(folder_path + "/" + filename + "." + format);
 
         } catch (Throwable e) {

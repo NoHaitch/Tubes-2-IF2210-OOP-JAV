@@ -29,7 +29,7 @@ public class Player {
         for (int i = 0 ; i < 6 ; i++) {
             active_deck.add(new NullCard()) ;
         }
-        field = new Field(20);        
+        field = new Field(20);
     }
 
     public Field getField() {
