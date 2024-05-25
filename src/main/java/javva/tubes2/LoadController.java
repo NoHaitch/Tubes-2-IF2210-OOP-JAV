@@ -34,7 +34,8 @@ public class LoadController implements Initializable {
 
     private SaveManager load_manager = SaveManager.getInstance();
 
-    private GameMaster game;
+    public static MainController main;
+
 
     @FXML
     private void close() {
@@ -51,10 +52,7 @@ public class LoadController implements Initializable {
     }
 
 
-    public void setGameMaster(GameMaster game) {
-        this.game = game;
-    }
-
+    @FXML
     public void load(){
         // Check text fields
         String path = folder_box.getText();
@@ -73,34 +71,33 @@ public class LoadController implements Initializable {
 
         // load player 1
         try {
-            game.player1 = load_manager.loadPlayer(path, "player1",format );
+            main.game.player1 = load_manager.loadPlayer(path, "player1",format );
         } catch (Exception e) {
             information.setText("Failed to load Player 1");
             information.setStyle("-fx-text-fill: red");
-//            e.printStackTrace();
-
-//            return ;
+            return ;
         }
         // load player 2
         try{
-            game.player2 = load_manager.loadPlayer(path,"player2", format);
+            main.game.player2 = load_manager.loadPlayer(path,"player2", format);
+            System.out.println("GULDEN 2 " +main.game.player2.getGulden());
         }catch(Exception e){
             information.setText("Failed to load Player 2");
             information.setStyle("-fx-text-fill: red");
         }
         // load gamestate (load turn)
         try{
-            game.turn = (int) load_manager.loadGameState(path, format);
+            main.game.turn = (int) load_manager.loadGameState(path, format);
         }catch (Exception e){
             information.setText("Failed to load Game State");
             information.setStyle("-fx-text-fill: red");
-//            e.printStackTrace();
-
-//            return;
+            return;
         }
-        System.out.println("Uang player 1 " + game.player1.getGulden());
-        System.out.println("Uang player 2 " + game.player2.getGulden());
+        information.setText("File " + path + "." + format + " loaded successfully");
+        information.setStyle("-fx-text-fill: #0eab79");
 
+        main.renderField(main.game.current_player);
+        main.renderActiveDeck(main.game.current_player);
 
 
 

@@ -29,6 +29,8 @@ public class MainController implements Initializable  {
     // Constant
     public static String BEARZONE = "FDC7C7";
 
+
+
     // GridPanes
     @FXML
     private GridPane active_deck;
@@ -90,6 +92,7 @@ public class MainController implements Initializable  {
     public GameMaster game;
     private Boolean field_shown = true;
 
+
     //  Methods
     // Buttons
     @FXML
@@ -134,12 +137,10 @@ public class MainController implements Initializable  {
     }
     @FXML
     void loadState(ActionEvent event) {
-        load_controller.setGameMaster(this.game);
         load_controller.load();
         load_state_stage.show();
-        renderField(game.current_player);
-        renderActiveDeck(game.current_player);
     }
+
     @FXML
     void saveState(ActionEvent event) {
         save_controller.setGameMaster(this.game);
@@ -227,6 +228,8 @@ public class MainController implements Initializable  {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        LoadController.main = this;
+
         game = new GameMaster();
         my_field_button.setDisable(true);
 
@@ -248,7 +251,7 @@ public class MainController implements Initializable  {
         }
 
         player_1.setText(game.player1.getGulden() + "");
-        player_2.setText(game.player1.getGulden() + "");
+        player_2.setText(game.player2.getGulden() + "");
 
         turn_label.setText(game.turn + "");
 
