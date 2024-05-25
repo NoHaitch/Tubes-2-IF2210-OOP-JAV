@@ -16,10 +16,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 import javva.tubes2.Card.*;
+import javva.tubes2.GameMaster.*;
 
 public class ShuffleCardController implements Initializable {
     private List<Card> cards = new ArrayList<>();
     private List<CardController> controllers = new ArrayList<>();
+
+    MainController main;
 
     @FXML
     private GridPane card_grid;
@@ -29,13 +32,26 @@ public class ShuffleCardController implements Initializable {
 
     @FXML
     void reShuffle(ActionEvent event) {
+        try {
+            cards = main.game.current_player.drawCards();
+            setData(cards);
 
+        } catch (Throwable e){
+
+        }
     }
 
     @FXML
     void close() {
         // Get the current stage using the button's scene
         Stage stage = (Stage) done_button.getScene().getWindow();
+        main.game.current_player.drawToActiveDeck(cards);
+
+        for(int i = 0 ; i < 6 ; i++){
+            main.active_deck_controllers.get(i).setData(main.game.current_player.getActiveDeck().get(i));
+        }
+
+        main.renderActiveDeck(main.game.current_player);
         // Close the current stage
         stage.close();
     }
@@ -47,6 +63,7 @@ public class ShuffleCardController implements Initializable {
     }
 
     public void setData(List<Card> cards) {
+        this.cards = cards;
         emptyField();
         for (int i = 0; i < cards.size(); i++) {
             controllers.get(i).setData(cards.get(i));

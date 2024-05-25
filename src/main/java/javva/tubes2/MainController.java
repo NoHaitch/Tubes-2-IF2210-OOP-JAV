@@ -80,14 +80,14 @@ public class MainController implements Initializable  {
     private Stage load_plugin_stage = new Stage();
     private Stage shuffle_stage = new Stage();
     private List<CardController> field_controllers = new ArrayList<>();
-    private List<CardController> active_deck_controllers = new ArrayList<>();
     private ShopController shop_controller = new ShopController();
     private PluginController plugin_controller = new PluginController();
     private LoadController load_controller = new LoadController();
     private SaveController save_controller = new SaveController();
     private ShuffleCardController shuffle_controller = new ShuffleCardController();
-
-    private GameMaster game;
+    
+    public List<CardController> active_deck_controllers = new ArrayList<>();
+    public GameMaster game;
     private Boolean field_shown = true;
 
     //  Methods
@@ -112,6 +112,13 @@ public class MainController implements Initializable  {
             player2_color.setStyle("-fx-background-color: #F3FFEF;");
         }
         game.changeTurn();
+
+        try{
+            callShuffle(game.current_player.drawCards());
+
+        } catch (Exception e){
+
+        }
 
         turn_label.setText(game.turn + "");
         renderField(game.current_player);
@@ -190,6 +197,7 @@ public class MainController implements Initializable  {
     public void safeDeck(){
         ArrayList<Card> temp_active_deck = new ArrayList<>();
         for(int i = 0 ; i < active_deck_controllers.size() ; i++){
+            System.out.println(active_deck_controllers.get(i).getCard().getName());
             if(!active_deck_controllers.get(i).getCard().getName().equals("null")){
                 temp_active_deck.add(active_deck_controllers.get(i).getCard());
             } else {
@@ -226,7 +234,9 @@ public class MainController implements Initializable  {
 
 
         try {
+
             callShuffle(game.current_player.drawCards());
+
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -326,6 +336,7 @@ public class MainController implements Initializable  {
         }
 
         shuffle_controller = loader.getController();
+        shuffle_controller.main = this;
 
         // Membuat stage baru untuk popup
 
@@ -419,6 +430,7 @@ public class MainController implements Initializable  {
                 AnchorPane anchorPane = fxmlLoader.load();
 
                 CardController cardController = fxmlLoader.getController();
+                System.out.println(player.getActiveDeck().get(i));
                 cardController.setData(player.getActiveDeck().get(i));
 
                 // adding card controller to further manipulation

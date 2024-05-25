@@ -110,7 +110,7 @@ public class Player {
             }
             for (int i = 0 ; i < cards.size() ; i++) {
                 try {
-                    // System.out.println(cards.get(i).getName()) ;
+                    System.out.println(cards.get(i).getName()) ;
                     addToActiveDeck(cards.get(i));
                 }
                 catch(Throwable e) {

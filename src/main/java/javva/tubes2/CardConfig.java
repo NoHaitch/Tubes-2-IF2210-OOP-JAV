@@ -27,8 +27,8 @@ public class CardConfig {
         productConfig.addLast(new Product("Strawberry", "Vegetable", "", 5, 350));
 
         animalConfig = new ArrayList<>();
-        animalConfig.addLast(new Animal("LandShark", "Carnivore", "", new Product("SharkFin", "Product", "", 12, 500), 0, 20));
-        animalConfig.addLast(new Animal("Cow", "Herbivore", "", new Product("Milk", "Product", "", 4, 100), 0, 10));
+        animalConfig.addLast(new Animal("LandShark", "Carnivore", "/javva/tubes2/images/Hewan/hiu_darat.png", new Product("SharkFin", "Product", "", 12, 500), 0, 20));
+        animalConfig.addLast(new Animal("Cow", "Herbivore", "/javva/tubes2/images/Hewan/cow.png", new Product("Milk", "Product", "", 4, 100), 0, 10));
         animalConfig.addLast(new Animal("Lamb", "Herbivore", "", new Product("LambMeat", "Product", "", 6, 120), 0, 12));
         animalConfig.addLast(new Animal("Horse", "Herbivore", "", new Product("HorseMeat", "Product", "", 8, 150), 0, 14));
         animalConfig.addLast(new Animal("Chicken", "Omnivore", "", new Product("Egg", "Product", "", 2, 50), 0, 5));
