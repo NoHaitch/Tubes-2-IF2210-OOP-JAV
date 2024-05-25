@@ -87,7 +87,8 @@ public class YAMLDataLoader implements DataLoader {
      * @throws Exception file not found, failed to save
      */
     @Override
-    public void saveGameState(String file_path, Shop shop, Integer current_turn) throws Exception {
+    public void saveGameState(String file_path, Integer current_turn) throws Exception {
+        Shop shop = Shop.getInstance();
         Map<String, Object> gameState = new HashMap<>();
         gameState.put("currentTurn", current_turn);
 
@@ -231,7 +232,7 @@ public class YAMLDataLoader implements DataLoader {
      * @throws Exception file not found, failed to load
      */
     @Override
-    public Pair<Shop, Integer> loadGameState(String file_path) throws Exception {
+    public Integer loadGameState(String file_path) throws Exception {
         try (Reader reader = new FileReader(file_path)) {
             Map<String, Object> gameState = yaml.load(reader);
             Shop shop = Shop.getInstance();
@@ -245,7 +246,7 @@ public class YAMLDataLoader implements DataLoader {
                 for (int i = 0; i < amount; i++) shop.addProduct(name);
             }
 
-            return new Pair<>(shop, currentTurn);
+            return currentTurn;
         }
     }
 

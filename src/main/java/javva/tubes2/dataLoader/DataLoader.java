@@ -28,7 +28,7 @@ public interface DataLoader {
      * @param current_turn current game turn
      * @throws Exception file not found, failed to save
      */
-    void saveGameState(String file_path, Shop shop, Integer current_turn) throws Exception;
+    void saveGameState(String file_path, Integer current_turn) throws Exception;
 
     /**
      * Load player data from file
@@ -46,7 +46,7 @@ public interface DataLoader {
      * @return Pair, first is Shop, second is turn
      * @throws Exception file not found, failed to load
      */
-    Pair<Shop, Integer> loadGameState(String file_path) throws Exception;
+    Integer loadGameState(String file_path) throws Exception;
 
     /**
      * @return file format

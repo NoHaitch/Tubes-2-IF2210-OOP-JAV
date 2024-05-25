@@ -138,6 +138,7 @@ public class MainController implements Initializable  {
     }
     @FXML
     void saveState(ActionEvent event) {
+        save_controller.setGameMaster(this.game);
         save_state_stage.show();
     }
     @FXML

@@ -102,7 +102,7 @@ public class SaveManager {
             }
 
             // save game state
-            dataLoader.saveGameState(folder_path + "/gamestate." + format, shop, current_turn);
+            dataLoader.saveGameState(folder_path + "/gamestate." + format, current_turn);
 
             // save player1
             dataLoader.savePlayer(player1, folder_path + "/player1." + format);

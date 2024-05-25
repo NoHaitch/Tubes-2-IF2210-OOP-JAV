@@ -52,7 +52,7 @@
                         </HBox>
                         <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
                            <children>
-                              <Button fx:id="save_button" alignment="CENTER" mnemonicParsing="false" prefHeight="30.0" prefWidth="820.0" styleClass="small_btn" text="Save" HBox.hgrow="ALWAYS">
+                              <Button fx:id="save_button" alignment="CENTER" mnemonicParsing="false" onAction="#save" prefHeight="30.0" prefWidth="820.0" styleClass="small_btn" text="Save" HBox.hgrow="ALWAYS">
                                  <HBox.margin>
                                     <Insets />
                                  </HBox.margin>

@@ -43,23 +43,32 @@ public class TXTDataLoader implements DataLoader {
 
         // get active deck
         List<Card> activeCards = player.getActiveDeck();
-        int activeCardSize = activeCards.size();
+        List<Card> not_null_cards = new ArrayList<>();
+        for(Card card : activeCards) {
+            if(card.getName() != "null"){
+                not_null_cards.add(card);
+            }
+        }
+        int activeCardSize = not_null_cards.size();
 
         // save active card amount
         writer.println(activeCardSize);
 
         // save active cards
         for (int i = 0; i < activeCardSize; i++) {
-            writer.print((i + 1) + " ");
-            writer.println(activeCards.get(i).getName());
+            if(activeCards.get(i).getName() != "null"){
+                writer.print((i + 1) + " ");
+                writer.println(activeCards.get(i).getName());
+            }
         }
 
         // save field card amount
         Field field = player.getField();
+        List<Harvestable> field_cards = field.getContent();
         int count = 0;
-        for (int i = 0; i < 20; i++) {
+        for (int i = 0; i < field_cards.size(); i++) {
             try {
-                Card card = field.getElement(i);
+                Card card = field_cards.get(i);
                 if (!card.getName().equals("null")) {
                     count++;
                 }
@@ -71,11 +80,11 @@ public class TXTDataLoader implements DataLoader {
         writer.println(count);
 
         // save field cards
-        for (int i = 0; i < 20; i++) {
+        for (int i = 0; i < field_cards.size(); i++) {
             try {
-                Card card = field.getElement(i);
-                if (!card.getName().equals("null")) {
-                    count++;
+                Harvestable card = field_cards.get(i);
+                if (card.getName().equals("null")) {
+                    continue;
                 }
 
                 // save item location and name
@@ -122,21 +131,30 @@ public class TXTDataLoader implements DataLoader {
      * @throws Exception file not found, failed to save
      */
     @Override
-    public void saveGameState(String file_path, Shop shop, Integer current_turn) throws Exception {
+    public void saveGameState(String file_path, Integer current_turn) throws Exception {
         // initialize file
         PrintWriter writer = new PrintWriter(file_path);
+        Shop shop = Shop.getInstance();
+
 
         // save current turn
         writer.println(current_turn);
 
         // shop
-        List<Map.Entry<String, Integer>> shop_item_list = shop.getShopItemsList();
+        CardConfig cardConfig = CardConfig.getInstance();
+        List<Product> prouct_config = cardConfig.getProductConfig();
+        List<Product> items = new ArrayList<>();
+        for(Product product : prouct_config) {
+            if(product.getName() != "null" && !shop.isSoldOut(product.getName())){
+                items.add(product);
+            }
+        }
 
         // save amount of shop items
-        writer.println(shop_item_list.size());
+        writer.println(items.size());
 
-        for (Map.Entry<String, Integer> item : shop_item_list) {
-            writer.println(item.getKey() + " " + item.getValue());
+        for (Product item : items) {
+            writer.println(item.getName() + " " + shop.getQuantity(item.getName()));
         }
 
         writer.close();
@@ -326,7 +344,7 @@ public class TXTDataLoader implements DataLoader {
      * @throws Exception file not found, failed to load
      */
     @Override
-    public Pair<Shop, Integer> loadGameState(String file_path) throws Exception {
+    public Integer loadGameState(String file_path) throws Exception {
         // load file
         Scanner scanner = new Scanner(new File(file_path));
 
@@ -349,6 +367,6 @@ public class TXTDataLoader implements DataLoader {
         }
 
         scanner.close();
-        return new Pair<>(shop, turn);
+        return turn;
     }
 }
