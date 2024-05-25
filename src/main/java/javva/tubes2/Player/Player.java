@@ -68,12 +68,6 @@ public class Player {
     
     // return pointer to active_deck. Jadi perubahan yang terjadi akan tersimpan.
     public List<Card> getActiveDeck() {
-        List<Card> result = new ArrayList<>() ;
-        for (int i = 0 ; i < 6 ; i++) {
-            if(!this.active_deck.get(i).getName().equals("null")) {
-                result.add(active_deck.get(i)) ;
-            }
-        }
         return this.active_deck ;
     }
 
@@ -107,13 +101,12 @@ public class Player {
             catch(Throwable e) {
                 System.out.println(e.getMessage()) ;
             }
-            for (int i = 0 ; i < cards.size() ; i++) {
+            for (Card card : cards) {
                 try {
                     // System.out.println(cards.get(i).getName()) ;
-                    addToActiveDeck(cards.get(i));
-                }
-                catch(Throwable e) {
-                    System.out.println(e.getMessage()) ;
+                    addToActiveDeck(card);
+                } catch (Throwable e) {
+                    System.out.println(e.getMessage());
                 }
             }
         }
