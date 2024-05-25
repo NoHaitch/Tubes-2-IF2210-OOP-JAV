@@ -114,7 +114,7 @@ public class Player {
             for (Card card : cards) {
                 try {
                     // System.out.println(cards.get(i).getName()) ;
-                    addToActiveDeck(cards.get(i));
+                    addToActiveDeck(card);
                 }
                 catch(Throwable e) {
                     System.out.println(e.getMessage()) ;
