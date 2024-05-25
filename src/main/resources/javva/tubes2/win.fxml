@@ -3,17 +3,24 @@
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
 
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" styleClass="transparent" stylesheets="@style.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="javva.tubes2.Win">
+<AnchorPane prefHeight="400.0" prefWidth="635.0" styleClass="transparent" stylesheets="@style.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="javva.tubes2.Win">
    <children>
-      <AnchorPane prefHeight="400.0" prefWidth="600.0" styleClass="card" stylesheets="@style.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <AnchorPane prefHeight="400.0" prefWidth="600.0" styleClass="card" stylesheets="@style.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.6666666666667425" AnchorPane.topAnchor="0.0">
          <children>
             <ImageView fitHeight="250.0" fitWidth="329.0" layoutX="142.0" layoutY="77.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@gif.gif" />
                </image>
             </ImageView>
+            <Text fx:id="winner" layoutX="179.0" layoutY="357.0" strokeType="OUTSIDE" strokeWidth="0.0" text="PLAYER 1 WINS !!" textAlignment="CENTER" wrappingWidth="254.13677978515625">
+               <font>
+                  <Font name="Arial Rounded MT Bold" size="25.0" />
+               </font>
+            </Text>
          </children>
       </AnchorPane>
    </children>
