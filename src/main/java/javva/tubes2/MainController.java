@@ -88,7 +88,17 @@ public class MainController implements Initializable  {
     
     public List<CardController> active_deck_controllers = new ArrayList<>();
     public GameMaster game;
-    private Boolean field_shown = true;
+    public Boolean field_shown = true;
+
+    public Boolean isFull(){
+        int count = 0;
+        for(int i = 0 ; i < active_deck_controllers.size() ; i++){
+            if(active_deck_controllers.get(i).card.getName() != "null"){
+                count++;
+            }
+        }
+        return count == 6;
+    }
 
     //  Methods
     // Buttons
@@ -148,6 +158,7 @@ public class MainController implements Initializable  {
         if(!field_shown){
             return;
         } else {
+
         }
         
         saveField();
@@ -405,7 +416,7 @@ public class MainController implements Initializable  {
                     cardController.setType("field");
                 }
                 cardController.setId_field(i);
-                
+                cardController.setContainer("field");
                 // adding card controller for further manipulation
                 field_controllers.add(cardController);
 
@@ -442,6 +453,7 @@ public class MainController implements Initializable  {
                 // adding card controller to further manipulation
                 active_deck_controllers.add(cardController);
                 active_deck_controllers.get(i).setType("deck");
+                cardController.setContainer("deck");
                 // Add the anchorPane to the GridPane
                 active_deck.add(anchorPane, column, row);
 

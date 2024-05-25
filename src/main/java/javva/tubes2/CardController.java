@@ -30,11 +30,21 @@ public class CardController {
     // Attributes
     public Card card;
     private String type = "field";    // field : bisa di drag + liat info, deck : bisa di drag tapi gabisa liat info, view: gabisa diliat infonya dan gabisa di drag
+    private String container = "deck";
     private static Card dragged_item;
+    private static Card bottom_item;
     private static Boolean is_transferable_area = true;
     private static Boolean is_destroyable = false;
     private static Boolean is_area_clear = true;
     public static String GREEN = "#B4FFD6";
+
+    public String getContainer() {
+        return container;
+    }
+
+    public void setContainer(String container) {
+        this.container = container;
+    }
 
     private int id_field = -1;
 
@@ -49,7 +59,7 @@ public class CardController {
     }
     public void dragDetected(MouseEvent event){
 
-        if(type.equals("view")){
+        if(type.equals("view") || !main.field_shown){
             return;
         }
         Dragboard db = card_frame.startDragAndDrop(TransferMode.ANY);
@@ -69,11 +79,32 @@ public class CardController {
         else if (card_image.getImage()!=null){
             is_area_clear = false;
         }
-
+        bottom_item = card;
         // System.out.println("You hovering while dragging on " + card.getName() + is_transferable_area);
         event.acceptTransferModes(TransferMode.ANY);
     }
     public void dragDropped(){
+        System.out.println(bottom_item.getName());
+        System.out.println(dragged_item.getName());
+        if(dragged_item instanceof Product){
+            if(bottom_item instanceof Harvestable){
+                if(bottom_item instanceof Animal){
+                    try {
+                        ((Animal)card).feed((Product)dragged_item);
+                        setData(card);
+                        is_destroyable = true;
+
+                    } catch (Throwable e){
+                        
+                    }
+                }
+            }
+        }
+
+        if(dragged_item instanceof Item){
+            return;
+        }
+
         if  (is_transferable_area && is_area_clear){
             card = dragged_item;
             setData(card);
@@ -136,6 +167,8 @@ public class CardController {
         if (type.equals("view") || type.equals("deck") || card_image.getImage() == null){
             return;
         }
+
+        CardInfoController.full = main.isFull();
 
         FXMLLoader loader = new FXMLLoader(CardController.class.getResource("card-info.fxml"));
         Parent root = null;

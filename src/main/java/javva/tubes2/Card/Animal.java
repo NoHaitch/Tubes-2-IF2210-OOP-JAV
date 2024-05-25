@@ -58,7 +58,7 @@ public class Animal extends Harvestable{
         return !isHarvestReady();
     }
 
-    public void feed(Product feed){
+    public void feed(Product feed) throws Throwable{
         if(getType().equals("Carnivore")){
             if(feed.getType().equals("Meat")){
                 weight += feed.getAddedWeight();
@@ -73,8 +73,11 @@ public class Animal extends Harvestable{
             }
         }
 
-        if(feed.getType().equals("Vegetable") || feed.getType().equals("Meat")){
+        if(getType().equals("Omnivore")){
             weight += feed.getAddedWeight();
+            return;
         }
+
+        throw new Exception("Salah makan bro");
     }
 }

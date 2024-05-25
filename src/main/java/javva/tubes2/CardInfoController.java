@@ -34,6 +34,7 @@ public class CardInfoController {
     private Button panen_button;
 
     public static MainController main;
+    public static Boolean full = false;
 
     private Card card;
     private Integer id = -1;
@@ -55,14 +56,34 @@ public class CardInfoController {
             Animal add = (Animal)card;
             item_weight.setText(" "+ add.getWeight() + " / " + add.getHarvestWeight());
             tipe.setText("Weight");
+
+            if(add.isHarvestReady()){
+                panen_button.setDisable(false);
+            } else {
+                panen_button.setDisable(true);
+            }
         }
 
         if(card instanceof Plants){
             Plants add = (Plants)card;
             item_weight.setText(" "+ add.getProgress() + " / " + add.getHarvestLimit());
             tipe.setText("Growth");
+            
+            if(add.isHarvestReady()){
+                if(full){
+                    panen_button.setDisable(true);
+                } else {
+                    panen_button.setDisable(false);
+                }
+            } else {
+                panen_button.setDisable(true);
+            }
         }
         
+        if(!main.field_shown){
+            panen_button.setDisable(true);
+        }
+
         try{
             Image image = new Image(getClass().getResourceAsStream((card.getPath())));
             item_image.setImage(image);
@@ -98,9 +119,13 @@ public class CardInfoController {
             main.renderActiveDeck(main.game.current_player);
             main.saveField();
             main.saveDeck();
+            
         } catch (Throwable e){
-
+            
         }
+        Stage stage = (Stage) back_button.getScene().getWindow();
+        // Close the current stage
+        stage.close();
     }
 
 }
