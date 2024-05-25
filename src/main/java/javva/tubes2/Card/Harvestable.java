@@ -1,6 +1,6 @@
 package javva.tubes2.Card;
 
-public class Harvestable extends Card{
+public abstract class Harvestable extends Card{
     protected Product product;
     private Boolean protect;
     private Boolean trap;
