@@ -39,7 +39,7 @@ public class MainController implements Initializable  {
 
     // Labels
     @FXML
-    private Label active_deck_number;
+    public Label active_deck_number;
     @FXML
     private Label player_1;
     @FXML
@@ -94,8 +94,8 @@ public class MainController implements Initializable  {
     // Buttons
     @FXML
     void nextTurn(ActionEvent event) {
-        safeField();
-        safeDeck();
+        saveField();
+        saveDeck();
 
         resetAll();
 
@@ -111,11 +111,12 @@ public class MainController implements Initializable  {
             player1_color.setStyle("-fx-background-color: #ffbf00;");
             player2_color.setStyle("-fx-background-color: #F3FFEF;");
         }
+        game.player1.getField().updatePlant();
+        game.player2.getField().updatePlant();
         game.changeTurn();
 
         try{
             callShuffle(game.current_player.drawCards());
-
         } catch (Exception e){
 
         }
@@ -149,7 +150,7 @@ public class MainController implements Initializable  {
         } else {
         }
         
-        safeField();
+        saveField();
 
         field_shown = false;
         field_controllers.clear();
@@ -180,7 +181,7 @@ public class MainController implements Initializable  {
 
 
     // Game utility
-    public void safeField(){
+    public void saveField(){
         if(field_shown){
                 ArrayList<Harvestable> temp_field = new ArrayList<>();
                 for(int i = 0 ; i < field_controllers.size() ; i++){
@@ -194,15 +195,14 @@ public class MainController implements Initializable  {
             }
         }
 
-    public void safeDeck(){
+    public void saveDeck(){
         ArrayList<Card> temp_active_deck = new ArrayList<>();
         for(int i = 0 ; i < active_deck_controllers.size() ; i++){
-            System.out.println(active_deck_controllers.get(i).getCard().getName());
-            if(!active_deck_controllers.get(i).getCard().getName().equals("null")){
+            // if(!active_deck_controllers.get(i).getCard().getName().equals("null")){
                 temp_active_deck.add(active_deck_controllers.get(i).getCard());
-            } else {
-                temp_active_deck.add(new NullCard());
-            }  
+            // } else {
+                // temp_active_deck.add(new NullCard());
+            // }  
         }
         game.current_player.setActive_deck(temp_active_deck);
     }
@@ -232,6 +232,7 @@ public class MainController implements Initializable  {
         renderShop();
         renderShuffle();
 
+        active_deck_number.setText("Deck Count : " + game.avail_deck_count);
 
         try {
 
@@ -422,6 +423,7 @@ public class MainController implements Initializable  {
     public void renderActiveDeck(Player player){
         try {
             active_deck.getChildren().clear();
+            active_deck_controllers.clear();
             Integer column = 0;
             Integer row = 0;
             for (int i = 0; i < 6; i++) {
@@ -430,7 +432,6 @@ public class MainController implements Initializable  {
                 AnchorPane anchorPane = fxmlLoader.load();
 
                 CardController cardController = fxmlLoader.getController();
-                System.out.println(player.getActiveDeck().get(i));
                 cardController.setData(player.getActiveDeck().get(i));
 
                 // adding card controller to further manipulation

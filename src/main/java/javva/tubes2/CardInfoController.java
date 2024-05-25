@@ -28,7 +28,11 @@ public class CardInfoController {
     private Label items_active;
 
     @FXML
+    private Label tipe;
+
+    @FXML
     private Button panen_button;
+
 
     private Card card;
 
@@ -37,6 +41,18 @@ public class CardInfoController {
     public void setData(Card card){
         this.card = card;
         item_name.setText(card.getName());
+        if(card instanceof Animal){
+            Animal add = (Animal)card;
+            item_weight.setText(" "+ add.getWeight() + " / " + add.getHarvestWeight());
+            tipe.setText("Weight");
+        }
+
+        if(card instanceof Plants){
+            Plants add = (Plants)card;
+            item_weight.setText(" "+ add.getProgress() + " / " + add.getHarvestLimit());
+            tipe.setText("Growth");
+        }
+        
         try{
             Image image = new Image(getClass().getResourceAsStream((card.getPath())));
             item_image.setImage(image);

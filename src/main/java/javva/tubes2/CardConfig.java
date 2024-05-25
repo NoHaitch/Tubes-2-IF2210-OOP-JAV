@@ -37,7 +37,7 @@ public class CardConfig {
         plantConfig = new ArrayList<>();
         plantConfig.addLast(new Plants("CornSeed", "Plant", "/javva/tubes2/images/Tanaman/corn seeds.png", new Product("Corn", "Product", "", 3, 150), 3));
         plantConfig.addLast(new Plants("PumpkinSeed", "Plant", "/javva/tubes2/images/Tanaman/pumpkin seeds.png", new Product("Pumpkin", "Product", "", 10, 500), 5));
-        plantConfig.addLast(new Plants("StrawberrySeed", "Plant", "/javva/tubes2/images/Tanaman/strawberry seed.png", new Product("Strawberry", "Product", "", 5, 350), 4));
+        plantConfig.addLast(new Plants("StrawberrySeed", "Plant", "/javva/tubes2/images/Tanaman/strawberry seeds.png", new Product("Strawberry", "Product", "", 5, 350), 4));
 
         itemConfig = new ArrayList<>() ;
         itemConfig.addLast(new Item("Accelerate", "Item", "/javva/tubes2/images/Item/Accelerate.png"));
