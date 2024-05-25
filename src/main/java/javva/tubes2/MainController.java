@@ -454,9 +454,12 @@ public class MainController implements Initializable  {
                 cardController.setData(player.getActiveDeck().get(i));
 
                 // adding card controller to further manipulation
-                active_deck_controllers.add(cardController);
-                active_deck_controllers.get(i).setType("deck");
                 cardController.setContainer("deck");
+                cardController.setId_deck(i);
+                cardController.setType("deck");
+
+                active_deck_controllers.add(cardController);
+
                 // Add the anchorPane to the GridPane
                 active_deck.add(anchorPane, column, row);
 
@@ -500,58 +503,4 @@ public class MainController implements Initializable  {
             field.setCardBackground(null);
         }
     }
-
-    // Generate
-    private List<Card> generateRandom(int len){
-        List<Card> cards = new ArrayList<>();
-        for(int i = 0; i<len; i++){
-            Card card = new Card("","","");
-            // Generate random number
-            Random random = new Random();
-            int min = 1;
-            int max = 6;
-            int randomInRange = random.nextInt(max - min + 1) + min;
-            switch(randomInRange){
-                case 1:
-                    card.setName("Chicken");
-                    card.setPath("/javva/tubes2/images/Hewan/chicken.png");
-                    cards.add(card);
-                    System.out.println("Chicken");
-                    break;
-                case 2:
-                    card.setName("Bear");
-                    card.setPath("/javva/tubes2/images/Hewan/bear.png");
-                    cards.add(card);
-                    System.out.println("Bear");
-                    break;
-                case 3:
-                    card.setName("Cow");
-                    card.setPath("/javva/tubes2/images/Hewan/cow.png");
-                    cards.add(card);
-                    System.out.println("Cow");
-                    break;
-                case 4:
-                    card.setName("Hiu Darat");
-                    card.setPath("/javva/tubes2/images/Hewan/hiu_darat.png");
-                    cards.add(card);
-                    System.out.println("Shark");
-                    break;
-                case 5:
-                    card.setName("Horse");
-                    card.setPath("/javva/tubes2/images/Hewan/horse.png");
-                    cards.add(card);
-                    System.out.println("Horse");
-                    break;
-                case 6:
-                    card.setName("Sheep");
-                    card.setPath("/javva/tubes2/images/Hewan/sheep.png");
-                    cards.add(card);
-                    System.out.println("Sheep");
-                    break;
-            }
-
-        }
-        return cards;
-    }
-
 }

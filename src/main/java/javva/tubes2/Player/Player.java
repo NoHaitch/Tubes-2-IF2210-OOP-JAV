@@ -293,7 +293,7 @@ public class Player {
                 } 
             }
             else if (active_deck.get(index).getName().equals("InstantHarvest")) {
-                boolean result = tPlayer.getField().useDelay(field_index) ;
+                boolean result = tPlayer.getField().useInstantHarvest(field_index) ;
                 if (result) {
                     removeFromActiveDeck(index);
                     harvest(field_index);
