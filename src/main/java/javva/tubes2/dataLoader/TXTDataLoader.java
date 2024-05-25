@@ -170,12 +170,11 @@ public class TXTDataLoader implements DataLoader {
 
         // get active cards
         CardConfig card_config = CardConfig.getInstance();
-        List<Animal> animal_config = card_config.getAnimalConfig();
-        List<Plants> plant_config = card_config.getPlantConfig();
-        List<Product> product_config = card_config.getProductConfig();
-        List<Item> item_config = card_config.getItemConfig();
+        Set<Animal> animal_config = card_config.getAnimalConfig();
+        Set<Plants> plant_config = card_config.getPlantConfig();
+        Set<Product> product_config = card_config.getProductConfig();
+        Set<Item> item_config = card_config.getItemConfig();
 
-        List<Card> active_cards = new ArrayList<>(6);
         Map<Integer, String> temp_active_name = new HashMap<>();
 
         // get active card data

@@ -20,9 +20,9 @@ public class Deck {
 
     public Deck(int capacity) {
         CardConfig cardConfig = CardConfig.getInstance() ;
-        animal = cardConfig.getAnimalConfig() ;
-        plants = cardConfig.getPlantConfig() ;
-        item = cardConfig.getItemConfig() ;
+        animal = cardConfig.getAnimalConfig().stream().toList();
+        plants = cardConfig.getPlantConfig().stream().toList();
+        item = cardConfig.getItemConfig().stream().toList();
 
         deck = new ArrayList<>() ;
         deck.addAll(animal) ;
