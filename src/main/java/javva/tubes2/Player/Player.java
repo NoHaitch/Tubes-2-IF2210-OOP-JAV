@@ -39,6 +39,16 @@ public class Player {
         this.field = field;
     }
 
+    public void addField(int card_index, int field_index) {
+        try {
+            this.field.addElement((Harvestable)this.active_deck.get(card_index), field_index);
+            removeFromActiveDeck(card_index);
+        }
+        catch(Throwable e) {
+            System.out.println(e.getMessage()) ;
+        }
+    }
+
     public void addField(Card stuff, int index) {
         try {
             this.field.addElement((Harvestable)stuff, index);
@@ -104,9 +114,10 @@ public class Player {
             for (Card card : cards) {
                 try {
                     // System.out.println(cards.get(i).getName()) ;
-                    addToActiveDeck(card);
-                } catch (Throwable e) {
-                    System.out.println(e.getMessage());
+                    addToActiveDeck(cards.get(i));
+                }
+                catch(Throwable e) {
+                    System.out.println(e.getMessage()) ;
                 }
             }
         }
@@ -141,7 +152,7 @@ public class Player {
     }
 
     public void removeFromActiveDeck(int index) throws IndexInvalid{
-        if (index >= 0 && index < countActiveCard()) {
+        if (index >= 0 && index < 6) {
             this.active_deck.remove(index) ;
             this.active_deck.add(new NullCard()) ;
         }
@@ -172,7 +183,7 @@ public class Player {
 
     public void harvest(int index) {
         try {
-            if (countActiveCard() <= 0) {
+            if (countActiveCard() >= 6) {
                 throw new ActiveDeckFull() ;
             }
             Product newProduct = this.field.getAndRemove(index) ;
@@ -191,16 +202,6 @@ public class Player {
             Animal animal = (Animal)this.field.getElement(animal_index) ;
             Product food = (Product)this.active_deck.get(food_index) ;
             animal.feed(food) ;
-        }
-        catch(Throwable e) {
-            System.out.println(e.getMessage()) ;
-        }
-    }
-
-    public void addToField(int card_index, int field_index) {
-        try {
-            this.field.addElement((Harvestable)this.active_deck.get(card_index), field_index);
-            removeFromActiveDeck(card_index);
         }
         catch(Throwable e) {
             System.out.println(e.getMessage()) ;

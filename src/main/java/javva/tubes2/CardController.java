@@ -130,7 +130,7 @@ public class CardController {
 
     // RENDERS
     public void showInfo() {
-        if (type.equals("view") || type.equals("deck")){
+        if (type.equals("view") || type.equals("deck") || card_image.getImage() == null){
             return;
         }
 

@@ -96,6 +96,14 @@ public class Field extends Thread{
         return ret;
     }
 
+    public void updatePlant(){
+        for(int i = 0 ; i < content.size() ; i++){
+            if(content.get(i) instanceof Plants){
+                ((Plants)content.get(i)).grow();
+            }
+        }
+    }
+
     public ArrayList<Product> harvestAll(){
         ArrayList<Product> harvestret = new ArrayList<>();
 
@@ -342,7 +350,6 @@ public class Field extends Thread{
     public synchronized void printContent(){
         if(bear_attack){
             try {
-                System.out.println("nigga");
                 wait();
             } catch (Throwable e){
 

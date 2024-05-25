@@ -34,10 +34,12 @@ public class MainController implements Initializable  {
     private GridPane active_deck;
     @FXML
     private GridPane field;
+    @FXML
+    private GridPane card_grid;
 
     // Labels
     @FXML
-    private Label active_deck_number;
+    public Label active_deck_number;
     @FXML
     private Label player_1;
     @FXML
@@ -78,22 +80,22 @@ public class MainController implements Initializable  {
     private Stage load_plugin_stage = new Stage();
     private Stage shuffle_stage = new Stage();
     private List<CardController> field_controllers = new ArrayList<>();
-    private List<CardController> active_deck_controllers = new ArrayList<>();
     private ShopController shop_controller = new ShopController();
     private PluginController plugin_controller = new PluginController();
     private LoadController load_controller = new LoadController();
     private SaveController save_controller = new SaveController();
     private ShuffleCardController shuffle_controller = new ShuffleCardController();
-
-    private GameMaster game;
+    
+    public List<CardController> active_deck_controllers = new ArrayList<>();
+    public GameMaster game;
     private Boolean field_shown = true;
 
     //  Methods
     // Buttons
     @FXML
     void nextTurn(ActionEvent event) {
-        safeField();
-        safeDeck();
+        saveField();
+        saveDeck();
 
         resetAll();
 
@@ -109,11 +111,19 @@ public class MainController implements Initializable  {
             player1_color.setStyle("-fx-background-color: #ffbf00;");
             player2_color.setStyle("-fx-background-color: #F3FFEF;");
         }
+        game.player1.getField().updatePlant();
+        game.player2.getField().updatePlant();
         game.changeTurn();
+
+        try{
+            callShuffle(game.current_player.drawCards());
+        } catch (Exception e){
+
+        }
 
         turn_label.setText(game.turn + "");
         renderField(game.current_player);
-        renderDeck(game.current_player);
+        renderActiveDeck(game.current_player);
     }
     @FXML
     void loadPlugin(ActionEvent event) {
@@ -124,41 +134,23 @@ public class MainController implements Initializable  {
     }
     @FXML
     void loadState(ActionEvent event) {
-        load_plugin_button.setDisable(false);
-        enemy_field_button.setDisable(false);
-//        load_state_button.setDisable(true);
-        my_field_button.setDisable(false);
-        save_state_button.setDisable(false);
-        shop_button.setDisable(false);
-
         load_state_stage.show();
     }
     @FXML
     void saveState(ActionEvent event) {
-        load_plugin_button.setDisable(false);
-        enemy_field_button.setDisable(false);
-        load_state_button.setDisable(false);
-        my_field_button.setDisable(false);
-//        save_state_button.setDisable(true);
-        shop_button.setDisable(false);
-
         save_state_stage.show();
     }
     @FXML
     void showEnemyField(ActionEvent event) {
-        load_plugin_button.setDisable(false);
         enemy_field_button.setDisable(true);
-        load_state_button.setDisable(false);
         my_field_button.setDisable(false);
-        save_state_button.setDisable(false);
-        shop_button.setDisable(false);
 
         if(!field_shown){
             return;
         } else {
         }
         
-        safeField();
+        saveField();
 
         field_shown = false;
         field_controllers.clear();
@@ -170,12 +162,8 @@ public class MainController implements Initializable  {
     }
     @FXML
     void showMyField(ActionEvent event) {
-        load_plugin_button.setDisable(false);
-        enemy_field_button.setDisable(false);
-        load_state_button.setDisable(false);
         my_field_button.setDisable(true);
-        save_state_button.setDisable(false);
-        shop_button.setDisable(false);
+        enemy_field_button.setDisable(false);
 
         if(field_shown){
             return;
@@ -187,19 +175,13 @@ public class MainController implements Initializable  {
     }
     @FXML
     void showShop(ActionEvent event) {
-        load_plugin_button.setDisable(false);
-        enemy_field_button.setDisable(false);
-        load_state_button.setDisable(false);
-        my_field_button.setDisable(false);
-        save_state_button.setDisable(false);
-//        shop_button.setDisable(true);
         stage_shop.show();
 
     }
 
 
     // Game utility
-    public void safeField(){
+    public void saveField(){
         if(field_shown){
                 ArrayList<Harvestable> temp_field = new ArrayList<>();
                 for(int i = 0 ; i < field_controllers.size() ; i++){
@@ -213,14 +195,14 @@ public class MainController implements Initializable  {
             }
         }
 
-    public void safeDeck(){
+    public void saveDeck(){
         ArrayList<Card> temp_active_deck = new ArrayList<>();
         for(int i = 0 ; i < active_deck_controllers.size() ; i++){
-            if(!active_deck_controllers.get(i).getCard().getName().equals("null")){
+            // if(!active_deck_controllers.get(i).getCard().getName().equals("null")){
                 temp_active_deck.add(active_deck_controllers.get(i).getCard());
-            } else {
-                temp_active_deck.add(new NullCard());
-            }  
+            // } else {
+                // temp_active_deck.add(new NullCard());
+            // }  
         }
         game.current_player.setActive_deck(temp_active_deck);
     }
@@ -243,12 +225,23 @@ public class MainController implements Initializable  {
         game = new GameMaster();
         my_field_button.setDisable(true);
 
-        renderIntitiate();
+        renderInitiate();
         renderLoadState();
         renderLoadPlugin();
         renderSaveState();
         renderShop();
         renderShuffle();
+
+        active_deck_number.setText("Deck Count : " + game.avail_deck_count);
+
+        try {
+
+            callShuffle(game.current_player.drawCards());
+
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+
         player_1.setText(game.player1.getGulden() + "");
         player_2.setText(game.player1.getGulden() + "");
 
@@ -256,17 +249,6 @@ public class MainController implements Initializable  {
 
         player1_color.setStyle("-fx-background-color: #ffbf00;");
 
-        // Testing buat render active deck
-        for (int i = 0; i < 6; i++) {
-            Card change = new Animal("Chicken", "Animal", "/javva/tubes2/images/Hewan/chicken.png", null, 0, 0);
-            // change.setName("Chicken");
-            // change.setPath("/javva/tubes2/images/Hewan/chicken.png");
-            setActiveDeckCard(i, change);
-        }
-
-        javafx.application.Platform.runLater(() -> {
-            shuffle_stage.show();
-        });
 
     }
 
@@ -355,6 +337,7 @@ public class MainController implements Initializable  {
         }
 
         shuffle_controller = loader.getController();
+        shuffle_controller.main = this;
 
         // Membuat stage baru untuk popup
 
@@ -366,6 +349,13 @@ public class MainController implements Initializable  {
         // Tampilkan popup
 //        popupStage.show();
     }
+    public void callShuffle(List<Card> cards){
+        shuffle_controller.setData(cards);
+        javafx.application.Platform.runLater(() -> {
+            shuffle_stage.show();
+        });
+    }
+
     public void renderShop(){
         FXMLLoader loader = new FXMLLoader(getClass().getResource("shop.fxml"));
         Parent root = null;
@@ -405,8 +395,10 @@ public class MainController implements Initializable  {
 
                 try {
                     cardController.setData(player.getField().getElement(i));
+                    cardController.setType("field");
                 } catch (Throwable e){
                     cardController.setData(new NullCard());
+                    cardController.setType("field");
                 }
                 
                 // adding card controller for further manipulation
@@ -428,9 +420,10 @@ public class MainController implements Initializable  {
         }
     }
 
-    public void renderDeck(Player player){
+    public void renderActiveDeck(Player player){
         try {
             active_deck.getChildren().clear();
+            active_deck_controllers.clear();
             Integer column = 0;
             Integer row = 0;
             for (int i = 0; i < 6; i++) {
@@ -443,6 +436,7 @@ public class MainController implements Initializable  {
 
                 // adding card controller to further manipulation
                 active_deck_controllers.add(cardController);
+                active_deck_controllers.get(i).setType("deck");
                 // Add the anchorPane to the GridPane
                 active_deck.add(anchorPane, column, row);
 
@@ -455,74 +449,10 @@ public class MainController implements Initializable  {
         }
     }
 
-    public void renderIntitiate(){
-        // Rendering the field
-        Boolean game_stopped = false;
-//         try {
-//             Integer column = 0;
-//             Integer row = 0;
-//             for (int i = 0; i < 20; i++) {
-//                 Harvestable empty;
-//                 try {
-//                     empty = game.player1.field.getElement(i);
-//                 } catch (Throwable e){
-//                     empty = new NullCard();
-//                 }
-//                 FXMLLoader fxmlLoader = new FXMLLoader();
-//                 fxmlLoader.setLocation(MainController.class.getResource("card.fxml"));
-//                 AnchorPane anchorPane = fxmlLoader.load();
-
-//                 CardController cardController = fxmlLoader.getController();
-//                 cardController.setData(empty);
-
-//                 // adding card controller for further manipulation
-//                 field_controllers.add(cardController);
-
-//                 // Add the anchorPane to the GridPane
-//                 field.add(anchorPane, column, row);
-
-//                 // Set margin around the anchorPane
-// //                GridPane.setMargin(anchorPane, new Insets(10)); // Set a uniform margin
-//                 column++;
-//                 if (column == 5) {
-//                     column = 0;
-//                     row++;
-//                 }
-//             }
-//         }
-//         catch (IOException e) {
-//             System.out.println("Gagal me-load ladang");
-//         }
+    public void renderInitiate(){
         renderField(game.current_player);
 
-
-        // Rendering active deck
-        try {
-            Integer column = 0;
-            Integer row = 0;
-            for (int i = 0; i < 6; i++) {
-                Card empty = new NullCard();
-                FXMLLoader fxmlLoader = new FXMLLoader();
-                fxmlLoader.setLocation(MainController.class.getResource("card.fxml"));
-                AnchorPane anchorPane = fxmlLoader.load();
-
-                CardController cardController = fxmlLoader.getController();
-                cardController.setData(empty);
-
-                // adding card controller to further manipulation
-                active_deck_controllers.add(cardController);
-                // Add the anchorPane to the GridPane
-                active_deck.add(anchorPane, column, row);
-
-                // Set margin around the anchorPane
-                GridPane.setMargin(anchorPane, new Insets(10)); // Set a uniform margin
-                column ++;
-            }
-        }
-        catch (IOException e) {
-            System.out.println("Gagal me-load deck aktif");
-        }
-
+        renderActiveDeck(game.current_player);
     }
 
     // Getters
