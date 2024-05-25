@@ -3,6 +3,7 @@ package javva.tubes2.dataLoader;
 import java.util.*;
 import java.io.File;
 
+import javafx.util.Pair;
 import javva.tubes2.Player.Player;
 import javva.tubes2.Shop;
 
@@ -148,7 +149,7 @@ public class SaveManager {
      * @return Game object
      * @throws Exception file not found, corrupted save
      */
-    public Object loadGameState(String folder_path, String format) throws Exception {
+    public Pair<Shop, Integer> loadGameState(String folder_path, String format) throws Exception {
         Class<?> dataLoaderClass = getDataLoaderClass(format);
         if (dataLoaderClass == null) {
             throw new Exception("Format not found");

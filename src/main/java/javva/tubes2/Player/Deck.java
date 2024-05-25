@@ -20,9 +20,9 @@ public class Deck {
 
     public Deck(int capacity) {
         CardConfig cardConfig = CardConfig.getInstance() ;
-        animal = cardConfig.getAnimalConfig().stream().toList() ;
-        plants = cardConfig.getPlantConfig().stream().toList() ;
-        item = cardConfig.getItemConfig().stream().toList() ;
+        animal = cardConfig.getAnimalConfig().stream().toList();
+        plants = cardConfig.getPlantConfig().stream().toList();
+        item = cardConfig.getItemConfig().stream().toList();
 
         deck = new ArrayList<>() ;
         deck.addAll(animal) ;
@@ -94,60 +94,4 @@ public class Deck {
 
         this.capacity -= size ;
     }
-
-    // public void shuffleDeck() {
-    //     Collections.shuffle(this.contain) ;
-    // }
-
-    // // Membuang kartu dari deck berdasarkan index
-    // public void removeCard(int index) {
-    //     if (index < this.capacity) {
-    //         this.contain.remove(index) ;
-    //         this.capacity -= 1 ;
-    //     }
-    // }
-
-    // // Membuang sejumlah kartu pertama sebanyak length
-    // public void removeCards(int length) {
-    //     if (length > this.capacity) {
-    //         length = this.capacity ;
-    //     }
-    //     for (int i = 0 ; i < length ; i++) {
-    //         removeCard(i);
-    //     }
-    // }
-
-    // // Menambahkan kartu pada deck
-    // public void addCard(Card card) {
-    //     this.contain.add(card) ;
-    //     this.capacity += 1 ;
-    // }
-
-    // // Mengambil kartu dari atas deck sebanyak length tanpa membuangnya dari deck
-    // public List<Card> drawCards(int length) {
-    //     List<Card> result = new ArrayList<>() ;
-    //     if (length > this.capacity) {
-    //         length = this.capacity ;
-    //     }
-    //     for (int i = 0 ; i < length ; i++) {
-    //         result.add(this.contain.get(i)) ;
-    //     }
-    //     return result ;
-    // }
-
-    // public List<Card> getAllCards() {
-    //     return this.contain ;
-    // }
-
-    // public static void main(String[] args) {
-    //     System.out.println("aa");
-    //     Deck tes = new Deck(5) ;
-    //     List<Card> hand = tes.drawCards(1) ;
-    //     System.out.println(hand.size());
-    //     String name = hand.get(0).getName() ;
-    //     System.out.println(hand.get(0).getName()); 
-
-    //     hand.remove(0) ;
-    //     tes.removeCards(1);
-    // }
 }

@@ -170,12 +170,11 @@ public class TXTDataLoader implements DataLoader {
 
         // get active cards
         CardConfig card_config = CardConfig.getInstance();
-        List<Animal> animal_config = card_config.getAnimalConfig().stream().toList();
-        List<Plants> plant_config = card_config.getPlantConfig().stream().toList();
-        List<Product> product_config = card_config.getProductConfig().stream().toList();
-        List<Item> item_config = card_config.getItemConfig().stream().toList();
+        Set<Animal> animal_config = card_config.getAnimalConfig();
+        Set<Plants> plant_config = card_config.getPlantConfig();
+        Set<Product> product_config = card_config.getProductConfig();
+        Set<Item> item_config = card_config.getItemConfig();
 
-        List<Card> active_cards = new ArrayList<>(6);
         Map<Integer, String> temp_active_name = new HashMap<>();
 
         // get active card data
@@ -278,10 +277,14 @@ public class TXTDataLoader implements DataLoader {
                     new_animal.setWeight(temp_progres.get(i));
 
                     for (String elmt : temp_item.get(i)) {
-                        if (elmt.equalsIgnoreCase("PROTECT")) {
+                        if (Objects.equals(elmt, "PROTECT")) {
                             new_animal.setProtect(true);
-                        } else if (elmt.equalsIgnoreCase("TRAP")) {
+                        } else if (Objects.equals(elmt, "TRAP")) {
                             new_animal.setTrap(true);
+                        } else if (Objects.equals(elmt, "ACCELERATE")) {
+                            new_animal.setWeight(new_animal.getWeight() + 5);
+                        } else if (Objects.equals(elmt, "DELAY")) {
+                            new_animal.setWeight(new_animal.getWeight() - 5);
                         }
                     }
 
@@ -300,10 +303,14 @@ public class TXTDataLoader implements DataLoader {
                     new_plant.setProgress(temp_progres.get(i));
 
                     for (String elmt : temp_item.get(i)) {
-                        if (elmt.equalsIgnoreCase("PROTECT")) {
+                        if (Objects.equals(elmt, "PROTECT")) {
                             new_plant.setProtect(true);
-                        } else if (elmt.equalsIgnoreCase("TRAP")) {
+                        } else if (Objects.equals(elmt, "TRAP")) {
                             new_plant.setTrap(true);
+                        } else if (Objects.equals(elmt, "ACCELERATE")) {
+                            new_plant.setProgress(new_plant.getProgress() + 5);
+                        } else if (Objects.equals(elmt, "DELAY")) {
+                            new_plant.setProgress(new_plant.getProgress() - 5);
                         }
                     }
 

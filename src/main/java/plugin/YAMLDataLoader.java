@@ -116,10 +116,10 @@ public class YAMLDataLoader implements DataLoader {
         Map<String, Object> playerData = objectMapper.readValue(new File(file_path), new TypeReference<>() {
         });
         CardConfig card_config = CardConfig.getInstance();
-        List<Animal> animal_config = card_config.getAnimalConfig().stream().toList();
-        List<Plants> plant_config = card_config.getPlantConfig().stream().toList();
-        List<Product> product_config = card_config.getProductConfig().stream().toList();
-        List<Item> item_config = card_config.getItemConfig().stream().toList();
+        Set<Animal> animal_config = card_config.getAnimalConfig();
+        Set<Plants> plant_config = card_config.getPlantConfig();
+        Set<Product> product_config = card_config.getProductConfig();
+        Set<Item> item_config = card_config.getItemConfig();
 
 
         int gulden = (int) playerData.get("gulden");
