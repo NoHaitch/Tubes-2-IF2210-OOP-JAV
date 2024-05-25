@@ -15,7 +15,7 @@ public class Field extends Thread{
     public ArrayList<Integer> available_integer;
     private List<Integer> protect ;
     
-    Field(int cap){
+    public Field(int cap){
         capacity = cap;
         content = new ArrayList<>(capacity);
         for(int i = 0 ; i < cap ; i++){
@@ -26,7 +26,7 @@ public class Field extends Thread{
         available_integer = generateAvailInteger();
     }
 
-    Field(){
+    public Field(){
         capacity = 20;
         content = new ArrayList<>(capacity);
         for(int i = 0 ; i < 20 ; i++){
@@ -187,90 +187,6 @@ public class Field extends Thread{
         }
     }
 
-    // public boolean useItem(Card item, int index) throws Throwable{
-    //     // Harvestable target = getElement(index) ;
-    //     if (getElement(index).getName() == "null") {
-    //         return false ;
-    //     }
-
-    //     if (item.getName() == "Accelerate") {
-    //         if (getElement(index).getType() == "Plant") {
-    //             Plants target = (Plants)getElement(index) ;
-    //             target.setProgress(target.getProgress() + 2) ;
-    //         }
-    //         else {
-    //             Animal target = (Animal)getElement(index) ;
-    //             target.setWeight(target.getWeight() + 5) ;
-    //         }  
-    //         return true ;      
-    //     }
-    //     else if (item.getName() == "Delay") {
-    //         if (getElement(index).getType() == "Plant") {
-    //             Plants target = (Plants)getElement(index) ;
-    //             if (target.getProgress() < 0) {
-    //                 return false ;
-    //             }
-    //             target.setProgress(target.getProgress() - 2) ;
-    //         }
-    //         else {
-    //             Animal target = (Animal)getElement(index) ;
-    //             if (target.getWeight() < 0) {
-    //                 return false ;
-    //             }
-    //             target.setWeight(target.getWeight() - 5) ;
-    //         }  
-    //         return true ;
-    //     }
-    //     else if (item.getName() == "InstantHarvest") {
-    //         if (getElement(index).getType() == "Plant") {
-    //             Plants target = (Plants)getElement(index) ;
-    //             target.setProgress(target.getHarvestLimit());
-    //             return true ;
-    //         }
-    //         else {
-    //             Animal target = (Animal)getElement(index) ;
-    //             target.setWeight(target.getHarvestWeight());
-    //             return true ;
-    //         }  
-    //     }
-    //     else if (item.getName() == "Destroy") {
-    //         // if (getElement(index).getName() == "null") {
-    //         //     return false ;
-    //         // }
-    //         if (getElement(index).getProtect()) {
-    //             getElement(index).setProtect(false); ;
-    //             return true ;
-    //         }
-    //         else {
-    //             removeElement(index);
-    //             return true ;
-    //         }
-    //     }
-    //     else if (item.getName() == "Protect") {
-    //         // if (getElement(index).getName() == "null") {
-    //         //     return false ;
-    //         // }
-    //         if (getElement(index).getProtect()) {
-    //             return false ; // sudah memiliki efek protect
-    //         }
-    //         else {
-    //             getElement(index).setProtect(true) ;
-    //             return true ;
-    //         }          
-    //     }
-    //     else if (item.getName() == "Trap") {
-    //         if (getElement(index).getTrap()) {
-    //             return false ;
-    //         }         
-    //         else {
-    //             getElement(index).setTrap(true) ;
-    //             return true ;
-    //         }
-    //     }
-    //     else {
-    //         return false ;
-    //     }
-    // }
     private ArrayList<Integer> generateAvailInteger(Integer row, Integer column){
         ArrayList<Integer> ret = new ArrayList<>();
         
@@ -356,34 +272,34 @@ public class Field extends Thread{
         }
     }
 
-    public static void main(String args[]){
-        Field yoi = new Field();
-
-        for(int i = 0 ; i < 20 ; i++){
-            try{
-                yoi.addElement(new Animal("aaa", "aaa", "aaaa", null, 3,4), i);
-            } catch(Throwable e){
-                System.out.println(e.getMessage());
-            }
-        }
-        try {
-            // yoi.removeElement(0);
-
-        } catch (Throwable e){
-
-        }
-
-        yoi.start();
-
-        try {
-            TimeUnit.SECONDS.sleep(1);
-        } catch (Throwable e){
-
-        }
-        
-        yoi.printContent();
-
-    }
+//    public static void main(String args[]){
+//        Field yoi = new Field();
+//
+//        for(int i = 0 ; i < 20 ; i++){
+//            try{
+//                yoi.addElement(new Animal("aaa", "aaa", "aaaa", null, 3,4), i);
+//            } catch(Throwable e){
+//                System.out.println(e.getMessage());
+//            }
+//        }
+//        try {
+//            // yoi.removeElement(0);
+//
+//        } catch (Throwable e){
+//
+//        }
+//
+//        yoi.start();
+//
+//        try {
+//            TimeUnit.SECONDS.sleep(1);
+//        } catch (Throwable e){
+//
+//        }
+//
+//        yoi.printContent();
+//
+//    }
 }
 
 class IndexOutOfRange extends Throwable{
