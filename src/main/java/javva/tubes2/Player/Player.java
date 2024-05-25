@@ -69,12 +69,6 @@ public class Player {
     
     // return pointer to active_deck. Jadi perubahan yang terjadi akan tersimpan.
     public List<Card> getActiveDeck() {
-        List<Card> result = new ArrayList<>() ;
-        for (int i = 0 ; i < 6 ; i++) {
-            if(!this.active_deck.get(i).getName().equals("null")) {
-                result.add(active_deck.get(i)) ;
-            }
-        }
         return this.active_deck ;
     }
 
@@ -149,7 +143,7 @@ public class Player {
     }
 
     public void removeFromActiveDeck(int index) throws IndexInvalid{
-        if (index >= 0 && index < countActiveCard()) {
+        if (index >= 0 && index < 6) {
             this.active_deck.remove(index) ;
             this.active_deck.add(new NullCard()) ;
         }
@@ -180,7 +174,7 @@ public class Player {
 
     public void harvest(int index) {
         try {
-            if (countActiveCard() <= 0) {
+            if (countActiveCard() >= 6) {
                 throw new ActiveDeckFull() ;
             }
             Product newProduct = this.field.getAndRemove(index) ;
