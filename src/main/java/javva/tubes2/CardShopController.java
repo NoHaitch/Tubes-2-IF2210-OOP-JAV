@@ -51,7 +51,7 @@ public class CardShopController{
             card_image.setImage(image);
         }
         catch(Exception e){
-            System.out.println("Image not found :" + card.getPath() );
+            // System.out.println("Image not found :" + card.getPath() );
         }
         // set harga
         harga.setText(Integer.toString(price));

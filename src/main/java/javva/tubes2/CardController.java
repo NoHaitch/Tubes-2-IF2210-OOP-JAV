@@ -25,6 +25,8 @@ public class CardController {
     @FXML
     private Label card_name;
 
+    public static MainController main;
+
     // Attributes
     public Card card;
     private String type = "field";    // field : bisa di drag + liat info, deck : bisa di drag tapi gabisa liat info, view: gabisa diliat infonya dan gabisa di drag
@@ -34,6 +36,7 @@ public class CardController {
     private static Boolean is_area_clear = true;
     public static String GREEN = "#B4FFD6";
 
+    private int id_field = -1;
 
     // Mouse activity
     public void dragEntered(){
@@ -67,7 +70,7 @@ public class CardController {
             is_area_clear = false;
         }
 
-        System.out.println("You hovering while dragging on " + card.getName() + is_transferable_area);
+        // System.out.println("You hovering while dragging on " + card.getName() + is_transferable_area);
         event.acceptTransferModes(TransferMode.ANY);
     }
     public void dragDropped(){
@@ -114,7 +117,7 @@ public class CardController {
             card_image.setImage(image);
         }
         catch(Exception e){
-            System.out.println("Image not found : " + card.getPath());
+            // System.out.println("Image not found : " + card.getPath());
             card_image.setImage(null);
         }
 
@@ -145,13 +148,11 @@ public class CardController {
         }
 
         CardInfoController controller = loader.getController();
+        controller.setId(id_field);
 
         if (controller != null) {
             controller.setData(card);
-        } else {
-            System.out.println("Controller is null");
         }
-
 
         // Membuat stage baru untuk popup
         Stage popupStage = new Stage();
@@ -164,5 +165,11 @@ public class CardController {
         popupStage.show();
     }
 
+    public int getId_field() {
+        return id_field;
+    }
 
+    public void setId_field(int id_field) {
+        this.id_field = id_field;
+    }
 }

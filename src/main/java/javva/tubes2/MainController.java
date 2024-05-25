@@ -225,6 +225,9 @@ public class MainController implements Initializable  {
         game = new GameMaster();
         my_field_button.setDisable(true);
 
+        CardController.main = this;
+        CardInfoController.main = this;
+
         renderInitiate();
         renderLoadState();
         renderLoadPlugin();
@@ -385,7 +388,8 @@ public class MainController implements Initializable  {
             field.getChildren().clear();
             Integer column = 0;
             Integer row = 0;
-
+            
+            field_controllers.clear();
             for (int i = 0; i < 20; i++) {
                 FXMLLoader fxmlLoader = new FXMLLoader();
                 fxmlLoader.setLocation(MainController.class.getResource("card.fxml"));
@@ -400,6 +404,7 @@ public class MainController implements Initializable  {
                     cardController.setData(new NullCard());
                     cardController.setType("field");
                 }
+                cardController.setId_field(i);
                 
                 // adding card controller for further manipulation
                 field_controllers.add(cardController);

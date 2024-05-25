@@ -33,8 +33,18 @@ public class CardInfoController {
     @FXML
     private Button panen_button;
 
+    public static MainController main;
 
     private Card card;
+    private Integer id = -1;
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public Integer getId() {
+        return id;
+    }
 
     @FXML
 
@@ -58,7 +68,7 @@ public class CardInfoController {
             item_image.setImage(image);
         }
         catch(Exception e){
-            System.out.println("Image not found :" + card.getPath() );
+            // System.out.println("Image not found :" + card.getPath() );
         }
     }
 
@@ -71,6 +81,26 @@ public class CardInfoController {
 
     @FXML
     void panenItem(ActionEvent event) {
+        if(card instanceof Animal){
+            Animal panen = (Animal)card;
+        }
+
+        if(card instanceof Plants){
+            Plants panen = (Plants)card;
+        }
+
+        try {
+            main.saveField();
+            main.saveDeck();
+            System.out.println(id);
+            main.game.current_player.harvest(id);
+            main.renderField(main.game.current_player);
+            main.renderActiveDeck(main.game.current_player);
+            main.saveField();
+            main.saveDeck();
+        } catch (Throwable e){
+
+        }
     }
 
 }

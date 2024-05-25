@@ -180,7 +180,7 @@ public class Player {
 
     public void harvest(int index) {
         try {
-            if (countActiveCard() <= 0) {
+            if (countActiveCard() >= 6) {
                 throw new ActiveDeckFull() ;
             }
             Product newProduct = this.field.getAndRemove(index) ;

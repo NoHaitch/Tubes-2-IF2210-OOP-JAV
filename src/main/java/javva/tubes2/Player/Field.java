@@ -68,7 +68,7 @@ public class Field extends Thread{
         }
         content.set(index, new NullCard());
         for(int i = 0 ; i < protect.size() ; i++){
-            if(protect.get(i) == index){
+            if(protect.get(i).equals(index)){
                 protect.remove(i);
             }
         }
