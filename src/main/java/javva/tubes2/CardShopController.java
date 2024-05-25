@@ -28,6 +28,16 @@ public class CardShopController{
     @FXML
     private Label jumlah;
 
+    @FXML
+    public void buyItem(){
+
+    }
+
+    @FXML
+    public void Sell(){
+        
+    }
+
     private Product card;
 
     public void setData(Product card, int price, int stock){

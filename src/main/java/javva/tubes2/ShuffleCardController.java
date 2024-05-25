@@ -16,9 +16,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 import javva.tubes2.Card.*;
+import javva.tubes2.GameMaster.*;
 
 public class ShuffleCardController implements Initializable {
     private List<Card> cards = new ArrayList<>();
+    private List<CardController> controllers = new ArrayList<>();
+
+    MainController main;
 
     @FXML
     private GridPane card_grid;
@@ -28,13 +32,36 @@ public class ShuffleCardController implements Initializable {
 
     @FXML
     void reShuffle(ActionEvent event) {
+        try {
+            cards = main.game.current_player.drawCards();
+            setData(cards);
 
+        } catch (Throwable e){
+
+        }
     }
 
     @FXML
     void close() {
         // Get the current stage using the button's scene
-        Stage stage = (Stage) done_button.getScene().getWindow();
+        Stage stage = (Stage) done_button.getScene().getWindow(
+
+        );
+        main.game.current_player.drawToActiveDeck(cards);
+
+        main.game.avail_deck_count -= cards.size();
+        System.out.println(main.game.avail_deck_count);
+
+        // for(int i = 0 ; i < 6 ; i++){
+        //     Card tempCard = main.game.current_player.getActiveDeck().get(i);
+        //     CardController tempController = new CardController();
+        //     tempController.setData(tempCard);
+        //     main.active_deck_controllers.set(i, tempController);
+        // }
+
+        main.renderActiveDeck(main.game.current_player);
+        main.active_deck_number.setText("Deck Count : " + main.game.avail_deck_count);
+
         // Close the current stage
         stage.close();
     }
@@ -42,20 +69,22 @@ public class ShuffleCardController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         // Initialize empty
-        for (int i = 0;i<4; i++){
-            Card temp = new Card("","","");
-            cards.add(temp);
-        }
-
         renderShuffled();
     }
 
-    public List<Card> getCards(){
-        return cards;
+    public void setData(List<Card> cards) {
+        this.cards = cards;
+        emptyField();
+        for (int i = 0; i < cards.size(); i++) {
+            controllers.get(i).setData(cards.get(i));
+        }
     }
 
-    public void setCards(List<Card> temp){
-        cards=temp;
+    private void emptyField(){
+        for (CardController controller: controllers) {
+            Card new_card = new NullCard();
+            controller.setData(new_card);
+        }
     }
 
     private void renderShuffled(){
@@ -64,18 +93,20 @@ public class ShuffleCardController implements Initializable {
         int row = 0;
         try {
             for (int i = 0; i < 4; i++) {
+                Card new_card = new NullCard();
+
                 FXMLLoader fxmlLoader = new FXMLLoader();
                 fxmlLoader.setLocation(MainController.class.getResource("card.fxml"));
                 AnchorPane anchorPane = fxmlLoader.load();
 
                 CardController cardController = fxmlLoader.getController();
-                cardController.setData(cards.get(i));
+                cardController.setData(new_card);
+                cardController.setType("view");
+                controllers.add(cardController);
 
                 // Add the anchorPane to the GridPane
                 card_grid.add(anchorPane, column, row);
 
-                // Set margin around the anchorPane
-                GridPane.setMargin(anchorPane, new Insets(0)); // Set a uniform margin
 
                 // Increment column and row for the next card
                 column++;
@@ -89,6 +120,7 @@ public class ShuffleCardController implements Initializable {
             throw new RuntimeException(e);
         }
     }
+
 
 
 }

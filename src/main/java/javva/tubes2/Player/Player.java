@@ -1,6 +1,8 @@
 package javva.tubes2.Player;
 import javva.tubes2.Card.* ;
 import javva.tubes2.Shop;
+
+import java.io.ObjectInputStream.GetField;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,6 +36,10 @@ public class Player {
         return this.field ;
     }
 
+    public void setField(Field field) {
+        this.field = field;
+    }
+
     public void addField(int card_index, int field_index) {
         try {
             this.field.addElement((Harvestable)this.active_deck.get(card_index), field_index);
@@ -65,14 +71,14 @@ public class Player {
         this.gulden += gulden ;
     }
 
+    public void setActive_deck(List<Card> active_deck) {
+        this.active_deck = active_deck;
+    }
+
+
+    
     // return pointer to active_deck. Jadi perubahan yang terjadi akan tersimpan.
     public List<Card> getActiveDeck() {
-        List<Card> result = new ArrayList<>() ;
-        for (int i = 0 ; i < 6 ; i++) {
-            if(!this.active_deck.get(i).getName().equals("null")) {
-                result.add(active_deck.get(i)) ;
-            }
-        }
         return this.active_deck ;
     }
 
@@ -108,7 +114,7 @@ public class Player {
             }
             for (int i = 0 ; i < cards.size() ; i++) {
                 try {
-                    // System.out.println(cards.get(i).getName()) ;
+                    System.out.println(cards.get(i).getName()) ;
                     addToActiveDeck(cards.get(i));
                 }
                 catch(Throwable e) {
@@ -147,7 +153,7 @@ public class Player {
     }
 
     public void removeFromActiveDeck(int index) throws IndexInvalid{
-        if (index >= 0 && index < countActiveCard()) {
+        if (index >= 0 && index < 6) {
             this.active_deck.remove(index) ;
             this.active_deck.add(new NullCard()) ;
         }
@@ -178,7 +184,7 @@ public class Player {
 
     public void harvest(int index) {
         try {
-            if (countActiveCard() <= 0) {
+            if (countActiveCard() >= 6) {
                 throw new ActiveDeckFull() ;
             }
             Product newProduct = this.field.getAndRemove(index) ;

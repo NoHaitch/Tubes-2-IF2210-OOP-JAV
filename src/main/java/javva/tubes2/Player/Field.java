@@ -74,6 +74,14 @@ public class Field extends Thread{
         }
     }
 
+    public ArrayList<Harvestable> getContent() {
+        return content;
+    }
+
+    public void setContent(ArrayList<Harvestable> content) {
+        this.content = content;
+    }
+
     public synchronized Product getAndRemove(int index) throws Throwable{
         if(index >= capacity || index < 0){
             throw new IndexOutOfRange();
@@ -86,6 +94,14 @@ public class Field extends Thread{
         removeElement(index);
 
         return ret;
+    }
+
+    public void updatePlant(){
+        for(int i = 0 ; i < content.size() ; i++){
+            if(content.get(i) instanceof Plants){
+                ((Plants)content.get(i)).grow();
+            }
+        }
     }
 
     public ArrayList<Product> harvestAll(){

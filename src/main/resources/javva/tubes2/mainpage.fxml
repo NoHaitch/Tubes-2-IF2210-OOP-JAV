@@ -152,7 +152,7 @@
                         </VBox>
                         <VBox alignment="CENTER" prefHeight="179.0" prefWidth="246.0">
                            <children>
-                              <HBox alignment="CENTER" nodeOrientation="LEFT_TO_RIGHT" prefHeight="100.0" prefWidth="200.0" style="-fx-background-color: #F3FFEF;" styleClass="card" stylesheets="@style.css">
+                              <HBox alignment="CENTER" nodeOrientation="LEFT_TO_RIGHT" prefHeight="100.0" prefWidth="200.0" style="-fx-background-color: #F3FFEF;" styleClass="card" stylesheets="@style.css" fx:id="player1_color">
                                  <children>
                                     <VBox alignment="CENTER_LEFT" prefHeight="200.0" prefWidth="100.0">
                                        <children>
@@ -195,11 +195,11 @@
                                     <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                                  </VBox.margin>
                               </HBox>
-                              <HBox alignment="CENTER" nodeOrientation="LEFT_TO_RIGHT" prefHeight="100.0" prefWidth="200.0" style="-fx-background-color: #F3FFEF;" styleClass="card" stylesheets="@style.css">
+                              <HBox alignment="CENTER" nodeOrientation="LEFT_TO_RIGHT" prefHeight="100.0" prefWidth="200.0" style="-fx-background-color: #F3FFEF;" styleClass="card" stylesheets="@style.css" fx:id="player2_color">
                                  <children>
                                     <VBox alignment="CENTER_LEFT" prefHeight="200.0" prefWidth="100.0">
                                        <children>
-                                          <Label prefHeight="16.0" prefWidth="59.0" text="Player 1">
+                                          <Label prefHeight="16.0" prefWidth="59.0" text="Player 2">
                                              <font>
                                                 <Font name="Arial Rounded MT Bold" size="13.0" />
                                              </font>
@@ -214,7 +214,7 @@
                                     </VBox>
                                     <VBox alignment="CENTER_RIGHT" prefHeight="74.0" prefWidth="54.0" HBox.hgrow="ALWAYS">
                                        <children>
-                                          <Label fx:id="player_11" contentDisplay="CENTER" text="XXXXX">
+                                          <Label fx:id="player_2" contentDisplay="CENTER" text="XXXXX">
                                              <font>
                                                 <Font name="Arial Rounded MT Bold" size="13.0" />
                                              </font>

@@ -26,7 +26,8 @@ public class CardController {
     private Label card_name;
 
     // Attributes
-    private Card card;
+    public Card card;
+    private String type = "field";    // field : bisa di drag + liat info, deck : bisa di drag tapi gabisa liat info, view: gabisa diliat infonya dan gabisa di drag
     private static Card dragged_item;
     private static Boolean is_transferable_area = true;
     private static Boolean is_destroyable = false;
@@ -44,6 +45,10 @@ public class CardController {
         System.out.println(is_transferable_area);
     }
     public void dragDetected(MouseEvent event){
+
+        if(type.equals("view")){
+            return;
+        }
         Dragboard db = card_frame.startDragAndDrop(TransferMode.ANY);
 
         ClipboardContent cb = new ClipboardContent();
@@ -66,7 +71,7 @@ public class CardController {
         event.acceptTransferModes(TransferMode.ANY);
     }
     public void dragDropped(){
-        if  (is_transferable_area & is_area_clear){
+        if  (is_transferable_area && is_area_clear){
             card = dragged_item;
             setData(card);
             System.out.println("Dropped");
@@ -75,7 +80,7 @@ public class CardController {
     }
     public void dragDone(){
         if (is_destroyable){
-            card = new Card("","","");
+            card = new NullCard();
             setData(card);
             is_destroyable = false;
         }
@@ -97,7 +102,11 @@ public class CardController {
     }
     public void setData(Card card){
         this.card = card;
-        card_name.setText(card.getName());
+        if(!card.getName().equals("null")){
+            card_name.setText(card.getName());
+        } else {
+            card_name.setText("");
+        }
 //        card_background.setStyle("-fx-background-color: " + null + ";");
 
         try{
@@ -110,7 +119,9 @@ public class CardController {
         }
 
     }
-
+    public void setType(String type){
+        this.type =type;
+    }
 
     // GETTERS
     public Card getCard(){
@@ -119,6 +130,10 @@ public class CardController {
 
     // RENDERS
     public void showInfo() {
+        if (type.equals("view") || type.equals("deck") || card_image.getImage() == null){
+            return;
+        }
+
         FXMLLoader loader = new FXMLLoader(CardController.class.getResource("card-info.fxml"));
         Parent root = null;
         try {

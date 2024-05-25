@@ -22,26 +22,26 @@
                   <Font name="Arial Rounded MT Bold" size="26.0" />
                </font>
             </Label>
-            <Label layoutX="20.0" layoutY="102.0" prefHeight="31.0" prefWidth="52.0" text="Berat">
+            <Label layoutX="20.0" layoutY="102.0" prefHeight="31.0" prefWidth="60.0" fx:id="tipe">
                <font>
                   <Font name="Arial Rounded MT Bold" size="16.0" />
                </font>
             </Label>
-            <Label layoutX="20.0" layoutY="133.0" prefHeight="31.0" prefWidth="81.0" text="Item Aktif">
+            <!-- <Label layoutX="20.0" layoutY="133.0" prefHeight="31.0" prefWidth="81.0" text="Item Aktif">
                <font>
                   <Font name="Arial Rounded MT Bold" size="16.0" />
                </font>
-            </Label>
+            </Label> -->
             <Label fx:id="item_weight" layoutX="114.0" layoutY="102.0" prefHeight="31.0" prefWidth="52.0" text="4 (4)" textFill="#3b942a">
                <font>
                   <Font name="Arial Rounded MT Bold" size="16.0" />
                </font>
             </Label>
-            <Label fx:id="items_active" alignment="TOP_LEFT" layoutX="114.0" layoutY="140.0" prefHeight="119.0" prefWidth="462.0" text="Accelerate, Delay, Protect" textFill="#3b942a">
+            <!-- <Label fx:id="items_active" alignment="TOP_LEFT" layoutX="114.0" layoutY="140.0" prefHeight="119.0" prefWidth="462.0" text="Accelerate, Delay, Protect" textFill="#3b942a">
                <font>
                   <Font name="Arial Rounded MT Bold" size="16.0" />
                </font>
-            </Label>
+            </Label> -->
             <ImageView fx:id="item_image" fitHeight="171.0" fitWidth="164.0" layoutX="599.0" layoutY="82.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@images/Tanaman/corn%20seeds.png" />
