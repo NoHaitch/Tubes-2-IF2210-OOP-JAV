@@ -2,7 +2,6 @@ package javva.tubes2.Player;
 import javva.tubes2.Card.* ;
 import javva.tubes2.Shop;
 
-import java.io.ObjectInputStream.GetField;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -40,6 +39,16 @@ public class Player {
         this.field = field;
     }
 
+    public void addField(int card_index, int field_index) {
+        try {
+            this.field.addElement((Harvestable)this.active_deck.get(card_index), field_index);
+            removeFromActiveDeck(card_index);
+        }
+        catch(Throwable e) {
+            System.out.println(e.getMessage()) ;
+        }
+    }
+
     public void addField(Card stuff, int index) {
         try {
             this.field.addElement((Harvestable)stuff, index);
@@ -69,12 +78,6 @@ public class Player {
     
     // return pointer to active_deck. Jadi perubahan yang terjadi akan tersimpan.
     public List<Card> getActiveDeck() {
-        List<Card> result = new ArrayList<>() ;
-        for (int i = 0 ; i < 6 ; i++) {
-            if(!this.active_deck.get(i).getName().equals("null")) {
-                result.add(active_deck.get(i)) ;
-            }
-        }
         return this.active_deck ;
     }
 
@@ -149,7 +152,7 @@ public class Player {
     }
 
     public void removeFromActiveDeck(int index) throws IndexInvalid{
-        if (index >= 0 && index < countActiveCard()) {
+        if (index >= 0 && index < 6) {
             this.active_deck.remove(index) ;
             this.active_deck.add(new NullCard()) ;
         }
@@ -199,16 +202,6 @@ public class Player {
             Animal animal = (Animal)this.field.getElement(animal_index) ;
             Product food = (Product)this.active_deck.get(food_index) ;
             animal.feed(food) ;
-        }
-        catch(Throwable e) {
-            System.out.println(e.getMessage()) ;
-        }
-    }
-
-    public void addToField(int card_index, int field_index) {
-        try {
-            this.field.addElement((Harvestable)this.active_deck.get(card_index), field_index);
-            removeFromActiveDeck(card_index);
         }
         catch(Throwable e) {
             System.out.println(e.getMessage()) ;

@@ -350,7 +350,6 @@ public class Field extends Thread{
     public synchronized void printContent(){
         if(bear_attack){
             try {
-                System.out.println("nigga");
                 wait();
             } catch (Throwable e){
 
