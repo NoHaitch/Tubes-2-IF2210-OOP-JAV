@@ -21,6 +21,8 @@ public class GameMaster {
     public Shop main_shop = Shop.getInstance();
     public CardConfig config;
 
+    public String winner = "" ;
+
     public GameMaster(){
         player1 = new Player();
         player2 = new Player();
@@ -30,7 +32,15 @@ public class GameMaster {
 
     public void changeTurn(){
         if(turn > 19){
-            // win condition
+            if (player1.getGulden() > player2.getGulden()) {
+                winner = "Player 1" ;
+            }
+            else if (player1.getGulden() < player2.getGulden()) {
+                winner = "Player 2" ;
+            }
+            else {
+                winner = "Draw" ; 
+            }
         } else {
             if(player_turn){
                 player_turn = false;
