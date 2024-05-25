@@ -16,7 +16,7 @@ public class Shop {
     /* CONSTRUCTOR */
     private Shop(){
         CardConfig config = CardConfig.getInstance();
-        List<Product> productConfig = config.getProductConfig();
+        List<Product> productConfig = config.getProductConfig().stream().toList();
         products = new HashMap<String, Integer>();
         for (Product p : productConfig){
             products.put(p.getName(), 0);
