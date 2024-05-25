@@ -323,26 +323,26 @@ public class Player {
         }
     }
 
-    public static void main(String[] args) {
-        Player player = new Player() ;
-        Card animal = new Animal("LandShark", "Carnivore", "", new Product("SharkFin", "Product", "", 12, 500), 0, 20) ;
-        player.addField(animal, 0);
-        try {
-            System.out.println(player.field.getElement(0).getName()) ;
-            Animal temp = (Animal) player.field.getElement(0) ;
-            System.out.println(temp.getHarvestWeight()) ;
+    // public static void main(String[] args) {
+    //     Player player = new Player() ;
+    //     Card animal = new Animal("LandShark", "Carnivore", "", new Product("SharkFin", "Product", "", 12, 500), 0, 20) ;
+    //     player.addField(animal, 0);
+    //     try {
+    //         System.out.println(player.field.getElement(0).getName()) ;
+    //         Animal temp = (Animal) player.field.getElement(0) ;
+    //         System.out.println(temp.getHarvestWeight()) ;
 
-            player.drawToActiveDeck(player.drawCards());
-            System.out.println("ABISDRAW") ;
-            for (int i = 0 ; i < 6 ; i++) {
-                System.out.println(player.getActiveDeck().get(i).getName()) ;
-            }
+    //         player.drawToActiveDeck(player.drawCards());
+    //         System.out.println("ABISDRAW") ;
+    //         for (int i = 0 ; i < 6 ; i++) {
+    //             System.out.println(player.getActiveDeck().get(i).getName()) ;
+    //         }
 
-        }
-        catch(Throwable e) {
-            System.out.println(e.getMessage()) ;
-        }
-    }
+    //     }
+    //     catch(Throwable e) {
+    //         System.out.println(e.getMessage()) ;
+    //     }
+    // }
 }
 
 class DeckIsFull extends Exception {
