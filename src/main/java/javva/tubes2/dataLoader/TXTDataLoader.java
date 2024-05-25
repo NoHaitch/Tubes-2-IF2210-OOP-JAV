@@ -277,10 +277,14 @@ public class TXTDataLoader implements DataLoader {
                     new_animal.setWeight(temp_progres.get(i));
 
                     for (String elmt : temp_item.get(i)) {
-                        if (elmt.equalsIgnoreCase("PROTECT")) {
+                        if (Objects.equals(elmt, "PROTECT")) {
                             new_animal.setProtect(true);
-                        } else if (elmt.equalsIgnoreCase("TRAP")) {
+                        } else if (Objects.equals(elmt, "TRAP")) {
                             new_animal.setTrap(true);
+                        } else if (Objects.equals(elmt, "ACCELERATE")) {
+                            new_animal.setWeight(new_animal.getWeight() + 5);
+                        } else if (Objects.equals(elmt, "DELAY")) {
+                            new_animal.setWeight(new_animal.getWeight() - 5);
                         }
                     }
 
@@ -299,10 +303,14 @@ public class TXTDataLoader implements DataLoader {
                     new_plant.setProgress(temp_progres.get(i));
 
                     for (String elmt : temp_item.get(i)) {
-                        if (elmt.equalsIgnoreCase("PROTECT")) {
+                        if (Objects.equals(elmt, "PROTECT")) {
                             new_plant.setProtect(true);
-                        } else if (elmt.equalsIgnoreCase("TRAP")) {
+                        } else if (Objects.equals(elmt, "TRAP")) {
                             new_plant.setTrap(true);
+                        } else if (Objects.equals(elmt, "ACCELERATE")) {
+                            new_plant.setProgress(new_plant.getProgress() + 5);
+                        } else if (Objects.equals(elmt, "DELAY")) {
+                            new_plant.setProgress(new_plant.getProgress() - 5);
                         }
                     }
 
