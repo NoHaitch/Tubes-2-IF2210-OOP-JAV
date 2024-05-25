@@ -179,8 +179,8 @@ public class MainController implements Initializable  {
         if(field_shown){
             return;
         } else {
-            field_shown = true;
         }
+        field_shown = true;
         field_controllers.clear();
         renderField(game.current_player);
     }

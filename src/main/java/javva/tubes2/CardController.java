@@ -58,10 +58,11 @@ public class CardController {
         System.out.println(is_transferable_area);
     }
     public void dragDetected(MouseEvent event){
-
-        if(type.equals("view") || !main.field_shown){
+        System.out.println("woi "+main.field_shown.toString());
+        if(type.equals("view") || (!main.field_shown && dragged_item instanceof Animal) || (!main.field_shown && dragged_item instanceof Plants)){
             return;
         }
+
         Dragboard db = card_frame.startDragAndDrop(TransferMode.ANY);
 
         ClipboardContent cb = new ClipboardContent();
@@ -105,7 +106,7 @@ public class CardController {
             return;
         }
 
-        if  (is_transferable_area && is_area_clear){
+        if (is_transferable_area && is_area_clear){
             card = dragged_item;
             setData(card);
             System.out.println("Dropped");
