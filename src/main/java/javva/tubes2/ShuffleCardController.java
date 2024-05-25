@@ -44,14 +44,24 @@ public class ShuffleCardController implements Initializable {
     @FXML
     void close() {
         // Get the current stage using the button's scene
-        Stage stage = (Stage) done_button.getScene().getWindow();
+        Stage stage = (Stage) done_button.getScene().getWindow(
+
+        );
         main.game.current_player.drawToActiveDeck(cards);
 
-        for(int i = 0 ; i < 6 ; i++){
-            main.active_deck_controllers.get(i).setData(main.game.current_player.getActiveDeck().get(i));
-        }
+        main.game.avail_deck_count -= cards.size();
+        System.out.println(main.game.avail_deck_count);
+
+        // for(int i = 0 ; i < 6 ; i++){
+        //     Card tempCard = main.game.current_player.getActiveDeck().get(i);
+        //     CardController tempController = new CardController();
+        //     tempController.setData(tempCard);
+        //     main.active_deck_controllers.set(i, tempController);
+        // }
 
         main.renderActiveDeck(main.game.current_player);
+        main.active_deck_number.setText("Deck Count : " + main.game.avail_deck_count);
+
         // Close the current stage
         stage.close();
     }
