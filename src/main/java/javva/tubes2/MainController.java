@@ -41,9 +41,9 @@ public class MainController implements Initializable  {
     @FXML
     public Label active_deck_number;
     @FXML
-    private Label player_1;
+    public Label player_1;
     @FXML
-    private Label player_2;
+    public Label player_2;
     @FXML
     private Label turn_label;
     @FXML

@@ -31,17 +31,32 @@ public class CardShopController{
 
     @FXML
     public void buyItem(){
-        main.game.current_player.buy(card.getName());
+        main.saveDeck();
+        main.game.current_player.buy(card);
+        main.renderActiveDeck(main.game.current_player);
+        main.shop_controller.renderShopItems();
+        if(main.game.player_turn){
+            main.player_1.setText(main.game.current_player.getGulden() + "");
+            main.player_2.setText(main.game.player2.getGulden() + "");
+        } else {
+            main.player_2.setText(main.game.current_player.getGulden() + "");
+            main.player_1.setText(main.game.player1.getGulden() + "");
+        }
     }
 
     @FXML
     public void Sell(){
-        System.out.println(main.game.main_shop.getShopItemsList());
-        System.out.println(card.getName());
         main.saveDeck();
         main.game.current_player.sell(card);
         main.renderActiveDeck(main.game.current_player);
         main.shop_controller.renderShopItems();
+        if(main.game.player_turn){
+            main.player_1.setText(main.game.current_player.getGulden() + "");
+            main.player_2.setText(main.game.player2.getGulden() + "");
+        } else {
+            main.player_2.setText(main.game.current_player.getGulden() + "");
+            main.player_1.setText(main.game.player1.getGulden() + "");
+        }
     }
 
     private Product card;

@@ -220,14 +220,14 @@ public class Player {
         }
     }
 
-    public void buy(String productName){
+    public void buy(Product buyprod){
         try {
             Shop shop = Shop.getInstance();
-            if (getGulden() >= shop.getPrice(productName)) {
-                if (getActiveDeck().size()!=6){
-                    addToActiveDeck(new Card(productName, "Product"));
-                    shop.removeProduct(productName);
-                    addGulden(-shop.getPrice(productName));
+            if (getGulden() >= shop.getPrice(buyprod.getName())) {
+                if (isDeckFull()){
+                    addToActiveDeck(buyprod);
+                    shop.removeProduct(buyprod.getName());
+                    addGulden(-shop.getPrice(buyprod.getName()));
                 } else {
                     throw new ActiveDeckFull();
                 }
@@ -237,6 +237,16 @@ public class Player {
         } catch (Throwable e) {
             System.out.println(e.getMessage());
         }
+    }
+
+    private Boolean isDeckFull(){
+        int count = 0;
+        for(int i = 0 ; i < 6 ; i++){
+            if(active_deck.get(i).getName() != "null"){
+                count++;
+            }
+        }
+        return count <= 6;
     }
 
     public void sell(int index){
